@@ -1,1 +1,46 @@
-﻿main css
+@import url("./layout.css");
+@import url("./gauges.css");
+@import url("./components.css");
+
+/* BASE GENERAL */
+body {
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: Arial, sans-serif;
+}
+
+/* PANEL PRINCIPAL */
+.panel {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+  color: #22c55e;
+}
+
+/* FILA */
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+}
+
+/* BLOQUE POR FASE */
+.fase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fase h2 {
+  margin-bottom: 10px;
+}
+
+/* VALOR NUMERICO */
+.valor {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
