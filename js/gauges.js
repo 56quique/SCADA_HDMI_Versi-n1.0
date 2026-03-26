@@ -8,7 +8,7 @@ export function crearGauge(id, min, max) {
     return;
   }
 
-  el.classList.add("gauge");
+  el.classList.add("gauges");
 
   // barra de relleno
   const fill = document.createElement("div");
