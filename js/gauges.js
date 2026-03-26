@@ -1,4 +1,3 @@
-console.log("GAUGE CARGADO");
 export function crearGauge(id, min, max) {
 
   const el = document.getElementById(id);
@@ -8,18 +7,42 @@ export function crearGauge(id, min, max) {
     return;
   }
 
-  el.classList.add("gauges");
+  el.innerHTML = "";
+  el.className = "gauge";
 
-  // barra de relleno
+  // RELLENO
   const fill = document.createElement("div");
   fill.className = "fill";
 
-  // cursor indicador
+  // CURSOR
   const cursor = document.createElement("div");
   cursor.className = "cursor";
 
   el.appendChild(fill);
   el.appendChild(cursor);
+
+  // ===== ESCALA PRINCIPAL (cada 50V) =====
+  for (let i = min; i <= max; i += 50) {
+    const tick = document.createElement("div");
+    tick.className = "tick";
+    tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
+
+    const label = document.createElement("span");
+    label.className = "label";
+    label.textContent = i;
+
+    tick.appendChild(label);
+    el.appendChild(tick);
+  }
+
+  // ===== SUBDIVISIONES (cada 10V) =====
+  for (let i = min; i <= max; i += 10) {
+    const tick = document.createElement("div");
+    tick.className = "tick-small";
+    tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
+
+    el.appendChild(tick);
+  }
 
   let valorActual = 0;
 
