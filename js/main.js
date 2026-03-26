@@ -30,9 +30,15 @@ setInterval(() => {
 function animar() {
 
   // interpolación (suavizado)
-  v1 += (target1 - v1) * 0.02;
-  v2 += (target2 - v2) * 0.02;
-  v3 += (target3 - v3) * 0.02;
+ // ruido pequeño
+const ruido1 = (Math.random() - 0.5) * 1.5;
+const ruido2 = (Math.random() - 0.5) * 1.5;
+const ruido3 = (Math.random() - 0.5) * 1.5;
+
+// interpolación + ruido
+v1 += (target1 - v1) * 0.02 + ruido1;
+v2 += (target2 - v2) * 0.02 + ruido2;
+v3 += (target3 - v3) * 0.02 + ruido3;
 
   g1.set(v1);
   g2.set(v2);
