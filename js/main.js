@@ -44,11 +44,15 @@ v3 += (target3 - v3) * 0.02 + ruido3;
   g2.set(v2);
   g3.set(v3);
 
-  t1.textContent = v1.toFixed(0) + " V";
-  t2.textContent = v2.toFixed(0) + " V";
-  t3.textContent = v3.toFixed(0) + " V";
+ 
 
   requestAnimationFrame(animar);
 }
 
 animar();
+// actualización lenta del valor numérico
+setInterval(() => {
+  t1.textContent = v1.toFixed(0) + " V";
+  t2.textContent = v2.toFixed(0) + " V";
+  t3.textContent = v3.toFixed(0) + " V";
+}, 500); // cada medio segundo
