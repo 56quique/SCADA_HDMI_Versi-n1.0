@@ -83,3 +83,12 @@ setInterval(() => {
   setColor(t3, prom3);
 
 }, 500);
+function setColor(elemento, valor) {
+
+  if (valor < 200 || valor > 240) {
+    elemento.style.color = "red";
+  } else {
+    elemento.style.color = "#22c55e"; // verde
+  }
+
+}
