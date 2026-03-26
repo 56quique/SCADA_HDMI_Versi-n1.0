@@ -41,7 +41,7 @@
   position: absolute;
   width: 10px;
   height: 2px;
-  background: black;
+  background: light gray;
   left: -12px;
 }
 
@@ -51,7 +51,7 @@
   left: -40px;
   top: -6px;
   font-size: 10px;
-  color: black;
+  color: light gray;
 }
 
 /* TICKS CHICOS */
