@@ -1,1 +1,28 @@
-﻿layout css
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* CONTENEDOR GENERAL */
+.panel {
+  max-width: 800px;
+  width: 100%;
+}
+
+/* FILA DE GAUGES */
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 60px;
+  margin-top: 40px;
+}
+
+/* CADA FASE */
+.fase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
