@@ -1,11 +1,12 @@
+/* IMPORTS */
 @import url("./layout.css");
 @import url("./gauges.css");
 @import url("./components.css");
 
-/* RESET */
+/* RESET TOTAL */
 body {
   margin: 0;
-  background: #0f172a; /* fondo sólido */
+  background: #0f172a; /* fondo limpio */
   color: #e5e7eb;
   font-family: Arial, sans-serif;
 }
@@ -13,11 +14,13 @@ body {
 /* PANEL */
 .panel {
   text-align: center;
-  padding-top: 40px;
+  padding: 40px;
 }
 
+/* TITULO */
 h1 {
   color: #22c55e;
+  margin-bottom: 30px;
 }
 
 /* FILA */
