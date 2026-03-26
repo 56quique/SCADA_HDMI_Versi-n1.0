@@ -57,7 +57,29 @@ v3 += (target3 - v3) * 0.02 + ruido3;
 animar();
 // actualización lenta del valor numérico
 setInterval(() => {
-  t1.textContent = v1.toFixed(0) + " V";
-  t2.textContent = v2.toFixed(0) + " V";
-  t3.textContent = v3.toFixed(0) + " V";
-}, 500); // cada medio segundo
+
+  // guardar historial
+  hist1.push(v1);
+  hist2.push(v2);
+  hist3.push(v3);
+
+  if (hist1.length > N) hist1.shift();
+  if (hist2.length > N) hist2.shift();
+  if (hist3.length > N) hist3.shift();
+
+  // calcular promedio
+  const prom1 = hist1.reduce((a, b) => a + b, 0) / hist1.length;
+  const prom2 = hist2.reduce((a, b) => a + b, 0) / hist2.length;
+  const prom3 = hist3.reduce((a, b) => a + b, 0) / hist3.length;
+
+  // mostrar
+  t1.textContent = prom1.toFixed(0) + " V";
+  t2.textContent = prom2.toFixed(0) + " V";
+  t3.textContent = prom3.toFixed(0) + " V";
+
+  // ===== COLOR SEGÚN RANGO =====
+  setColor(t1, prom1);
+  setColor(t2, prom2);
+  setColor(t3, prom3);
+
+}, 500);
