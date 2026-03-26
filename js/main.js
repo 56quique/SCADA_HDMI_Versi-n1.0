@@ -85,7 +85,7 @@ setInterval(() => {
 }, 500);
 function setColor(elemento, valor) {
 
-  if (valor < 200 || valor > 240) {
+  if (valor < 210 || valor > 230) {
     elemento.style.color = "red";
   } else {
     elemento.style.color = "#22c55e"; // verde
