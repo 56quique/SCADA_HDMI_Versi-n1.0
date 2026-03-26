@@ -9,12 +9,30 @@ const t1 = document.getElementById("tL1");
 const t2 = document.getElementById("tL2");
 const t3 = document.getElementById("tL3");
 
-// Simulación tipo red trifásica
-setInterval(() => {
+// valores actuales
+let v1 = 220;
+let v2 = 225;
+let v3 = 215;
 
-  const v1 = 210 + Math.random() * 30;
-  const v2 = 220 + Math.random() * 20;
-  const v3 = 200 + Math.random() * 40;
+// valores objetivo
+let target1 = v1;
+let target2 = v2;
+let target3 = v3;
+
+// cada 3 segundos cambia el objetivo
+setInterval(() => {
+  target1 = 210 + Math.random() * 30;
+  target2 = 220 + Math.random() * 20;
+  target3 = 200 + Math.random() * 40;
+}, 3000);
+
+// animación continua (suave)
+function animar() {
+
+  // interpolación (suavizado)
+  v1 += (target1 - v1) * 0.02;
+  v2 += (target2 - v2) * 0.02;
+  v3 += (target3 - v3) * 0.02;
 
   g1.set(v1);
   g2.set(v2);
@@ -24,4 +42,7 @@ setInterval(() => {
   t2.textContent = v2.toFixed(0) + " V";
   t3.textContent = v3.toFixed(0) + " V";
 
-}, 1000);
+  requestAnimationFrame(animar);
+}
+
+animar();
