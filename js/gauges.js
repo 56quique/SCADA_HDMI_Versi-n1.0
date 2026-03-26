@@ -1,3 +1,4 @@
+console.log("GAUGE CARGADO");
 export function crearGauge(id, min, max) {
 
   const el = document.getElementById(id);
