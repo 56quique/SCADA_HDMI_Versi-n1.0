@@ -1,6 +1,11 @@
 console.log("JS OK");
 import { crearGauge } from "./gauges.js";
 
+let hist1 = [];
+let hist2 = [];
+let hist3 = [];
+
+const N = 10; // cantidad de muestras para promedio
 const g1 = crearGauge("vL1", 0, 300);
 const g2 = crearGauge("vL2", 0, 300);
 const g3 = crearGauge("vL3", 0, 300);
