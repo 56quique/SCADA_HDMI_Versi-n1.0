@@ -1,13 +1,21 @@
-import { crearGauge } from "./gauges.js"
+import { crearGauge } from "./gauge.js"
 
 const g1 = crearGauge("gaugeL1")
 const g2 = crearGauge("gaugeL2")
 const g3 = crearGauge("gaugeL3")
 
-function render() {
-  g1.dibujar()
-  g2.dibujar()
-  g3.dibujar()
+function simularValor() {
+  return 180 + Math.random() * 80
 }
 
-render()
+function actualizar() {
+  const v1 = simularValor()
+  const v2 = simularValor()
+  const v3 = simularValor()
+
+  g1.dibujar(v1)
+  g2.dibujar(v2)
+  g3.dibujar(v3)
+}
+
+setInterval(actualizar, 500)
