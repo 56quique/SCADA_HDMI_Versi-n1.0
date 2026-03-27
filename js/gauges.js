@@ -9,19 +9,6 @@ export function crearGauge(id, min, max) {
 
   el.innerHTML = "";
   el.className = "gauge";
-  // ===== LINEAS DE UMBRAL =====
-const minThreshold = 200;
-const maxThreshold = 240;
-
-function crearLinea(valor, clase) {
-  const linea = document.createElement("div");
-  linea.className = clase;
-  linea.style.bottom = ((valor - min) / (max - min)) * 100 + "%";
-  el.appendChild(linea);
-}
-
-crearLinea(minThreshold, "linea-min");
-crearLinea(maxThreshold, "linea-max");
 
   // RELLENO
   const fill = document.createElement("div");
@@ -34,7 +21,25 @@ crearLinea(maxThreshold, "linea-max");
   el.appendChild(fill);
   el.appendChild(cursor);
 
-  // ===== ESCALA PRINCIPAL (cada 50V) =====
+  // ===== LINEAS DINÁMICAS =====
+  const lineaMin = document.createElement("div");
+  lineaMin.className = "linea-min";
+
+  const lineaMax = document.createElement("div");
+  lineaMax.className = "linea-max";
+
+  el.appendChild(lineaMin);
+  el.appendChild(lineaMax);
+
+  function setThresholds(minVal, maxVal) {
+    const pMin = ((minVal - min) / (max - min)) * 100;
+    const pMax = ((maxVal - min) / (max - min)) * 100;
+
+    lineaMin.style.bottom = pMin + "%";
+    lineaMax.style.bottom = pMax + "%";
+  }
+
+  // ===== ESCALA =====
   for (let i = min; i <= max; i += 50) {
     const tick = document.createElement("div");
     tick.className = "tick";
@@ -48,12 +53,10 @@ crearLinea(maxThreshold, "linea-max");
     el.appendChild(tick);
   }
 
-  // ===== SUBDIVISIONES (cada 10V) =====
   for (let i = min; i <= max; i += 10) {
     const tick = document.createElement("div");
     tick.className = "tick-small";
     tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
-
     el.appendChild(tick);
   }
 
@@ -74,6 +77,7 @@ crearLinea(maxThreshold, "linea-max");
   return {
     set(valor) {
       animar(valor);
-    }
+    },
+    setThresholds
   };
 }
