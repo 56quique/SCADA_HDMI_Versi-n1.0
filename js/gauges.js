@@ -10,34 +10,19 @@ export function crearGauge(id, min, max) {
   el.innerHTML = "";
   el.className = "gauge";
 
-  // RELLENO
-  const fill = document.createElement("div");
-  fill.className = "fill";
-
-  // CURSOR
+  // ===== CURSOR =====
   const cursor = document.createElement("div");
   cursor.className = "cursor";
-
-  el.appendChild(fill);
   el.appendChild(cursor);
 
-  // ===== LINEAS DINÁMICAS =====
+  // ===== LINEAS =====
   const lineaMin = document.createElement("div");
   lineaMin.className = "linea-min";
+  el.appendChild(lineaMin);
 
   const lineaMax = document.createElement("div");
   lineaMax.className = "linea-max";
-
-  el.appendChild(lineaMin);
   el.appendChild(lineaMax);
-
-  function setThresholds(minVal, maxVal) {
-    const pMin = ((minVal - min) / (max - min)) * 100;
-    const pMax = ((maxVal - min) / (max - min)) * 100;
-
-    lineaMin.style.bottom = pMin + "%";
-    lineaMax.style.bottom = pMax + "%";
-  }
 
   // ===== ESCALA =====
   for (let i = min; i <= max; i += 50) {
@@ -60,17 +45,29 @@ export function crearGauge(id, min, max) {
     el.appendChild(tick);
   }
 
- let valorActual = 0;
+  // ===== VALOR =====
+  let valorActual = 0;
 
-return {
-  set(valor) {
+  function set(valor) {
     valorActual += (valor - valorActual) * 0.2;
 
     let percent = ((valorActual - min) / (max - min)) * 100;
     percent = Math.max(0, Math.min(100, percent));
 
-    fill.style.height = percent + "%";
     cursor.style.bottom = percent + "%";
-  },
-  setThresholds
-};
+  }
+
+  // ===== UMBRALES =====
+  function setThresholds(minVal, maxVal) {
+    const pMin = ((minVal - min) / (max - min)) * 100;
+    const pMax = ((maxVal - min) / (max - min)) * 100;
+
+    lineaMin.style.bottom = pMin + "%";
+    lineaMax.style.bottom = pMax + "%";
+  }
+
+  return {
+    set,
+    setThresholds
+  };
+}
