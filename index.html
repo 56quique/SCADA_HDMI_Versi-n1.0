@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>SCADA Tensiones</title>
+
+  <!-- ESTILOS -->
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/gauges.css">
 </head>
@@ -13,12 +15,15 @@
 
   <h1>MONITOREO DE TENSIONES</h1>
 
+  <!-- ===== GAUGES ===== -->
   <div class="gauges-container">
 
     <!-- L1 -->
     <div class="gauge-card">
       <h2>L1</h2>
+
       <canvas id="gaugeL1"></canvas>
+
       <div class="leds">
         <div class="led red" id="L1_red"></div>
         <div class="led yellow" id="L1_yellow"></div>
@@ -29,7 +34,9 @@
     <!-- L2 -->
     <div class="gauge-card">
       <h2>L2</h2>
+
       <canvas id="gaugeL2"></canvas>
+
       <div class="leds">
         <div class="led red" id="L2_red"></div>
         <div class="led yellow" id="L2_yellow"></div>
@@ -40,7 +47,9 @@
     <!-- L3 -->
     <div class="gauge-card">
       <h2>L3</h2>
+
       <canvas id="gaugeL3"></canvas>
+
       <div class="leds">
         <div class="led red" id="L3_red"></div>
         <div class="led yellow" id="L3_yellow"></div>
@@ -50,21 +59,26 @@
 
   </div>
 
-  <!-- CONTROLES -->
+  <!-- ===== CONTROLES ===== -->
   <div class="controls">
-    <div class="knob-container">
-      <label>Umin</label>
+
+    <div class="control-box">
+      <label for="umin">Umin</label>
       <input type="range" id="umin" min="180" max="220" value="200">
+      <span id="umin_val">200 V</span>
     </div>
 
-    <div class="knob-container">
-      <label>Umax</label>
+    <div class="control-box">
+      <label for="umax">Umax</label>
       <input type="range" id="umax" min="220" max="260" value="240">
+      <span id="umax_val">240 V</span>
     </div>
+
   </div>
 
 </div>
 
+<!-- JS SIEMPRE AL FINAL -->
 <script type="module" src="js/main.js"></script>
 
 </body>
