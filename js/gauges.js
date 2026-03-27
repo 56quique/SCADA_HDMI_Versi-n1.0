@@ -61,26 +61,16 @@ export function crearGauge(id, min, max) {
   }
 
  let valorActual = 0;
-let valorObjetivo = 0;
-
-function loop() {
-  valorActual += (valorObjetivo - valorActual) * 0.1;
-
-  let percent = ((valorActual - min) / (max - min)) * 100;
-  percent = Math.max(0, Math.min(100, percent));
-
-  fill.style.height = percent + "%";
-  cursor.style.bottom = percent + "%";
-
-  requestAnimationFrame(loop);
-}
-
-// arrancar UNA sola vez
-loop();
 
 return {
   set(valor) {
-    valorObjetivo = valor;
+    valorActual += (valor - valorActual) * 0.2;
+
+    let percent = ((valorActual - min) / (max - min)) * 100;
+    percent = Math.max(0, Math.min(100, percent));
+
+    fill.style.height = percent + "%";
+    cursor.style.bottom = percent + "%";
   },
   setThresholds
 };
