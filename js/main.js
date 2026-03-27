@@ -128,10 +128,6 @@ setInterval(() => {
 
   const minVal3 = +min3.value;
   const maxVal3 = +max3.value;
-  // actualizar líneas del gauge
-g1.setThresholds(minVal1, maxVal1);
-g2.setThresholds(minVal2, maxVal2);
-g3.setThresholds(minVal3, maxVal3);
 
   // COLOR TEXTO
   setColor(t1, prom1, minVal1, maxVal1);
