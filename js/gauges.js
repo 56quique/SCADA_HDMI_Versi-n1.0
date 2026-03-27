@@ -8,28 +8,26 @@ export function crearGauge(canvasId) {
 
   const ctx = canvas.getContext("2d")
 
-  // Tamaño real interno (IMPORTANTE para que no se deforme)
   canvas.width = 120
   canvas.height = 300
 
   const W = canvas.width
   const H = canvas.height
 
-  function dibujarEscala() {
+  function dibujar(valor = 0) {
     ctx.clearRect(0, 0, W, H)
 
-    // Fondo del instrumento
+    // Fondo
     ctx.fillStyle = "#050f1f"
     ctx.fillRect(0, 0, W, H)
 
-    // Canal del gauge
+    // Canal
     ctx.fillStyle = "#0a0a0a"
     ctx.fillRect(40, 10, 40, H - 20)
 
     // ===== ESCALA =====
     for (let v = 0; v <= 300; v += 10) {
       const y = H - (v / 300) * (H - 20) - 10
-
       const esMayor = (v % 30 === 0)
 
       ctx.beginPath()
@@ -39,16 +37,29 @@ export function crearGauge(canvasId) {
       ctx.lineWidth = esMayor ? 2 : 1
       ctx.stroke()
 
-      // Números solo en ticks grandes
       if (esMayor) {
         ctx.fillStyle = "#cfe3ff"
         ctx.font = "10px Arial"
         ctx.fillText(v, 5, y + 3)
       }
     }
+
+    // ===== CURSOR =====
+    const yVal = H - (valor / 300) * (H - 20) - 10
+
+    // barra principal
+    ctx.fillStyle = "#00e0ff"
+    ctx.fillRect(40, yVal - 2, 40, 4)
+
+    // punta lateral (tipo instrumento)
+    ctx.beginPath()
+    ctx.moveTo(85, yVal)
+    ctx.lineTo(100, yVal - 6)
+    ctx.lineTo(100, yVal + 6)
+    ctx.closePath()
+    ctx.fillStyle = "#00e0ff"
+    ctx.fill()
   }
 
-  return {
-    dibujar: dibujarEscala
-  }
+  return { dibujar }
 }
