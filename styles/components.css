@@ -29,3 +29,14 @@
   background: yellow;
   color: black;
 }
+.controles {
+  margin-top: 10px;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.controles input {
+  width: 100%;
+}
