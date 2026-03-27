@@ -2,72 +2,65 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>SCADA</title>
+  <title>SCADA Tensiones</title>
   <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/gauges.css">
 </head>
 
 <body>
 
 <div class="panel">
 
-  <h1>MONITOREO DE TENSIÓN</h1>
+  <h1>MONITOREO DE TENSIONES</h1>
 
-  <div class="row">
-    
-    <div class="fase">
+  <div class="gauges-container">
+
+    <!-- L1 -->
+    <div class="gauge-card">
       <h2>L1</h2>
-      <div id="vL1"></div>
-      <span class="valor" id="tL1">0 V</span>
+      <canvas id="gaugeL1"></canvas>
       <div class="leds">
-    <div class="led rojo" id="led1-alto">Sobretensión</div>
-    <div class="led verde" id="led1-normal">Normal</div>
-    <div class="led amarillo" id="led1-bajo">Subtensión</div>
-  </div>
-      <div class="controles">
-  <label>Min: <span id="min1-val">200</span> V</label>
-  <input type="range" id="min1" min="180" max="220" value="200">
-
-  <label>Max: <span id="max1-val">240</span> V</label>
-  <input type="range" id="max1" min="220" max="260" value="240">
-</div>
+        <div class="led red" id="L1_red"></div>
+        <div class="led yellow" id="L1_yellow"></div>
+        <div class="led green" id="L1_green"></div>
+      </div>
     </div>
 
-    <div class="fase">
+    <!-- L2 -->
+    <div class="gauge-card">
       <h2>L2</h2>
-      <div id="vL2"></div>
-      <span class="valor" id="tL2">0 V</span>
+      <canvas id="gaugeL2"></canvas>
       <div class="leds">
-    <div class="led rojo" id="led2-alto">Sobretensión</div>
-    <div class="led verde" id="led2-normal">Normal</div>
-    <div class="led amarillo" id="led2-bajo">Subtensión</div>
-  </div>
-      <div class="controles">
-  <label>Min: <span id="min2-val">200</span> V</label>
-  <input type="range" id="min2" min="180" max="220" value="200">
-
-  <label>Max: <span id="max2-val">240</span> V</label>
-  <input type="range" id="max2" min="220" max="260" value="240">
-</div>
+        <div class="led red" id="L2_red"></div>
+        <div class="led yellow" id="L2_yellow"></div>
+        <div class="led green" id="L2_green"></div>
+      </div>
     </div>
 
-    <div class="fase">
+    <!-- L3 -->
+    <div class="gauge-card">
       <h2>L3</h2>
-      <div id="vL3"></div>
-      <span class="valor" id="tL3">0 V</span>
+      <canvas id="gaugeL3"></canvas>
       <div class="leds">
-    <div class="led rojo" id="led3-alto">Sobretensión</div>
-    <div class="led verde" id="led3-normal">Normal</div>
-    <div class="led amarillo" id="led3-bajo">Subtensión</div>
-  </div>
-      <div class="controles">
-  <label>Min: <span id="min3-val">200</span> V</label>
-  <input type="range" id="min3" min="180" max="220" value="200">
-
-  <label>Max: <span id="max3-val">240</span> V</label>
-  <input type="range" id="max3" min="220" max="260" value="240">
-</div>
+        <div class="led red" id="L3_red"></div>
+        <div class="led yellow" id="L3_yellow"></div>
+        <div class="led green" id="L3_green"></div>
+      </div>
     </div>
 
+  </div>
+
+  <!-- CONTROLES -->
+  <div class="controls">
+    <div class="knob-container">
+      <label>Umin</label>
+      <input type="range" id="umin" min="180" max="220" value="200">
+    </div>
+
+    <div class="knob-container">
+      <label>Umax</label>
+      <input type="range" id="umax" min="220" max="260" value="240">
+    </div>
   </div>
 
 </div>
