@@ -9,6 +9,19 @@ export function crearGauge(id, min, max) {
 
   el.innerHTML = "";
   el.className = "gauge";
+  // ===== LINEAS DE UMBRAL =====
+const minThreshold = 200;
+const maxThreshold = 240;
+
+function crearLinea(valor, clase) {
+  const linea = document.createElement("div");
+  linea.className = clase;
+  linea.style.bottom = ((valor - min) / (max - min)) * 100 + "%";
+  el.appendChild(linea);
+}
+
+crearLinea(minThreshold, "linea-min");
+crearLinea(maxThreshold, "linea-max");
 
   // RELLENO
   const fill = document.createElement("div");
