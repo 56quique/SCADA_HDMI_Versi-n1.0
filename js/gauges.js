@@ -60,24 +60,27 @@ export function crearGauge(id, min, max) {
     el.appendChild(tick);
   }
 
-  let valorActual = 0;
+ let valorActual = 0;
+let valorObjetivo = 0;
 
-  function animar(valor) {
-    valorActual += (valor - valorActual) * 0.1;
+function loop() {
+  valorActual += (valorObjetivo - valorActual) * 0.1;
 
-    let percent = ((valorActual - min) / (max - min)) * 100;
-    percent = Math.max(0, Math.min(100, percent));
+  let percent = ((valorActual - min) / (max - min)) * 100;
+  percent = Math.max(0, Math.min(100, percent));
 
-    fill.style.height = percent + "%";
-    cursor.style.bottom = percent + "%";
+  fill.style.height = percent + "%";
+  cursor.style.bottom = percent + "%";
 
-    requestAnimationFrame(() => animar(valor));
-  }
-
-  return {
-    set(valor) {
-      animar(valor);
-    },
-    setThresholds
-  };
+  requestAnimationFrame(loop);
 }
+
+// arrancar UNA sola vez
+loop();
+
+return {
+  set(valor) {
+    valorObjetivo = valor;
+  },
+  setThresholds
+};
