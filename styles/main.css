@@ -1,43 +1,56 @@
-/* IMPORTS */
-@import url("./layout.css");
-@import url("./gauges.css");
-@import url("./components.css");
-
-/* RESET TOTAL */
 body {
   margin: 0;
-  background: #0f172a; /* fondo limpio */
-  color: #e5e7eb;
+  background: #0b1f3a;
   font-family: Arial, sans-serif;
+  color: #fff;
 }
 
-/* PANEL */
 .panel {
+  padding: 20px;
   text-align: center;
-  padding: 40px;
 }
 
-/* TITULO */
-h1 {
-  color: #22c55e;
-  margin-bottom: 30px;
-}
-
-/* FILA */
-.row {
+.gauges-container {
   display: flex;
   justify-content: center;
-  gap: 60px;
+  gap: 40px;
+  margin-top: 20px;
 }
 
-/* FASE */
-.fase {
+.gauge-card {
+  background: #112b4a;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #3a5a80;
+}
+
+canvas {
+  width: 120px;
+  height: 300px;
+}
+
+.leds {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.valor {
-  margin-top: 10px;
-  font-size: 18px;
+.led {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  opacity: 0.2;
+}
+
+.red { background: #ff3b3b; }
+.yellow { background: #ffd000; }
+.green { background: #00ff88; }
+
+.controls {
+  margin-top: 30px;
+}
+
+.knob-container {
+  margin: 10px;
 }
