@@ -1,145 +1,42 @@
-export function crearGauge(id, min, max) {
+.leds {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  const el = document.getElementById(id);
+.led {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #333;
+  color: #aaa;
+  text-align: center;
+}
 
-  if (!el) {
-    console.error("Elemento no encontrado:", id);
-    return;
-  }
+/* ACTIVOS */
+.led.activo.rojo {
+  background: red;
+  color: white;
+}
 
-  el.innerHTML = "";
-  el.className = "gauge";
+.led.activo.verde {
+  background: #22c55e;
+  color: black;
+}
 
-  // ===== CURSOR =====
-  const cursor = document.createElement("div");
-  cursor.className = "cursor";
-  el.appendChild(cursor);
+.led.activo.amarillo {
+  background: yellow;
+  color: black;
+}
+.controles {
+  margin-top: 10px;
+  font-size: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  // ===== LINEAS =====
-  const lineaMin = document.createElement("div");
-  lineaMin.className = "linea-min";
-  el.appendChild(lineaMin);
-
-  const lineaMax = document.createElement("div");
-  lineaMax.className = "linea-max";
-  el.appendChild(lineaMax);
-
-  // ===== ESCALA =====
-  for (let i = min; i <= max; i += 50) {
-    const tick = document.createElement("div");
-    tick.className = "tick";
-    tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
-
-    const label = document.createElement("span");
-    label.className = "label";
-    label.textContent = i;
-
-    tick.appendChild(label);
-    el.appendChild(tick);
-  }
-
-  for (let i = min; i <= max; i += 10) {
-    const tick = document.createElement("div");
-    tick.className = "tick-small";
-    tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
-    el.appendChild(tick);
-  }
-
-  // ===== VALOR SUAVE =====
-  let valorActual = 0;
-
-  function set(valor) {
-    valorActual += (valor - valorActual) * 0.2;
-
-    let percent = ((valorActual - min) / (max - min)) * 100;
-    percent = Math.max(0, Math.min(100, percent));
-
-    cursor.style.bottom = percent + "%";
-  }
-
-  // ===== UMBRALES DINÁMICOS =====
-  function setThresholds(minVal, maxVal) {
-    const pMin = ((minVal - min) / (max - min)) * 100;
-    const pMax = ((maxVal - min) / (max - min)) * 100;
-
-    lineaMin.style.bottom = pMin + "%";
-    lineaMax.style.bottom = pMax + "%";
-  }
-
-  return {
-    set,
-    setThresholds
-  };
-}export function crearGauge(id, min, max) {
-
-  const el = document.getElementById(id);
-
-  if (!el) {
-    console.error("Elemento no encontrado:", id);
-    return;
-  }
-
-  el.innerHTML = "";
-  el.className = "gauge";
-
-  // ===== CURSOR =====
-  const cursor = document.createElement("div");
-  cursor.className = "cursor";
-  el.appendChild(cursor);
-
-  // ===== LINEAS =====
-  const lineaMin = document.createElement("div");
-  lineaMin.className = "linea-min";
-  el.appendChild(lineaMin);
-
-  const lineaMax = document.createElement("div");
-  lineaMax.className = "linea-max";
-  el.appendChild(lineaMax);
-
-  // ===== ESCALA =====
-  for (let i = min; i <= max; i += 50) {
-    const tick = document.createElement("div");
-    tick.className = "tick";
-    tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
-
-    const label = document.createElement("span");
-    label.className = "label";
-    label.textContent = i;
-
-    tick.appendChild(label);
-    el.appendChild(tick);
-  }
-
-  for (let i = min; i <= max; i += 10) {
-    const tick = document.createElement("div");
-    tick.className = "tick-small";
-    tick.style.bottom = ((i - min) / (max - min)) * 100 + "%";
-    el.appendChild(tick);
-  }
-
-  // ===== VALOR =====
-  let valorActual = 0;
-
-  function set(valor) {
-    valorActual += (valor - valorActual) * 0.2;
-
-    let percent = ((valorActual - min) / (max - min)) * 100;
-    percent = Math.max(0, Math.min(100, percent));
-
-    cursor.style.bottom = percent + "%";
-  }
-
-  // ===== UMBRALES =====
-  function setThresholds(minVal, maxVal) {
-    const pMin = ((minVal - min) / (max - min)) * 100;
-    const pMax = ((maxVal - min) / (max - min)) * 100;
-
-    lineaMin.style.bottom = pMin + "%";
-    lineaMax.style.bottom = pMax + "%";
-  }
-
-  return {
-    set,
-    setThresholds
-  };
+.controles input {
+  width: 100%;
 }
