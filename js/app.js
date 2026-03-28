@@ -44,13 +44,23 @@ function loop(timestamp) {
   }
 
   // dibujar SIEMPRE (suavizado hace el resto)
- redV1.dibujar(estado.red.tension[0])
+ // RED
+redV1.dibujar(estado.red.tension[0])
 redV2.dibujar(estado.red.tension[1])
 redV3.dibujar(estado.red.tension[2])
 
+redI1.dibujar(estado.red.corriente[0])
+redI2.dibujar(estado.red.corriente[1])
+redI3.dibujar(estado.red.corriente[2])
+
+// GRUPO
 grupoV1.dibujar(estado.grupo.tension[0])
 grupoV2.dibujar(estado.grupo.tension[1])
 grupoV3.dibujar(estado.grupo.tension[2])
+
+grupoI1.dibujar(estado.grupo.corriente[0])
+grupoI2.dibujar(estado.grupo.corriente[1])
+grupoI3.dibujar(estado.grupo.corriente[2])
 
   requestAnimationFrame(loop)
 }
