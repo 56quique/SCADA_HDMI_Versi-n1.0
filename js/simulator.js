@@ -1,17 +1,21 @@
-// Valor base global (se mantiene entre llamadas)
-let valorBase = 220
+let base = 220
 
 export function simular(estado) {
 
-  // Variación lenta tipo red real (no salta bruscamente)
-  valorBase += (Math.random() - 0.5) * 2
+  // variación lenta general
+  base += (Math.random() - 0.5) * 2
 
-  // RED (más estable)
-  estado.red.tension = estado.red.tension.map(() => valorBase)
+  // RED (ligeras diferencias entre fases)
+  estado.red.tension = [
+    base + (Math.random() - 0.5) * 2,
+    base + (Math.random() - 0.5) * 2,
+    base + (Math.random() - 0.5) * 2
+  ]
 
-  // GRUPO (ligeramente distinto)
-  estado.grupo.tension = estado.grupo.tension.map(() =>
-    valorBase - 10 + Math.random() * 5
-  )
-
+  // GRUPO (un poco más inestable)
+  estado.grupo.tension = [
+    base - 10 + Math.random() * 5,
+    base - 10 + Math.random() * 5,
+    base - 10 + Math.random() * 5
+  ]
 }
