@@ -1,1 +1,28 @@
-﻿components css
+/* Estilo general del body */
+body {
+  font-family: Arial, sans-serif;
+  background: #111;   /* fondo oscuro tipo SCADA */
+  color: #eee;
+  text-align: center;
+}
+
+/* Contenedor de paneles */
+.container {
+  display: flex;              /* los pone en fila */
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+/* Cada panel (RED / GRUPO) */
+.panel {
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Canvas (instrumento) */
+canvas {
+  width: 120px;   /* tamaño visual */
+  height: 300px;
+  background: #000;
+}
