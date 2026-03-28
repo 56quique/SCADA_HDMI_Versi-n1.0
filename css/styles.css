@@ -26,3 +26,9 @@ canvas {
   height: 300px;
   background: #000;
 }
+/* fila de instrumentos */
+.fila {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
