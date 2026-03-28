@@ -11,7 +11,6 @@ export function crearGauge(id, min, max, unidad = "") {
 
   const ctx = canvas.getContext("2d")
 
-  // Tamaño real del canvas
   const WIDTH = 120
   const HEIGHT = 300
 
@@ -22,20 +21,30 @@ export function crearGauge(id, min, max, unidad = "") {
   const ALTO_UTIL = HEIGHT - 2 * MARGEN
 
   // =========================
-  // FUNCION DE DIBUJO
+  // 🔥 VALOR SUAVIZADO
   // =========================
-  function dibujar(valor) {
+  let valorSuavizado = min
+
+  // qué tan rápido responde (0.05 = lento, 0.2 = rápido)
+  const FACTOR_INERCIA = 0.1
+
+  function dibujar(valorReal) {
+
+    // =========================
+    // 🔁 SUAVIZADO
+    // =========================
+    valorSuavizado += (valorReal - valorSuavizado) * FACTOR_INERCIA
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT)
 
     // =========================
-    // FONDO DEL GAUGE
+    // FONDO
     // =========================
     ctx.fillStyle = "#111"
     ctx.fillRect(30, MARGEN, 60, ALTO_UTIL)
 
     // =========================
-    // ESCALA (líneas)
+    // ESCALA
     // =========================
     ctx.strokeStyle = "#888"
     ctx.lineWidth = 1
@@ -51,7 +60,6 @@ export function crearGauge(id, min, max, unidad = "") {
       ctx.lineTo(30, y)
       ctx.stroke()
 
-      // valor numérico de la escala
       const valorEscala = max - (i / pasos) * (max - min)
 
       ctx.fillStyle = "#aaa"
@@ -60,26 +68,23 @@ export function crearGauge(id, min, max, unidad = "") {
     }
 
     // =========================
-    // CALCULO DE ALTURA
+    // NORMALIZACIÓN
     // =========================
-    let porcentaje = (valor - min) / (max - min)
-
-    // limitar entre 0 y 1
+    let porcentaje = (valorSuavizado - min) / (max - min)
     porcentaje = Math.max(0, Math.min(1, porcentaje))
 
     const altura = porcentaje * ALTO_UTIL
 
     // =========================
-    // COLOR SEGÚN RANGO
+    // COLOR
     // =========================
     let color = "red"
-
-    if (valor >= 210 && valor <= 240) {
+    if (valorSuavizado >= 210 && valorSuavizado <= 240) {
       color = "lime"
     }
 
     // =========================
-    // BARRA DE VALOR
+    // BARRA
     // =========================
     ctx.fillStyle = color
     ctx.fillRect(30, HEIGHT - MARGEN - altura, 60, altura)
@@ -91,11 +96,11 @@ export function crearGauge(id, min, max, unidad = "") {
     ctx.strokeRect(30, MARGEN, 60, ALTO_UTIL)
 
     // =========================
-    // VALOR NUMÉRICO
+    // TEXTO
     // =========================
     ctx.fillStyle = "#fff"
     ctx.font = "14px Arial"
-    ctx.fillText(valor.toFixed(1) + " " + unidad, 30, 15)
+    ctx.fillText(valorSuavizado.toFixed(1) + " " + unidad, 30, 15)
   }
 
   return { dibujar }
