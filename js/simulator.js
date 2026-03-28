@@ -1,15 +1,17 @@
-// Esta función modifica el estado simulando mediciones reales
+// Valor base global (se mantiene entre llamadas)
+let valorBase = 220
 
 export function simular(estado) {
 
-  // Genera tensiones de red entre 210 y 240 aprox
-  estado.red.tension = estado.red.tension.map(() =>
-    210 + Math.random() * 30
-  )
+  // Variación lenta tipo red real (no salta bruscamente)
+  valorBase += (Math.random() - 0.5) * 2
 
-  // Genera tensiones del grupo entre 200 y 240 aprox
+  // RED (más estable)
+  estado.red.tension = estado.red.tension.map(() => valorBase)
+
+  // GRUPO (ligeramente distinto)
   estado.grupo.tension = estado.grupo.tension.map(() =>
-    200 + Math.random() * 40
+    valorBase - 10 + Math.random() * 5
   )
 
 }
