@@ -32,3 +32,14 @@ canvas {
   gap: 10px;
   justify-content: center;
 }
+.instrumento {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.instrumento span {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #ccc;
+}
