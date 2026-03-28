@@ -16,9 +16,9 @@ const redV1 = crearGauge("redV1", 0, 300, "V")
 const redV2 = crearGauge("redV2", 0, 300, "V")
 const redV3 = crearGauge("redV3", 0, 300, "V")
 
-const redI1 = crearGauge("redI1", 0, 150, "A")
-const redI2 = crearGauge("redI2", 0, 150, "A")
-const redI3 = crearGauge("redI3", 0, 150, "A")
+const redI1 = crearGauge("redI1", 0, 100, "A")
+const redI2 = crearGauge("redI2", 0, 100, "A")
+const redI3 = crearGauge("redI3", 0, 100, "A")
 
 // ================= GRUPO =================
 const grupoV1 = crearGauge("grupoV1", 0, 300, "V")
