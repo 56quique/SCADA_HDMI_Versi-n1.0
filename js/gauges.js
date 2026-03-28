@@ -350,7 +350,7 @@ export function crearGauge(id, min, max, unidad = "") {
 
 // ====== VERSIÓN 4 ========
 
-// gauges.js (versión limpia, escala por rangos + valor separado)
+// gauges.js (versión final con rangos para V y A)
 
 export function crearGauge(id, min, max, unidad = "") {
 
@@ -369,10 +369,10 @@ export function crearGauge(id, min, max, unidad = "") {
   canvas.width = WIDTH
   canvas.height = HEIGHT
 
-  // ===== MÁRGENES =====
-  const MARGEN_SUP = 12
-  const MARGEN_INF = 28   // espacio reservado para el valor
-  const ALTO_UTIL = HEIGHT - MARGEN_SUP - MARGEN_INF
+  // ===== ZONAS =====
+  const ZONA_GAUGE_SUP = 10
+  const ZONA_GAUGE_INF = 100
+  const ALTO_UTIL = ZONA_GAUGE_INF - ZONA_GAUGE_SUP
 
   const GAUGE_W = 18
   const GAUGE_X = WIDTH / 2 - GAUGE_W / 2
@@ -380,48 +380,55 @@ export function crearGauge(id, min, max, unidad = "") {
   let valorSuavizado = min
   const FACTOR_INERCIA = 0.1
 
+  function obtenerColorEscala(valor) {
+
+    // ===== TENSIÓN =====
+    if (unidad === "V") {
+      if (valor < 210) return "#ffd000"
+      if (valor <= 230) return "#00ff00"
+      return "#ff3030"
+    }
+
+    // ===== CORRIENTE =====
+    if (unidad === "A") {
+      if (valor <= 80) return "#00ff00"
+      if (valor <= 120) return "#ffd000"
+      return "#ff3030"
+    }
+
+    return "#aaa"
+  }
+
   function dibujar(valorReal) {
 
-    // Suavizado
     valorSuavizado += (valorReal - valorSuavizado) * FACTOR_INERCIA
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT)
 
     // =========================
-    // FONDO DEL GAUGE
+    // FONDO
     // =========================
     ctx.fillStyle = "#111"
-    ctx.fillRect(GAUGE_X, MARGEN_SUP, GAUGE_W, ALTO_UTIL)
+    ctx.fillRect(GAUGE_X, ZONA_GAUGE_SUP, GAUGE_W, ALTO_UTIL)
 
     // =========================
-    // ESCALA CON COLOR POR RANGO
+    // ESCALA
     // =========================
     const pasos = 8
 
     for (let i = 0; i <= pasos; i++) {
 
-      const y = MARGEN_SUP + (i / pasos) * ALTO_UTIL
+      const y = ZONA_GAUGE_SUP + (i / pasos) * ALTO_UTIL
       const valorEscala = max - (i / pasos) * (max - min)
 
-      // Color por rango
-      let colorEscala = "#aaa"
+      const colorEscala = obtenerColorEscala(valorEscala)
 
-      if (valorEscala < 210) {
-        colorEscala = "#ffd000"   // amarillo
-      } else if (valorEscala <= 230) {
-        colorEscala = "#00ff00"   // verde
-      } else {
-        colorEscala = "#ff3030"   // rojo
-      }
-
-      // Línea de escala
       ctx.strokeStyle = "#666"
       ctx.beginPath()
       ctx.moveTo(GAUGE_X - 6, y)
       ctx.lineTo(GAUGE_X, y)
       ctx.stroke()
 
-      // Número
       ctx.fillStyle = colorEscala
       ctx.font = "10px monospace"
       ctx.textAlign = "right"
@@ -442,7 +449,7 @@ export function crearGauge(id, min, max, unidad = "") {
     ctx.fillStyle = "#d0d0d0"
     ctx.fillRect(
       GAUGE_X,
-      HEIGHT - MARGEN_INF - altura,
+      ZONA_GAUGE_INF - altura,
       GAUGE_W,
       altura
     )
@@ -451,18 +458,24 @@ export function crearGauge(id, min, max, unidad = "") {
     // BORDE
     // =========================
     ctx.strokeStyle = "#444"
-    ctx.strokeRect(GAUGE_X, MARGEN_SUP, GAUGE_W, ALTO_UTIL)
+    ctx.strokeRect(GAUGE_X, ZONA_GAUGE_SUP, GAUGE_W, ALTO_UTIL)
 
     // =========================
-    // VALOR NUMÉRICO (ABAJO SEPARADO)
+    // DISPLAY
     // =========================
+    ctx.fillStyle = "#000"
+    ctx.fillRect(5, 110, WIDTH - 10, 25)
+
+    ctx.strokeStyle = "#333"
+    ctx.strokeRect(5, 110, WIDTH - 10, 25)
+
     ctx.fillStyle = "#e0e0e0"
-    ctx.font = "bold 11px monospace"
+    ctx.font = "bold 12px monospace"
     ctx.textAlign = "center"
     ctx.fillText(
       valorSuavizado.toFixed(1) + " " + unidad,
       WIDTH / 2,
-      HEIGHT - 8
+      127
     )
   }
 
