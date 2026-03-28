@@ -1,49 +1,102 @@
-// Función que crea un gauge vertical
-export function crearGauge(id, min, max) {
+// gauges.js
 
-  // Busca el canvas en el HTML
+export function crearGauge(id, min, max, unidad = "") {
+
   const canvas = document.getElementById(id)
 
-  // Si no existe, evita que todo el sistema falle
   if (!canvas) {
     console.error("Canvas no encontrado:", id)
     return { dibujar: () => {} }
   }
 
-  // Contexto de dibujo 2D
   const ctx = canvas.getContext("2d")
 
-  // Tamaño REAL interno (muy importante)
-  canvas.width = 120
-  canvas.height = 300
+  // Tamaño real del canvas
+  const WIDTH = 120
+  const HEIGHT = 300
 
-  // Función que dibuja el valor
+  canvas.width = WIDTH
+  canvas.height = HEIGHT
+
+  const MARGEN = 20
+  const ALTO_UTIL = HEIGHT - 2 * MARGEN
+
+  // =========================
+  // FUNCION DE DIBUJO
+  // =========================
   function dibujar(valor) {
 
-    // Limpia el canvas en cada frame
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.clearRect(0, 0, WIDTH, HEIGHT)
 
-    // Fondo del instrumento
-    ctx.fillStyle = "#222"
-    ctx.fillRect(40, 20, 40, 260)
+    // =========================
+    // FONDO DEL GAUGE
+    // =========================
+    ctx.fillStyle = "#111"
+    ctx.fillRect(30, MARGEN, 60, ALTO_UTIL)
 
-    // Conversión valor → altura gráfica
-    const altura = ((valor - min) / (max - min)) * 260
+    // =========================
+    // ESCALA (líneas)
+    // =========================
+    ctx.strokeStyle = "#888"
+    ctx.lineWidth = 1
 
-    // Color según rango (lógica eléctrica)
+    const pasos = 10
+
+    for (let i = 0; i <= pasos; i++) {
+
+      const y = MARGEN + (i / pasos) * ALTO_UTIL
+
+      ctx.beginPath()
+      ctx.moveTo(25, y)
+      ctx.lineTo(30, y)
+      ctx.stroke()
+
+      // valor numérico de la escala
+      const valorEscala = max - (i / pasos) * (max - min)
+
+      ctx.fillStyle = "#aaa"
+      ctx.font = "10px Arial"
+      ctx.fillText(valorEscala.toFixed(0), 2, y + 3)
+    }
+
+    // =========================
+    // CALCULO DE ALTURA
+    // =========================
+    let porcentaje = (valor - min) / (max - min)
+
+    // limitar entre 0 y 1
+    porcentaje = Math.max(0, Math.min(1, porcentaje))
+
+    const altura = porcentaje * ALTO_UTIL
+
+    // =========================
+    // COLOR SEGÚN RANGO
+    // =========================
     let color = "red"
-    if (valor >= 210 && valor <= 240) color = "lime"
 
-    // Barra del gauge
+    if (valor >= 210 && valor <= 240) {
+      color = "lime"
+    }
+
+    // =========================
+    // BARRA DE VALOR
+    // =========================
     ctx.fillStyle = color
-    ctx.fillRect(40, 280 - altura, 40, altura)
+    ctx.fillRect(30, HEIGHT - MARGEN - altura, 60, altura)
 
-    // Texto del valor
+    // =========================
+    // BORDE
+    // =========================
+    ctx.strokeStyle = "#555"
+    ctx.strokeRect(30, MARGEN, 60, ALTO_UTIL)
+
+    // =========================
+    // VALOR NUMÉRICO
+    // =========================
     ctx.fillStyle = "#fff"
     ctx.font = "14px Arial"
-    ctx.fillText(valor.toFixed(1) + " V", 25, 15)
+    ctx.fillText(valor.toFixed(1) + " " + unidad, 30, 15)
   }
 
-  // Devuelve el método para usar desde afuera
   return { dibujar }
 }
