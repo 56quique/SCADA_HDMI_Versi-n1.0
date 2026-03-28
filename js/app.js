@@ -11,15 +11,23 @@ import { crearGauge } from "./gauges.js"
 // CREACIÓN DE INSTRUMENTOS
 // =============================
 
-// RED
+// ================= RED =================
 const redV1 = crearGauge("redV1", 0, 300, "V")
 const redV2 = crearGauge("redV2", 0, 300, "V")
 const redV3 = crearGauge("redV3", 0, 300, "V")
 
-// GRUPO
+const redI1 = crearGauge("redI1", 0, 150, "A")
+const redI2 = crearGauge("redI2", 0, 150, "A")
+const redI3 = crearGauge("redI3", 0, 150, "A")
+
+// ================= GRUPO =================
 const grupoV1 = crearGauge("grupoV1", 0, 300, "V")
 const grupoV2 = crearGauge("grupoV2", 0, 300, "V")
 const grupoV3 = crearGauge("grupoV3", 0, 300, "V")
+
+const grupoI1 = crearGauge("grupoI1", 0, 150, "A")
+const grupoI2 = crearGauge("grupoI2", 0, 150, "A")
+const grupoI3 = crearGauge("grupoI3", 0, 150, "A")
 
 // =============================
 // LOOP PRINCIPAL (tipo SCADA)
