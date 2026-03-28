@@ -11,7 +11,7 @@ export function crearGauge(id, min, max, unidad = "") {
 
   const ctx = canvas.getContext("2d")
 
-  const WIDTH = 100
+  const WIDTH = 90
 const HEIGHT = 140
 
   canvas.width = WIDTH
