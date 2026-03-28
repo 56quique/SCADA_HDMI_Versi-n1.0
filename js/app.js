@@ -12,10 +12,10 @@ import { crearGauge } from "./gauges.js"
 // =============================
 
 // Gauge de tensión RED
-const gaugeRed = crearGauge("gaugeV1", 0, 300)
+const gaugeRed = crearGauge("gaugeV1", 0, 300, "V")
 
 // Gauge de tensión GRUPO
-const gaugeGrupo = crearGauge("gaugeV2", 0, 300)
+const gaugeGrupo = crearGauge("gaugeV2", 0, 300, "V")
 
 // =============================
 // LOOP PRINCIPAL (tipo SCADA)
