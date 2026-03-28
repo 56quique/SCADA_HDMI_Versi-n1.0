@@ -2,84 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>SCADA Tensiones</title>
 
-  <!-- ESTILOS -->
-  <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/gauges.css">
+  <!-- Título de la pestaña -->
+  <title>SCADA - Transferencia Automática</title>
+
+  <!-- Vinculación del CSS -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-<div class="panel">
+  <!-- Título principal -->
+  <h1>SCADA - Grupo Electrógeno</h1>
 
-  <h1>MONITOREO DE TENSIONES</h1>
+  <!-- Contenedor general -->
+  <div class="container">
 
-  <!-- ===== GAUGES ===== -->
-  <div class="gauges-container">
+    <!-- PANEL RED -->
+    <div class="panel">
+      <h2>RED</h2>
 
-    <!-- L1 -->
-    <div class="gauge-card">
-      <h2>L1</h2>
-
-      <canvas id="gaugeL1"></canvas>
-
-      <div class="leds">
-        <div class="led red" id="L1_red"></div>
-        <div class="led yellow" id="L1_yellow"></div>
-        <div class="led green" id="L1_green"></div>
-      </div>
+      <!-- Canvas donde se dibuja el gauge -->
+      <canvas id="gaugeV1"></canvas>
     </div>
 
-    <!-- L2 -->
-    <div class="gauge-card">
-      <h2>L2</h2>
+    <!-- PANEL GRUPO -->
+    <div class="panel">
+      <h2>GRUPO</h2>
 
-      <canvas id="gaugeL2"></canvas>
-
-      <div class="leds">
-        <div class="led red" id="L2_red"></div>
-        <div class="led yellow" id="L2_yellow"></div>
-        <div class="led green" id="L2_green"></div>
-      </div>
-    </div>
-
-    <!-- L3 -->
-    <div class="gauge-card">
-      <h2>L3</h2>
-
-      <canvas id="gaugeL3"></canvas>
-
-      <div class="leds">
-        <div class="led red" id="L3_red"></div>
-        <div class="led yellow" id="L3_yellow"></div>
-        <div class="led green" id="L3_green"></div>
-      </div>
+      <!-- Segundo gauge -->
+      <canvas id="gaugeV2"></canvas>
     </div>
 
   </div>
 
-  <!-- ===== CONTROLES ===== -->
-  <div class="controls">
-
-    <div class="control-box">
-      <label for="umin">Umin</label>
-      <input type="range" id="umin" min="180" max="220" value="200">
-      <span id="umin_val">200 V</span>
-    </div>
-
-    <div class="control-box">
-      <label for="umax">Umax</label>
-      <input type="range" id="umax" min="220" max="260" value="240">
-      <span id="umax_val">240 V</span>
-    </div>
-
-  </div>
-
-</div>
-
-<!-- JS SIEMPRE AL FINAL -->
-<script type="module" src="js/main.js"></script>
+  <!-- Importante: type="module" para poder usar imports en JS -->
+  <script type="module" src="js/app.js"></script>
 
 </body>
 </html>
