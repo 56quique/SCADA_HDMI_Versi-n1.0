@@ -21,16 +21,20 @@ const gaugeGrupo = crearGauge("gaugeV2", 0, 300, "V")
 // LOOP PRINCIPAL (tipo SCADA)
 // =============================
 
-function loop() {
+let ultimoCambio = 0
 
-  // Actualiza los datos (simulación)
-  simular(estado)
+function loop(timestamp) {
 
-  // Dibuja valores en los instrumentos
+  // actualizar valores cada 500 ms (medio segundo)
+  if (timestamp - ultimoCambio > 500) {
+    simular(estado)
+    ultimoCambio = timestamp
+  }
+
+  // dibujar SIEMPRE (suavizado hace el resto)
   gaugeRed.dibujar(estado.red.tension[0])
   gaugeGrupo.dibujar(estado.grupo.tension[0])
 
-  // Repite el ciclo (animación continua)
   requestAnimationFrame(loop)
 }
 
