@@ -26,7 +26,7 @@ export function crearGauge(id, min, max, unidad = "") {
   let valorSuavizado = min
 
   // qué tan rápido responde (0.05 = lento, 0.2 = rápido)
-  const FACTOR_INERCIA = 0.1
+  const FACTOR_INERCIA = 0.05
 
   function dibujar(valorReal) {
 
