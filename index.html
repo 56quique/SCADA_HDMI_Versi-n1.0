@@ -18,23 +18,29 @@
   <!-- Contenedor general -->
   <div class="container">
 
-    <!-- PANEL RED -->
-    <div class="panel">
-      <h2>RED</h2>
+  <!-- RED -->
+  <div class="panel">
+    <h2>RED</h2>
 
-      <!-- Canvas donde se dibuja el gauge -->
-      <canvas id="gaugeV1"></canvas>
+    <div class="fila">
+      <canvas id="redV1"></canvas>
+      <canvas id="redV2"></canvas>
+      <canvas id="redV3"></canvas>
     </div>
-
-    <!-- PANEL GRUPO -->
-    <div class="panel">
-      <h2>GRUPO</h2>
-
-      <!-- Segundo gauge -->
-      <canvas id="gaugeV2"></canvas>
-    </div>
-
   </div>
+
+  <!-- GRUPO -->
+  <div class="panel">
+    <h2>GRUPO</h2>
+
+    <div class="fila">
+      <canvas id="grupoV1"></canvas>
+      <canvas id="grupoV2"></canvas>
+      <canvas id="grupoV3"></canvas>
+    </div>
+  </div>
+
+</div>
 
   <!-- Importante: type="module" para poder usar imports en JS -->
   <script type="module" src="js/app.js"></script>
