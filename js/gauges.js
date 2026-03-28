@@ -1,4 +1,4 @@
-// gauges.js
+// gauges.js (versión PRO estilo industrial)
 
 export function crearGauge(id, min, max, unidad = "") {
 
@@ -11,60 +11,60 @@ export function crearGauge(id, min, max, unidad = "") {
 
   const ctx = canvas.getContext("2d")
 
-  const WIDTH = 110
-const HEIGHT = 200
+  // Tamaño (coincide con CSS)
+  const WIDTH = 80
+  const HEIGHT = 140
 
   canvas.width = WIDTH
   canvas.height = HEIGHT
 
-  const MARGEN = 20
+  const MARGEN = 15
   const ALTO_UTIL = HEIGHT - 2 * MARGEN
 
-  // =========================
-  // 🔥 VALOR SUAVIZADO
-  // =========================
-  let valorSuavizado = min
+  // Geometría PRO
+  const GAUGE_W = 18
+  const GAUGE_X = WIDTH / 2 - GAUGE_W / 2
 
-  // qué tan rápido responde (0.05 = lento, 0.2 = rápido)
-  const FACTOR_INERCIA = 0.05
+  // Inercia
+  let valorSuavizado = min
+  const FACTOR_INERCIA = 0.1
 
   function dibujar(valorReal) {
 
-    // =========================
-    // 🔁 SUAVIZADO
-    // =========================
+    // Suavizado
     valorSuavizado += (valorReal - valorSuavizado) * FACTOR_INERCIA
 
     ctx.clearRect(0, 0, WIDTH, HEIGHT)
 
     // =========================
-    // FONDO
+    // FONDO DEL GAUGE
     // =========================
     ctx.fillStyle = "#111"
-    ctx.fillRect(30, MARGEN, 60, ALTO_UTIL)
+    ctx.fillRect(GAUGE_X, MARGEN, GAUGE_W, ALTO_UTIL)
 
     // =========================
     // ESCALA
     // =========================
-    ctx.strokeStyle = "#888"
+    ctx.strokeStyle = "#777"
     ctx.lineWidth = 1
 
-    const pasos = 10
+    const pasos = 8
 
     for (let i = 0; i <= pasos; i++) {
 
       const y = MARGEN + (i / pasos) * ALTO_UTIL
 
       ctx.beginPath()
-      ctx.moveTo(25, y)
-      ctx.lineTo(30, y)
+      ctx.moveTo(GAUGE_X - 6, y)
+      ctx.lineTo(GAUGE_X, y)
       ctx.stroke()
 
       const valorEscala = max - (i / pasos) * (max - min)
 
       ctx.fillStyle = "#aaa"
-      ctx.font = "10px Arial"
-      ctx.fillText(valorEscala.toFixed(0), 2, y + 3)
+      ctx.font = "10px monospace"
+      ctx.textAlign = "right"
+      ctx.fillText(valorEscala.toFixed(0), GAUGE_X - 8, y + 3)
     }
 
     // =========================
@@ -76,31 +76,33 @@ const HEIGHT = 200
     const altura = porcentaje * ALTO_UTIL
 
     // =========================
-    // COLOR
+    // COLOR POR RANGO (TENSIÓN)
     // =========================
-    let color = "red"
+    let color = "#ff3030"
+
     if (valorSuavizado >= 210 && valorSuavizado <= 240) {
-      color = "lime"
+      color = "#00ff00"
     }
 
     // =========================
     // BARRA
     // =========================
     ctx.fillStyle = color
-    ctx.fillRect(30, HEIGHT - MARGEN - altura, 60, altura)
+    ctx.fillRect(GAUGE_X, HEIGHT - MARGEN - altura, GAUGE_W, altura)
 
     // =========================
     // BORDE
     // =========================
     ctx.strokeStyle = "#555"
-    ctx.strokeRect(30, MARGEN, 60, ALTO_UTIL)
+    ctx.strokeRect(GAUGE_X, MARGEN, GAUGE_W, ALTO_UTIL)
 
     // =========================
-    // TEXTO
+    // VALOR NUMÉRICO
     // =========================
-    ctx.fillStyle = "#fff"
-    ctx.font = "14px Arial"
-    ctx.fillText(valorSuavizado.toFixed(1) + " " + unidad, 30, 15)
+    ctx.fillStyle = "#00ff00"
+    ctx.font = "bold 11px monospace"
+    ctx.textAlign = "center"
+    ctx.fillText(valorSuavizado.toFixed(1) + " " + unidad, WIDTH / 2, HEIGHT - 5)
   }
 
   return { dibujar }
