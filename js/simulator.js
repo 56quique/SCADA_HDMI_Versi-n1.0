@@ -19,14 +19,14 @@ export function simular(estado) {
 
   // CORRIENTES (simulación simple)
   estado.red.corriente = [
-    Math.random() * 100,
-    Math.random() * 100,
-    Math.random() * 100
-  ]
+  40 + Math.random() * 60,
+  40 + Math.random() * 60,
+  40 + Math.random() * 60
+]
 
-  estado.grupo.corriente = [
-    Math.random() * 120,
-    Math.random() * 120,
-    Math.random() * 120
-  ]
+estado.grupo.corriente = [
+  50 + Math.random() * 70,
+  50 + Math.random() * 70,
+  50 + Math.random() * 70
+]
 }
