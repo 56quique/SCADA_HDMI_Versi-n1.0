@@ -115,6 +115,7 @@ export function crearGauge(id, min, max, unidad = "") {
 
 // gauges.js (OPCIÓN 2 - estilo zonas industriales)
 
+/*
 export function crearGauge(id, min, max, unidad = "") {
 
   const canvas = document.getElementById(id)
@@ -230,6 +231,114 @@ export function crearGauge(id, min, max, unidad = "") {
     // VALOR NUMÉRICO
     // =========================
     ctx.fillStyle = "#0f0"
+    ctx.font = "bold 11px monospace"
+    ctx.textAlign = "center"
+    ctx.fillText(valorSuavizado.toFixed(1) + " " + unidad, WIDTH / 2, HEIGHT - 5)
+  }
+
+  return { dibujar }
+} */
+
+// ======== VERSIÓN 3 ========
+
+// gauges.js (OPCIÓN 3 - estilo monocromo profesional)
+
+export function crearGauge(id, min, max, unidad = "") {
+
+  const canvas = document.getElementById(id)
+
+  if (!canvas) {
+    console.error("Canvas no encontrado:", id)
+    return { dibujar: () => {} }
+  }
+
+  const ctx = canvas.getContext("2d")
+
+  const WIDTH = 80
+  const HEIGHT = 140
+
+  canvas.width = WIDTH
+  canvas.height = HEIGHT
+
+  const MARGEN = 15
+  const ALTO_UTIL = HEIGHT - 2 * MARGEN
+
+  const GAUGE_W = 14
+  const GAUGE_X = WIDTH / 2 - GAUGE_W / 2
+
+  let valorSuavizado = min
+  const FACTOR_INERCIA = 0.1
+
+  function dibujar(valorReal) {
+
+    valorSuavizado += (valorReal - valorSuavizado) * FACTOR_INERCIA
+
+    ctx.clearRect(0, 0, WIDTH, HEIGHT)
+
+    // =========================
+    // FONDO
+    // =========================
+    ctx.fillStyle = "#0a0a0a"
+    ctx.fillRect(GAUGE_X, MARGEN, GAUGE_W, ALTO_UTIL)
+
+    // =========================
+    // ESCALA
+    // =========================
+    ctx.strokeStyle = "#666"
+    ctx.lineWidth = 1
+
+    const pasos = 8
+
+    for (let i = 0; i <= pasos; i++) {
+
+      const y = MARGEN + (i / pasos) * ALTO_UTIL
+
+      ctx.beginPath()
+      ctx.moveTo(GAUGE_X - 5, y)
+      ctx.lineTo(GAUGE_X, y)
+      ctx.stroke()
+
+      const valorEscala = max - (i / pasos) * (max - min)
+
+      ctx.fillStyle = "#999"
+      ctx.font = "10px monospace"
+      ctx.textAlign = "right"
+      ctx.fillText(valorEscala.toFixed(0), GAUGE_X - 7, y + 3)
+    }
+
+    // =========================
+    // NORMALIZACIÓN
+    // =========================
+    let porcentaje = (valorSuavizado - min) / (max - min)
+    porcentaje = Math.max(0, Math.min(1, porcentaje))
+
+    const altura = porcentaje * ALTO_UTIL
+
+    // =========================
+    // BARRA (GRIS CLARO)
+    // =========================
+    ctx.fillStyle = "#cccccc"
+    ctx.fillRect(GAUGE_X, HEIGHT - MARGEN - altura, GAUGE_W, altura)
+
+    // =========================
+    // BORDE
+    // =========================
+    ctx.strokeStyle = "#444"
+    ctx.strokeRect(GAUGE_X, MARGEN, GAUGE_W, ALTO_UTIL)
+
+    // =========================
+    // LÍNEA DE REFERENCIA (opcional)
+    // =========================
+    ctx.strokeStyle = "#888"
+    ctx.beginPath()
+    ctx.moveTo(GAUGE_X, HEIGHT - MARGEN - altura)
+    ctx.lineTo(GAUGE_X + GAUGE_W, HEIGHT - MARGEN - altura)
+    ctx.stroke()
+
+    // =========================
+    // VALOR NUMÉRICO
+    // =========================
+    ctx.fillStyle = "#e0e0e0"
     ctx.font = "bold 11px monospace"
     ctx.textAlign = "center"
     ctx.fillText(valorSuavizado.toFixed(1) + " " + unidad, WIDTH / 2, HEIGHT - 5)
