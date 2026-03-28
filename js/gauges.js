@@ -350,7 +350,7 @@ export function crearGauge(id, min, max, unidad = "") {
 
 // ====== VERSIÓN 4 ========
 
-// gauges.js (versión gris + escala por rangos)
+// gauges.js (versión limpia, escala por rangos + valor separado)
 
 export function crearGauge(id, min, max, unidad = "") {
 
@@ -369,8 +369,10 @@ export function crearGauge(id, min, max, unidad = "") {
   canvas.width = WIDTH
   canvas.height = HEIGHT
 
-  const MARGEN = 15
-  const ALTO_UTIL = HEIGHT - 2 * MARGEN
+  // ===== MÁRGENES =====
+  const MARGEN_SUP = 12
+  const MARGEN_INF = 28   // espacio reservado para el valor
+  const ALTO_UTIL = HEIGHT - MARGEN_SUP - MARGEN_INF
 
   const GAUGE_W = 18
   const GAUGE_X = WIDTH / 2 - GAUGE_W / 2
@@ -389,21 +391,19 @@ export function crearGauge(id, min, max, unidad = "") {
     // FONDO DEL GAUGE
     // =========================
     ctx.fillStyle = "#111"
-    ctx.fillRect(GAUGE_X, MARGEN, GAUGE_W, ALTO_UTIL)
+    ctx.fillRect(GAUGE_X, MARGEN_SUP, GAUGE_W, ALTO_UTIL)
 
     // =========================
     // ESCALA CON COLOR POR RANGO
     // =========================
-    ctx.lineWidth = 1
-
     const pasos = 8
 
     for (let i = 0; i <= pasos; i++) {
 
-      const y = MARGEN + (i / pasos) * ALTO_UTIL
+      const y = MARGEN_SUP + (i / pasos) * ALTO_UTIL
       const valorEscala = max - (i / pasos) * (max - min)
 
-      // COLOR SEGÚN RANGO
+      // Color por rango
       let colorEscala = "#aaa"
 
       if (valorEscala < 210) {
@@ -414,14 +414,14 @@ export function crearGauge(id, min, max, unidad = "") {
         colorEscala = "#ff3030"   // rojo
       }
 
-      // línea de escala
+      // Línea de escala
       ctx.strokeStyle = "#666"
       ctx.beginPath()
       ctx.moveTo(GAUGE_X - 6, y)
       ctx.lineTo(GAUGE_X, y)
       ctx.stroke()
 
-      // número de escala
+      // Número
       ctx.fillStyle = colorEscala
       ctx.font = "10px monospace"
       ctx.textAlign = "right"
@@ -440,21 +440,30 @@ export function crearGauge(id, min, max, unidad = "") {
     // BARRA (GRIS)
     // =========================
     ctx.fillStyle = "#d0d0d0"
-    ctx.fillRect(GAUGE_X, HEIGHT - MARGEN - altura, GAUGE_W, altura)
+    ctx.fillRect(
+      GAUGE_X,
+      HEIGHT - MARGEN_INF - altura,
+      GAUGE_W,
+      altura
+    )
 
     // =========================
     // BORDE
     // =========================
     ctx.strokeStyle = "#444"
-    ctx.strokeRect(GAUGE_X, MARGEN, GAUGE_W, ALTO_UTIL)
+    ctx.strokeRect(GAUGE_X, MARGEN_SUP, GAUGE_W, ALTO_UTIL)
 
     // =========================
-    // VALOR NUMÉRICO
+    // VALOR NUMÉRICO (ABAJO SEPARADO)
     // =========================
     ctx.fillStyle = "#e0e0e0"
     ctx.font = "bold 11px monospace"
     ctx.textAlign = "center"
-    ctx.fillText(valorSuavizado.toFixed(1) + " " + unidad, WIDTH / 2, HEIGHT - 5)
+    ctx.fillText(
+      valorSuavizado.toFixed(1) + " " + unidad,
+      WIDTH / 2,
+      HEIGHT - 8
+    )
   }
 
   return { dibujar }
