@@ -62,6 +62,43 @@ grupoI1.dibujar(estado.grupo.corriente[0])
 grupoI2.dibujar(estado.grupo.corriente[1])
 grupoI3.dibujar(estado.grupo.corriente[2])
 
+// =========================
+// POTENCIAS (DESDE RED)
+// =========================
+
+// Promedio trifásico
+const Vprom = (
+  estado.red.tension[0] +
+  estado.red.tension[1] +
+  estado.red.tension[2]
+) / 3
+
+const Iprom = (
+  estado.red.corriente[0] +
+  estado.red.corriente[1] +
+  estado.red.corriente[2]
+) / 3
+
+// Factor de potencia (simulado por ahora)
+const cosfi = 0.9
+
+// Potencia aparente
+const S = Math.sqrt(3) * Vprom * Iprom / 1000 // kVA
+
+// Potencia activa
+const P = S * cosfi // kW
+
+// Potencia reactiva
+const Q = Math.sqrt(S * S - P * P) // kVAr
+
+// =========================
+// MOSTRAR
+// =========================
+document.getElementById("potP").innerText = P.toFixed(1)
+document.getElementById("potQ").innerText = Q.toFixed(1)
+document.getElementById("potS").innerText = S.toFixed(1)
+document.getElementById("cosfi").innerText = cosfi.toFixed(2)
+
   requestAnimationFrame(loop)
 }
 
