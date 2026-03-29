@@ -3,7 +3,7 @@
 ========================= */
 body {
   font-family: Arial, sans-serif;
-  background: #111;
+  background: #1e1e1e;
   color: #eee;
   text-align: center;
 }
@@ -22,10 +22,10 @@ body {
    PANEL
 ========================= */
 .panel {
-  background: #1c1c1c;
+  background: #2a2a2a;
   padding: 20px;
   border-radius: 10px;
-  border: 1px solid #333; /* 🔥 borde sutil */
+  border: 1px solid #3a3a3a; /* 🔥 borde sutil */
 }
 
 /* =========================
@@ -76,7 +76,7 @@ canvas {
 }
 
 .dato {
-  background: #111;
+  background: #222;
   border: 1px solid #333;
   padding: 8px;
   text-align: center;
