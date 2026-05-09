@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Editor Eléctrico AEA</title>
 
   <style>
+
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family:Arial, Helvetica, sans-serif;
     }
 
     body{
       display:flex;
       height:100vh;
       overflow:hidden;
-      background:#f0f2f5;
+      background:#f3f4f6;
     }
 
-    /* ===== BARRA LATERAL ===== */
+    /* ===== SIDEBAR ===== */
 
     .sidebar{
       width:220px;
@@ -32,7 +36,6 @@
 
     .sidebar h2{
       margin-bottom:20px;
-      font-size:20px;
     }
 
     .symbol{
@@ -40,8 +43,8 @@
       border:1px solid #4b5563;
       padding:12px;
       margin-bottom:10px;
-      cursor:grab;
       border-radius:6px;
+      cursor:grab;
       text-align:center;
       transition:0.2s;
     }
@@ -50,15 +53,16 @@
       background:#4b5563;
     }
 
-    /* ===== CANVAS PRINCIPAL ===== */
+    /* ===== CANVAS ===== */
 
     .canvas{
       flex:1;
       position:relative;
       overflow:hidden;
+
       background:
-        linear-gradient(to right, #d1d5db 1px, transparent 1px),
-        linear-gradient(to bottom, #d1d5db 1px, transparent 1px);
+        linear-gradient(to right,#d1d5db 1px,transparent 1px),
+        linear-gradient(to bottom,#d1d5db 1px,transparent 1px);
 
       background-size:20px 20px;
     }
@@ -67,23 +71,25 @@
 
     .node{
       position:absolute;
-      width:120px;
+      width:140px;
       height:60px;
       cursor:move;
       user-select:none;
     }
 
-    .tp-svg{
+    .node svg{
       width:100%;
       height:100%;
+      overflow:visible;
     }
 
-    /* ===== MODAL TABLERO ===== */
+    /* ===== MODAL ===== */
 
     .modal{
       position:fixed;
       inset:0;
       background:rgba(0,0,0,0.5);
+
       display:none;
       justify-content:center;
       align-items:center;
@@ -95,6 +101,7 @@
       background:white;
       border-radius:10px;
       overflow:hidden;
+
       display:flex;
       flex-direction:column;
     }
@@ -103,18 +110,19 @@
       background:#111827;
       color:white;
       padding:12px;
+
       display:flex;
       justify-content:space-between;
       align-items:center;
     }
 
     .close-btn{
-      cursor:pointer;
-      background:#ef4444;
       border:none;
+      background:#ef4444;
       color:white;
       padding:8px 12px;
       border-radius:4px;
+      cursor:pointer;
     }
 
     /* ===== MINI CANVAS ===== */
@@ -122,14 +130,16 @@
     .mini-canvas{
       flex:1;
       position:relative;
+
       background:
-        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
-        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+        linear-gradient(to right,#e5e7eb 1px,transparent 1px),
+        linear-gradient(to bottom,#e5e7eb 1px,transparent 1px);
 
       background-size:20px 20px;
     }
 
   </style>
+
 </head>
 
 <body>
@@ -137,14 +147,23 @@
   <!-- ===== SIDEBAR ===== -->
 
   <div class="sidebar">
+
     <h2>Símbolos</h2>
 
-    <div class="symbol" draggable="true" data-type="TP">
+    <div class="symbol"
+         draggable="true"
+         data-type="TP">
+
       TP
+
     </div>
 
-    <div class="symbol" draggable="true" data-type="TS">
+    <div class="symbol"
+         draggable="true"
+         data-type="TS">
+
       TS
+
     </div>
 
   </div>
@@ -160,14 +179,22 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h3 id="modalTitle">Tablero</h3>
 
-        <button class="close-btn" id="closeModal">
+        <h3 id="modalTitle">
+          Editor Interno
+        </h3>
+
+        <button class="close-btn"
+                id="closeModal">
+
           Cerrar
+
         </button>
+
       </div>
 
-      <div class="mini-canvas" id="miniCanvas"></div>
+      <div class="mini-canvas"
+           id="miniCanvas"></div>
 
     </div>
 
@@ -175,70 +202,129 @@
 
   <script>
 
-    const canvas = document.getElementById("canvas");
+    const canvas =
+      document.getElementById("canvas");
 
-    const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("closeModal");
-    const modalTitle = document.getElementById("modalTitle");
+    const modal =
+      document.getElementById("modal");
+
+    const modalTitle =
+      document.getElementById("modalTitle");
+
+    const closeModal =
+      document.getElementById("closeModal");
 
     let nodeCounter = 0;
 
-    // ===== DRAG SIDEBAR =====
+    // ===== DRAG DESDE SIDEBAR =====
 
-    document.querySelectorAll(".symbol").forEach(symbol => {
+    document
+      .querySelectorAll(".symbol")
+      .forEach(symbol => {
 
-      symbol.addEventListener("dragstart", e => {
+        symbol.addEventListener(
+          "dragstart",
+          e => {
 
-        e.dataTransfer.setData(
-          "type",
-          symbol.dataset.type
+            e.dataTransfer.setData(
+              "type",
+              symbol.dataset.type
+            );
+
+          }
         );
 
       });
 
-    });
+    // ===== HABILITAR DROP =====
 
-    // ===== DROP EN CANVAS =====
+    canvas.addEventListener(
+      "dragover",
+      e => {
 
-    canvas.addEventListener("dragover", e => {
-      e.preventDefault();
-    });
+        e.preventDefault();
 
-    canvas.addEventListener("drop", e => {
+      }
+    );
 
-      e.preventDefault();
+    canvas.addEventListener(
+      "drop",
+      e => {
 
-      const type = e.dataTransfer.getData("type");
+        e.preventDefault();
 
-      createNode(
-        type,
-        e.offsetX,
-        e.offsetY
-      );
+        const type =
+          e.dataTransfer.getData("type");
 
-    });
+        const rect =
+          canvas.getBoundingClientRect();
+
+        const x =
+          e.clientX - rect.left;
+
+        const y =
+          e.clientY - rect.top;
+
+        createNode(type, x, y);
+
+      }
+    );
 
     // ===== CREAR NODO =====
 
     function createNode(type, x, y){
 
-      const node = document.createElement("div");
+      const node =
+        document.createElement("div");
 
       node.classList.add("node");
 
       node.style.left = x + "px";
       node.style.top = y + "px";
 
-      node.dataset.id = "node_" + nodeCounter++;
+      node.dataset.id =
+        "node_" + nodeCounter++;
 
-      node.innerHTML = `
-      
-        <svg class="tp-svg" viewBox="0 0 120 60">
+      node.innerHTML =
+        getSVG(type);
+
+      canvas.appendChild(node);
+
+      enableDrag(node);
+
+      // ===== DOBLE CLICK =====
+
+      node.addEventListener(
+        "dblclick",
+        () => {
+
+          modal.style.display = "flex";
+
+          modalTitle.innerText =
+            "Editor interno - " + type;
+
+        }
+      );
+
+    }
+
+    // ===== SVG =====
+
+    function getSVG(type){
+
+      if(type === "TP"){
+
+        return `
+        
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="140"
+             height="60"
+             viewBox="0 0 140 60">
 
           <rect
             x="10"
             y="10"
-            width="70"
+            width="100"
             height="40"
             fill="white"
             stroke="black"
@@ -248,14 +334,14 @@
           <line
             x1="10"
             y1="10"
-            x2="80"
+            x2="110"
             y2="50"
             stroke="black"
             stroke-width="2"
           />
 
           <line
-            x1="80"
+            x1="110"
             y1="10"
             x2="10"
             y2="50"
@@ -264,84 +350,128 @@
           />
 
           <text
-            x="90"
+            x="118"
             y="35"
             font-size="14"
             font-family="Arial"
           >
-            ${type}
+            TP
           </text>
 
         </svg>
 
-      `;
+        `;
+      }
 
-      canvas.appendChild(node);
+      if(type === "TS"){
 
-      enableDrag(node);
+        return `
+        
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="140"
+             height="60"
+             viewBox="0 0 140 60">
 
-      // ===== DOBLE CLICK =====
+          <rect
+            x="10"
+            y="10"
+            width="100"
+            height="40"
+            fill="white"
+            stroke="black"
+            stroke-width="2"
+          />
 
-      node.addEventListener("dblclick", () => {
+          <line
+            x1="20"
+            y1="20"
+            x2="100"
+            y2="40"
+            stroke="black"
+            stroke-width="2"
+          />
 
-        modal.style.display = "flex";
+          <text
+            x="118"
+            y="35"
+            font-size="14"
+            font-family="Arial"
+          >
+            TS
+          </text>
 
-        modalTitle.innerText =
-          "Editor interno - " + type;
+        </svg>
 
-      });
+        `;
+      }
+
+      return "";
 
     }
-
-    // ===== CERRAR MODAL =====
-
-    closeModal.addEventListener("click", () => {
-
-      modal.style.display = "none";
-
-    });
 
     // ===== MOVER NODOS =====
 
     function enableDrag(node){
 
-      let offsetX = 0;
-      let offsetY = 0;
       let isDragging = false;
 
-      node.addEventListener("mousedown", e => {
+      let offsetX = 0;
+      let offsetY = 0;
 
-        isDragging = true;
+      node.addEventListener(
+        "mousedown",
+        e => {
 
-        offsetX =
-          e.clientX - node.offsetLeft;
+          isDragging = true;
 
-        offsetY =
-          e.clientY - node.offsetTop;
+          offsetX =
+            e.clientX - node.offsetLeft;
 
-      });
+          offsetY =
+            e.clientY - node.offsetTop;
 
-      document.addEventListener("mousemove", e => {
+        }
+      );
 
-        if(!isDragging) return;
+      document.addEventListener(
+        "mousemove",
+        e => {
 
-        node.style.left =
-          (e.clientX - offsetX) + "px";
+          if(!isDragging) return;
 
-        node.style.top =
-          (e.clientY - offsetY) + "px";
+          node.style.left =
+            (e.clientX - offsetX) + "px";
 
-      });
+          node.style.top =
+            (e.clientY - offsetY) + "px";
 
-      document.addEventListener("mouseup", () => {
+        }
+      );
 
-        isDragging = false;
+      document.addEventListener(
+        "mouseup",
+        () => {
 
-      });
+          isDragging = false;
+
+        }
+      );
 
     }
+
+    // ===== CERRAR MODAL =====
+
+    closeModal.addEventListener(
+      "click",
+      () => {
+
+        modal.style.display = "none";
+
+      }
+    );
 
   </script>
 
 </body>
+
 </html>
