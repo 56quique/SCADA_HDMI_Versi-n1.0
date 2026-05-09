@@ -1,112 +1,347 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editor Eléctrico AEA</title>
 
-  <!-- Título de la pestaña -->
-  <title>SCADA - Transferencia Automática</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
+    body{
+      display:flex;
+      height:100vh;
+      overflow:hidden;
+      background:#f0f2f5;
+    }
 
-  <!-- 🔥 ESTA LÍNEA ES CLAVE -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    /* ===== BARRA LATERAL ===== */
 
-  <!-- Vinculación del CSS -->
-  <link rel="stylesheet" href="css/styles.css">
+    .sidebar{
+      width:220px;
+      background:#1f2937;
+      color:white;
+      padding:15px;
+      border-right:2px solid #111827;
+    }
+
+    .sidebar h2{
+      margin-bottom:20px;
+      font-size:20px;
+    }
+
+    .symbol{
+      background:#374151;
+      border:1px solid #4b5563;
+      padding:12px;
+      margin-bottom:10px;
+      cursor:grab;
+      border-radius:6px;
+      text-align:center;
+      transition:0.2s;
+    }
+
+    .symbol:hover{
+      background:#4b5563;
+    }
+
+    /* ===== CANVAS PRINCIPAL ===== */
+
+    .canvas{
+      flex:1;
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(to right, #d1d5db 1px, transparent 1px),
+        linear-gradient(to bottom, #d1d5db 1px, transparent 1px);
+
+      background-size:20px 20px;
+    }
+
+    /* ===== NODOS ===== */
+
+    .node{
+      position:absolute;
+      width:120px;
+      height:60px;
+      cursor:move;
+      user-select:none;
+    }
+
+    .tp-svg{
+      width:100%;
+      height:100%;
+    }
+
+    /* ===== MODAL TABLERO ===== */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      display:none;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .modal-content{
+      width:900px;
+      height:600px;
+      background:white;
+      border-radius:10px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .modal-header{
+      background:#111827;
+      color:white;
+      padding:12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .close-btn{
+      cursor:pointer;
+      background:#ef4444;
+      border:none;
+      color:white;
+      padding:8px 12px;
+      border-radius:4px;
+    }
+
+    /* ===== MINI CANVAS ===== */
+
+    .mini-canvas{
+      flex:1;
+      position:relative;
+      background:
+        linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+        linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+
+      background-size:20px 20px;
+    }
+
+  </style>
 </head>
 
 <body>
 
-  <!-- Título principal -->
-  <h1>SCADA - Grupo Electrógeno</h1>
+  <!-- ===== SIDEBAR ===== -->
 
-  <!-- Contenedor general -->
-  <div class="container">
+  <div class="sidebar">
+    <h2>Símbolos</h2>
 
- <!-- RED -->
-<div class="panel">
-  <h2>RED</h2>
-
-  <div class="fila">
-
-    <div class="instrumento">
-      <div class="etiqueta">L1</div>
-      <canvas id="redV1"></canvas>
-      <canvas id="redI1"></canvas>
+    <div class="symbol" draggable="true" data-type="TP">
+      TP
     </div>
 
-    <div class="instrumento">
-      <div class="etiqueta">L2</div>
-      <canvas id="redV2"></canvas>
-      <canvas id="redI2"></canvas>
-    </div>
-
-    <div class="instrumento">
-      <div class="etiqueta">L3</div>
-      <canvas id="redV3"></canvas>
-      <canvas id="redI3"></canvas>
+    <div class="symbol" draggable="true" data-type="TS">
+      TS
     </div>
 
   </div>
-</div>
 
+  <!-- ===== CANVAS ===== -->
 
-<!-- GRUPO -->
-<div class="panel">
-  <h2>GRUPO</h2>
+  <div class="canvas" id="canvas"></div>
 
-  <div class="fila">
+  <!-- ===== MODAL ===== -->
 
-    <div class="instrumento">
-      <div class="etiqueta">L1</div>
-      <canvas id="grupoV1"></canvas>
-      <canvas id="grupoI1"></canvas>
-    </div>
+  <div class="modal" id="modal">
 
-    <div class="instrumento">
-      <div class="etiqueta">L2</div>
-      <canvas id="grupoV2"></canvas>
-      <canvas id="grupoI2"></canvas>
-    </div>
+    <div class="modal-content">
 
-    <div class="instrumento">
-      <div class="etiqueta">L3</div>
-      <canvas id="grupoV3"></canvas>
-      <canvas id="grupoI3"></canvas>
+      <div class="modal-header">
+        <h3 id="modalTitle">Tablero</h3>
+
+        <button class="close-btn" id="closeModal">
+          Cerrar
+        </button>
+      </div>
+
+      <div class="mini-canvas" id="miniCanvas"></div>
+
     </div>
 
   </div>
-</div>
 
-<div class="panel">
-  <h2>POTENCIA</h2>
+  <script>
 
-  <div class="potencia">
+    const canvas = document.getElementById("canvas");
 
-    <div class="dato">
-      <span>P (kW)</span>
-      <div id="potP">0</div>
-    </div>
+    const modal = document.getElementById("modal");
+    const closeModal = document.getElementById("closeModal");
+    const modalTitle = document.getElementById("modalTitle");
 
-    <div class="dato">
-      <span>Q (kVAr)</span>
-      <div id="potQ">0</div>
-    </div>
+    let nodeCounter = 0;
 
-    <div class="dato">
-      <span>S (kVA)</span>
-      <div id="potS">0</div>
-    </div>
+    // ===== DRAG SIDEBAR =====
 
-    <div class="dato">
-      <span>cos φ</span>
-      <div id="cosfi">0</div>
-    </div>
+    document.querySelectorAll(".symbol").forEach(symbol => {
 
-  </div>
-</div>
+      symbol.addEventListener("dragstart", e => {
 
-  <!-- Importante: type="module" para poder usar imports en JS -->
-  <script type="module" src="js/app.js"></script>
+        e.dataTransfer.setData(
+          "type",
+          symbol.dataset.type
+        );
+
+      });
+
+    });
+
+    // ===== DROP EN CANVAS =====
+
+    canvas.addEventListener("dragover", e => {
+      e.preventDefault();
+    });
+
+    canvas.addEventListener("drop", e => {
+
+      e.preventDefault();
+
+      const type = e.dataTransfer.getData("type");
+
+      createNode(
+        type,
+        e.offsetX,
+        e.offsetY
+      );
+
+    });
+
+    // ===== CREAR NODO =====
+
+    function createNode(type, x, y){
+
+      const node = document.createElement("div");
+
+      node.classList.add("node");
+
+      node.style.left = x + "px";
+      node.style.top = y + "px";
+
+      node.dataset.id = "node_" + nodeCounter++;
+
+      node.innerHTML = `
+      
+        <svg class="tp-svg" viewBox="0 0 120 60">
+
+          <rect
+            x="10"
+            y="10"
+            width="70"
+            height="40"
+            fill="white"
+            stroke="black"
+            stroke-width="2"
+          />
+
+          <line
+            x1="10"
+            y1="10"
+            x2="80"
+            y2="50"
+            stroke="black"
+            stroke-width="2"
+          />
+
+          <line
+            x1="80"
+            y1="10"
+            x2="10"
+            y2="50"
+            stroke="black"
+            stroke-width="2"
+          />
+
+          <text
+            x="90"
+            y="35"
+            font-size="14"
+            font-family="Arial"
+          >
+            ${type}
+          </text>
+
+        </svg>
+
+      `;
+
+      canvas.appendChild(node);
+
+      enableDrag(node);
+
+      // ===== DOBLE CLICK =====
+
+      node.addEventListener("dblclick", () => {
+
+        modal.style.display = "flex";
+
+        modalTitle.innerText =
+          "Editor interno - " + type;
+
+      });
+
+    }
+
+    // ===== CERRAR MODAL =====
+
+    closeModal.addEventListener("click", () => {
+
+      modal.style.display = "none";
+
+    });
+
+    // ===== MOVER NODOS =====
+
+    function enableDrag(node){
+
+      let offsetX = 0;
+      let offsetY = 0;
+      let isDragging = false;
+
+      node.addEventListener("mousedown", e => {
+
+        isDragging = true;
+
+        offsetX =
+          e.clientX - node.offsetLeft;
+
+        offsetY =
+          e.clientY - node.offsetTop;
+
+      });
+
+      document.addEventListener("mousemove", e => {
+
+        if(!isDragging) return;
+
+        node.style.left =
+          (e.clientX - offsetX) + "px";
+
+        node.style.top =
+          (e.clientY - offsetY) + "px";
+
+      });
+
+      document.addEventListener("mouseup", () => {
+
+        isDragging = false;
+
+      });
+
+    }
+
+  </script>
 
 </body>
 </html>
