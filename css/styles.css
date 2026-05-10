@@ -1,133 +1,121 @@
-/* =========================
-   ESTILO GENERAL
-========================= */
-body {
-  font-family: Arial, sans-serif;
-  background: #1e1e1e;
-  color: #eee;
-  text-align: center;
+/* ===== RESET ===== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-/* =========================
-   CONTENEDOR
-========================= */
-.container {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  gap: 20px; /* 🔥 separación entre RED - GRUPO - POTENCIA */
+/* ===== BODY ===== */
+
+body{
+  width:100vw;
+  height:100vh;
+
+  display:flex;
+
+  overflow:hidden;
+
+  font-family:Arial, Helvetica, sans-serif;
+
+  background:#f3f4f6;
 }
 
-/* =========================
-   PANEL
-========================= */
-.panel {
-  background: #2a2a2a;
-  padding: 20px;
-  border-radius: 10px;
-  border: 1px solid #3a3a3a; /* 🔥 borde sutil */
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+  width:220px;
+  height:100vh;
+
+  background:#1f2937;
+
+  border-right:2px solid #111827;
+
+  padding:15px;
+
+  color:white;
 }
 
-/* =========================
-   FILA DE INSTRUMENTOS
-========================= */
-.fila {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
+/* ===== TITULO ===== */
+
+.sidebar-title{
+  margin-bottom:20px;
+
+  font-size:22px;
 }
 
-/* =========================
-   INSTRUMENTO
-========================= */
-.instrumento {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
+/* ===== SIMBOLOS ===== */
+
+.symbol{
+  width:100%;
+
+  padding:12px;
+
+  margin-bottom:10px;
+
+  background:#374151;
+
+  border:1px solid #4b5563;
+
+  border-radius:6px;
+
+  text-align:center;
+
+  cursor:grab;
+
+  transition:0.2s;
 }
 
-/* =========================
-   ETIQUETA L1 L2 L3
-========================= */
-.etiqueta {
-  font-size: 13px;
-  color: #ccc;
-  text-align: center;
-  margin-bottom: 2px;
+/* ===== HOVER ===== */
+
+.symbol:hover{
+  background:#4b5563;
 }
 
-/* =========================
-   GAUGE (canvas)
-========================= */
-canvas {
-  width: 110px;
-  height: 200px;
-  background: #000;
+/* ===== CANVAS ===== */
+
+.canvas{
+  flex:1;
+
+  position:relative;
+
+  overflow:hidden;
+
+  background:
+
+    linear-gradient(
+      to right,
+      #d1d5db 1px,
+      transparent 1px
+    ),
+
+    linear-gradient(
+      to bottom,
+      #d1d5db 1px,
+      transparent 1px
+    );
+
+  background-size:20px 20px;
 }
 
-/* =========================
-   TARJETA POTENCIA
-========================= */
-.potencia {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+/* ===== NODOS ===== */
+
+.node{
+  position:absolute;
+
+  width:140px;
+  height:60px;
+
+  cursor:move;
+
+  user-select:none;
 }
 
-.dato {
-  background: #222;
-  border: 1px solid #333;
-  padding: 8px;
-  text-align: center;
-  border-radius: 4px;
-}
+/* ===== SVG ===== */
 
-.dato span {
-  font-size: 12px;
-  color: #aaa;
-}
+.node svg{
+  width:100%;
+  height:100%;
 
-.dato div {
-  font-size: 16px;
-  color: #e0e0e0;
-  margin-top: 4px;
-  font-family: monospace;
-}
-
-/* =========================
-   RESPONSIVE CELULAR
-========================= */
-@media (max-width: 600px) {
-
-  .container {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px; /* 🔥 separación vertical */
-  }
-
-}
-
-  .panel {
-    width: 95%;
-    max-width: 350px;
-  }
-
-  .fila {
-    justify-content: space-around;
-    flex-wrap: wrap; /* CLAVE */
-  }
-
-  canvas {
-    width: 65px;
-    height: 120px;
-  }
-
-  .etiqueta {
-    font-size: 11px;
-  }
-
-  .dato div {
-    font-size: 14px;
-  }
+  overflow:visible;
 }
