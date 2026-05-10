@@ -4,24 +4,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ServiciosYA</title>  <style>
 
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family:Arial, Helvetica, sans-serif;
+      font-family:'Inter', sans-serif;
     }
 
     body{
-      background:#f3f4f6;
+      background:#eef2f7;
       color:#111827;
     }
 
     /* ===== HEADER ===== */
 
     header{
-      background:#111827;
+      background:#0f172a;
       color:white;
-      padding:20px 40px;
+      padding:20px 50px;
 
       display:flex;
       justify-content:space-between;
@@ -30,203 +32,276 @@
       position:sticky;
       top:0;
       z-index:100;
+
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
     }
 
     .logo{
-      font-size:28px;
-      font-weight:bold;
+      font-size:30px;
+      font-weight:700;
+      letter-spacing:1px;
+
+      color:#f59e0b;
     }
 
     .menu{
       display:flex;
-      gap:20px;
+      gap:28px;
     }
 
     .menu a{
       color:white;
       text-decoration:none;
+      font-weight:500;
       transition:0.2s;
     }
 
     .menu a:hover{
-      color:#60a5fa;
+      color:#f59e0b;
     }
 
     /* ===== HERO ===== */
 
     .hero{
-      padding:80px 30px;
+      min-height:650px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
       text-align:center;
 
-      background:linear-gradient(
-        135deg,
-        #1e3a8a,
-        #2563eb
-      );
+      padding:60px 30px;
+
+      background:
+        linear-gradient(
+          rgba(15,23,42,0.75),
+          rgba(15,23,42,0.75)
+        ),
+
+        url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
 
       color:white;
     }
 
+    .hero-content{
+      max-width:900px;
+    }
+
     .hero h1{
-      font-size:52px;
-      margin-bottom:20px;
+      font-size:64px;
+      line-height:1.1;
+      margin-bottom:25px;
+      font-weight:700;
     }
 
     .hero p{
-      font-size:20px;
-      margin-bottom:35px;
+      font-size:22px;
+      line-height:1.6;
+      margin-bottom:40px;
+      color:#d1d5db;
     }
 
     /* ===== BUSCADOR ===== */
 
     .search-box{
-      max-width:700px;
+      max-width:850px;
       margin:auto;
 
       display:flex;
-      gap:10px;
+      gap:12px;
+
+      background:white;
+      padding:12px;
+
+      border-radius:18px;
+
+      box-shadow:0 8px 25px rgba(0,0,0,0.2);
     }
 
     .search-box input{
       flex:1;
 
-      padding:16px;
+      padding:18px;
 
       border:none;
-      border-radius:10px;
+      outline:none;
 
       font-size:18px;
+
+      border-radius:12px;
+
+      background:#f3f4f6;
     }
 
     .search-box button{
-      padding:16px 24px;
+      padding:18px 28px;
 
       border:none;
-      border-radius:10px;
+      border-radius:14px;
 
-      background:#111827;
+      background:#f59e0b;
       color:white;
+
+      font-size:16px;
+      font-weight:600;
 
       cursor:pointer;
       transition:0.2s;
     }
 
     .search-box button:hover{
-      background:#1f2937;
+      transform:translateY(-2px);
+      background:#d97706;
     }
 
-    /* ===== CATEGORIAS ===== */
+    /* ===== SECCIONES ===== */
 
-    .categories{
-      padding:50px 30px;
+    .categories,
+    .services{
+      padding:80px 30px;
     }
 
     .section-title{
-      font-size:32px;
-      margin-bottom:30px;
+      font-size:40px;
+      margin-bottom:40px;
       text-align:center;
+      font-weight:700;
+
+      color:#0f172a;
     }
+
+    /* ===== CATEGORIAS ===== */
 
     .category-grid{
       display:grid;
 
       grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
+        repeat(auto-fit, minmax(200px, 1fr));
 
-      gap:20px;
+      gap:24px;
 
-      max-width:1200px;
+      max-width:1300px;
       margin:auto;
     }
 
     .category-card{
       background:white;
 
-      border-radius:16px;
+      border-radius:24px;
 
-      padding:30px 20px;
+      padding:40px 20px;
 
       text-align:center;
 
-      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      box-shadow:0 8px 20px rgba(0,0,0,0.08);
 
-      transition:0.2s;
+      transition:0.25s;
 
       cursor:pointer;
+
+      border:1px solid #e5e7eb;
     }
 
     .category-card:hover{
-      transform:translateY(-5px);
+      transform:translateY(-8px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.12);
     }
 
     .category-icon{
-      font-size:48px;
-      margin-bottom:15px;
+      font-size:54px;
+      margin-bottom:18px;
     }
 
     .category-name{
-      font-size:20px;
-      font-weight:bold;
+      font-size:22px;
+      font-weight:600;
     }
 
     /* ===== SERVICIOS ===== */
-
-    .services{
-      padding:50px 30px 80px;
-    }
 
     .service-grid{
       display:grid;
 
       grid-template-columns:
-        repeat(auto-fit, minmax(320px, 1fr));
+        repeat(auto-fit, minmax(340px, 1fr));
 
-      gap:25px;
+      gap:32px;
 
-      max-width:1300px;
+      max-width:1400px;
       margin:auto;
     }
 
     .service-card{
       background:white;
 
-      border-radius:18px;
+      border-radius:28px;
 
       overflow:hidden;
 
-      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
 
-      transition:0.2s;
+      transition:0.25s;
     }
 
     .service-card:hover{
-      transform:translateY(-6px);
+      transform:translateY(-8px);
+      box-shadow:0 16px 40px rgba(0,0,0,0.12);
     }
 
     .service-image{
       width:100%;
-      height:220px;
-
+      height:240px;
       object-fit:cover;
     }
 
     .service-content{
-      padding:20px;
+      padding:24px;
+    }
+
+    .service-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+    }
+
+    .verified{
+      background:#dcfce7;
+      color:#166534;
+
+      padding:8px 12px;
+
+      border-radius:999px;
+
+      font-size:13px;
+      font-weight:600;
     }
 
     .service-title{
-      font-size:24px;
+      font-size:28px;
+      margin-bottom:12px;
+      color:#0f172a;
+    }
+
+    .service-rating{
+      color:#f59e0b;
       margin-bottom:10px;
+      font-weight:600;
     }
 
     .service-location{
       color:#6b7280;
-      margin-bottom:12px;
+      margin-bottom:16px;
     }
 
     .service-description{
-      line-height:1.5;
-      margin-bottom:20px;
+      line-height:1.7;
+      margin-bottom:24px;
+      color:#374151;
     }
 
     .service-footer{
@@ -236,37 +311,42 @@
     }
 
     .service-price{
-      font-size:22px;
-      font-weight:bold;
+      font-size:24px;
+      font-weight:700;
       color:#2563eb;
     }
 
     .contact-btn{
-      padding:12px 18px;
+      padding:14px 20px;
 
       border:none;
-      border-radius:10px;
+      border-radius:14px;
 
       background:#22c55e;
       color:white;
+
+      font-weight:600;
 
       cursor:pointer;
       transition:0.2s;
     }
 
     .contact-btn:hover{
+      transform:translateY(-2px);
       background:#16a34a;
     }
 
     /* ===== FOOTER ===== */
 
     footer{
-      background:#111827;
+      background:#0f172a;
       color:white;
 
       text-align:center;
 
-      padding:30px;
+      padding:40px;
+
+      margin-top:40px;
     }
 
     /* ===== RESPONSIVE ===== */
@@ -275,11 +355,15 @@
 
       header{
         flex-direction:column;
-        gap:15px;
+        gap:18px;
       }
 
       .hero h1{
-        font-size:38px;
+        font-size:42px;
+      }
+
+      .hero p{
+        font-size:18px;
       }
 
       .search-box{
@@ -300,7 +384,9 @@
   <a href="#">Contacto</a>
 </nav>
 
-  </header>  <!-- ===== HERO ===== -->  <section class="hero"><h1>
+  </header>  <!-- ===== HERO ===== -->  <section class="hero"><div class="hero-content">
+
+<h1>
   Encontrá profesionales cerca tuyo
 </h1>
 
@@ -320,6 +406,8 @@
   </button>
 
 </div>
+
+  </div>
 
   </section>  <!-- ===== CATEGORIAS ===== -->  <section class="categories"><h2 class="section-title">
   Categorías
@@ -372,9 +460,21 @@
 
     <div class="service-content">
 
+      <div class="service-top">
+
+        <div class="verified">
+          ✓ Verificado
+        </div>
+
+      </div>
+
       <h3 class="service-title">
         Instalaciones Eléctricas
       </h3>
+
+      <div class="service-rating">
+        ⭐ 4.9
+      </div>
 
       <div class="service-location">
         Jardín América - Misiones
@@ -412,9 +512,21 @@
 
     <div class="service-content">
 
+      <div class="service-top">
+
+        <div class="verified">
+          ✓ Verificado
+        </div>
+
+      </div>
+
       <h3 class="service-title">
         Obras y Construcción
       </h3>
+
+      <div class="service-rating">
+        ⭐ 4.8
+      </div>
 
       <div class="service-location">
         Oberá - Misiones
@@ -452,9 +564,21 @@
 
     <div class="service-content">
 
+      <div class="service-top">
+
+        <div class="verified">
+          ✓ Verificado
+        </div>
+
+      </div>
+
       <h3 class="service-title">
         Carpintería a Medida
       </h3>
+
+      <div class="service-rating">
+        ⭐ 5.0
+      </div>
 
       <div class="service-location">
         Posadas - Misiones
