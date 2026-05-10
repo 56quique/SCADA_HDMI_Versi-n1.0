@@ -1,106 +1,262 @@
-// Importa el estado del sistema
-import { estado } from "./data.js"
+// ===== CANVAS =====
 
-// Importa el simulador
-import { simular } from "./simulator.js"
+const canvas =
+  document.getElementById("canvas");
 
-// Importa el creador de gauges
-import { crearGauge } from "./gauges.js"
+// ===== CONTADOR =====
 
-// =============================
-// CREACIÓN DE INSTRUMENTOS
-// =============================
+let nodeCounter = 0;
 
-// ================= RED =================
-const redV1 = crearGauge("redV1", 0, 300, "V")
-const redV2 = crearGauge("redV2", 0, 300, "V")
-const redV3 = crearGauge("redV3", 0, 300, "V")
+// ===== SIDEBAR =====
 
-const redI1 = crearGauge("redI1", 0, 150, "A")
-const redI2 = crearGauge("redI2", 0, 150, "A")
-const redI3 = crearGauge("redI3", 0, 150, "A")
+const symbols =
+  document.querySelectorAll(".symbol");
 
-// ================= GRUPO =================
-const grupoV1 = crearGauge("grupoV1", 0, 300, "V")
-const grupoV2 = crearGauge("grupoV2", 0, 300, "V")
-const grupoV3 = crearGauge("grupoV3", 0, 300, "V")
+// ===== DRAG SIDEBAR =====
 
-const grupoI1 = crearGauge("grupoI1", 0, 150, "A")
-const grupoI2 = crearGauge("grupoI2", 0, 150, "A")
-const grupoI3 = crearGauge("grupoI3", 0, 150, "A")
+symbols.forEach(symbol => {
 
-// =============================
-// LOOP PRINCIPAL (tipo SCADA)
-// =============================
+  symbol.addEventListener(
+    "dragstart",
+    e => {
 
-let ultimoCambio = 0
+      e.dataTransfer.setData(
+        "type",
+        symbol.dataset.type
+      );
 
-function loop(timestamp) {
+    }
+  );
 
-  // actualizar valores cada 500 ms (medio segundo)
-  if (timestamp - ultimoCambio > 500) {
-    simular(estado)
-    ultimoCambio = timestamp
+});
+
+// ===== HABILITAR DROP =====
+
+canvas.addEventListener(
+  "dragover",
+  e => {
+
+    e.preventDefault();
+
   }
+);
 
-  // dibujar SIEMPRE (suavizado hace el resto)
- // RED
-redV1.dibujar(estado.red.tension[0])
-redV2.dibujar(estado.red.tension[1])
-redV3.dibujar(estado.red.tension[2])
+// ===== DROP =====
 
-redI1.dibujar(estado.red.corriente[0])
-redI2.dibujar(estado.red.corriente[1])
-redI3.dibujar(estado.red.corriente[2])
+canvas.addEventListener(
+  "drop",
+  e => {
 
-// GRUPO
-grupoV1.dibujar(estado.grupo.tension[0])
-grupoV2.dibujar(estado.grupo.tension[1])
-grupoV3.dibujar(estado.grupo.tension[2])
+    e.preventDefault();
 
-grupoI1.dibujar(estado.grupo.corriente[0])
-grupoI2.dibujar(estado.grupo.corriente[1])
-grupoI3.dibujar(estado.grupo.corriente[2])
+    // ===== TIPO =====
 
-// =========================
-// POTENCIAS (DESDE RED)
-// =========================
+    const type =
+      e.dataTransfer.getData("type");
 
-// Promedio trifásico
-const Vprom = (
-  estado.red.tension[0] +
-  estado.red.tension[1] +
-  estado.red.tension[2]
-) / 3
+    // ===== POSICION =====
 
-const Iprom = (
-  estado.red.corriente[0] +
-  estado.red.corriente[1] +
-  estado.red.corriente[2]
-) / 3
+    const rect =
+      canvas.getBoundingClientRect();
 
-// Factor de potencia (simulado por ahora)
-const cosfi = 0.9
+    const x =
+      e.clientX - rect.left;
 
-// Potencia aparente
-const S = Math.sqrt(3) * Vprom * Iprom / 1000 // kVA
+    const y =
+      e.clientY - rect.top;
 
-// Potencia activa
-const P = S * cosfi // kW
+    // ===== CREAR NODO =====
 
-// Potencia reactiva
-const Q = Math.sqrt(S * S - P * P) // kVAr
+    createNode(type, x, y);
 
-// =========================
-// MOSTRAR
-// =========================
-document.getElementById("potP").innerText = P.toFixed(1)
-document.getElementById("potQ").innerText = Q.toFixed(1)
-document.getElementById("potS").innerText = S.toFixed(1)
-document.getElementById("cosfi").innerText = cosfi.toFixed(2)
+  }
+);
 
-  requestAnimationFrame(loop)
+// ===== CREAR NODO =====
+
+function createNode(type, x, y){
+
+  const node =
+    document.createElement("div");
+
+  node.classList.add("node");
+
+  node.dataset.id =
+    "node_" + nodeCounter++;
+
+  node.style.left = x + "px";
+  node.style.top = y + "px";
+
+  // ===== SVG =====
+
+  node.innerHTML =
+    getSVG(type);
+
+  // ===== AGREGAR =====
+
+  canvas.appendChild(node);
+
+  // ===== MOVER =====
+
+  enableMove(node);
+
 }
 
-// Arranque del sistema
-loop()
+// ===== SVG =====
+
+function getSVG(type){
+
+  // ===== TP =====
+
+  if(type === "TP"){
+
+    return `
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="140"
+      height="60"
+      viewBox="0 0 140 60"
+    >
+
+      <rect
+        x="10"
+        y="10"
+        width="100"
+        height="40"
+        fill="white"
+        stroke="black"
+        stroke-width="2"
+      />
+
+      <line
+        x1="10"
+        y1="10"
+        x2="110"
+        y2="50"
+        stroke="black"
+        stroke-width="2"
+      />
+
+      <line
+        x1="110"
+        y1="10"
+        x2="10"
+        y2="50"
+        stroke="black"
+        stroke-width="2"
+      />
+
+      <text
+        x="118"
+        y="35"
+        font-size="14"
+        font-family="Arial"
+      >
+        TP
+      </text>
+
+    </svg>
+
+    `;
+  }
+
+  // ===== TS =====
+
+  if(type === "TS"){
+
+    return `
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="140"
+      height="60"
+      viewBox="0 0 140 60"
+    >
+
+      <rect
+        x="10"
+        y="10"
+        width="100"
+        height="40"
+        fill="white"
+        stroke="black"
+        stroke-width="2"
+      />
+
+      <line
+        x1="20"
+        y1="20"
+        x2="100"
+        y2="40"
+        stroke="black"
+        stroke-width="2"
+      />
+
+      <text
+        x="118"
+        y="35"
+        font-size="14"
+        font-family="Arial"
+      >
+        TS
+      </text>
+
+    </svg>
+
+    `;
+  }
+
+  return "";
+
+}
+
+// ===== MOVER NODOS =====
+
+function enableMove(node){
+
+  let isDragging = false;
+
+  let offsetX = 0;
+  let offsetY = 0;
+
+  node.addEventListener(
+    "mousedown",
+    e => {
+
+      isDragging = true;
+
+      offsetX =
+        e.clientX - node.offsetLeft;
+
+      offsetY =
+        e.clientY - node.offsetTop;
+
+    }
+  );
+
+  document.addEventListener(
+    "mousemove",
+    e => {
+
+      if(!isDragging) return;
+
+      node.style.left =
+        (e.clientX - offsetX) + "px";
+
+      node.style.top =
+        (e.clientY - offsetY) + "px";
+
+    }
+  );
+
+  document.addEventListener(
+    "mouseup",
+    () => {
+
+      isDragging = false;
+
+    }
+  );
+
+}
