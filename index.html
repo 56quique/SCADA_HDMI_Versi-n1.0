@@ -1,75 +1,488 @@
-<!DOCTYPE html>
-<html lang="es">
-
+<!DOCTYPE html><html lang="es">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ServiciosYA</title>  <style>
 
-  <meta charset="UTF-8">
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    body{
+      background:#f3f4f6;
+      color:#111827;
+    }
+
+    /* ===== HEADER ===== */
+
+    header{
+      background:#111827;
+      color:white;
+      padding:20px 40px;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:bold;
+    }
+
+    .menu{
+      display:flex;
+      gap:20px;
+    }
+
+    .menu a{
+      color:white;
+      text-decoration:none;
+      transition:0.2s;
+    }
+
+    .menu a:hover{
+      color:#60a5fa;
+    }
+
+    /* ===== HERO ===== */
+
+    .hero{
+      padding:80px 30px;
+      text-align:center;
+
+      background:linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+      );
+
+      color:white;
+    }
+
+    .hero h1{
+      font-size:52px;
+      margin-bottom:20px;
+    }
+
+    .hero p{
+      font-size:20px;
+      margin-bottom:35px;
+    }
+
+    /* ===== BUSCADOR ===== */
+
+    .search-box{
+      max-width:700px;
+      margin:auto;
+
+      display:flex;
+      gap:10px;
+    }
+
+    .search-box input{
+      flex:1;
+
+      padding:16px;
+
+      border:none;
+      border-radius:10px;
+
+      font-size:18px;
+    }
+
+    .search-box button{
+      padding:16px 24px;
+
+      border:none;
+      border-radius:10px;
+
+      background:#111827;
+      color:white;
+
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .search-box button:hover{
+      background:#1f2937;
+    }
+
+    /* ===== CATEGORIAS ===== */
+
+    .categories{
+      padding:50px 30px;
+    }
+
+    .section-title{
+      font-size:32px;
+      margin-bottom:30px;
+      text-align:center;
+    }
+
+    .category-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+      gap:20px;
+
+      max-width:1200px;
+      margin:auto;
+    }
+
+    .category-card{
+      background:white;
+
+      border-radius:16px;
+
+      padding:30px 20px;
+
+      text-align:center;
+
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+
+      transition:0.2s;
+
+      cursor:pointer;
+    }
+
+    .category-card:hover{
+      transform:translateY(-5px);
+    }
+
+    .category-icon{
+      font-size:48px;
+      margin-bottom:15px;
+    }
+
+    .category-name{
+      font-size:20px;
+      font-weight:bold;
+    }
+
+    /* ===== SERVICIOS ===== */
+
+    .services{
+      padding:50px 30px 80px;
+    }
+
+    .service-grid{
+      display:grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
+
+      gap:25px;
+
+      max-width:1300px;
+      margin:auto;
+    }
+
+    .service-card{
+      background:white;
+
+      border-radius:18px;
+
+      overflow:hidden;
+
+      box-shadow:0 4px 12px rgba(0,0,0,0.08);
+
+      transition:0.2s;
+    }
+
+    .service-card:hover{
+      transform:translateY(-6px);
+    }
+
+    .service-image{
+      width:100%;
+      height:220px;
+
+      object-fit:cover;
+    }
+
+    .service-content{
+      padding:20px;
+    }
+
+    .service-title{
+      font-size:24px;
+      margin-bottom:10px;
+    }
+
+    .service-location{
+      color:#6b7280;
+      margin-bottom:12px;
+    }
+
+    .service-description{
+      line-height:1.5;
+      margin-bottom:20px;
+    }
+
+    .service-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .service-price{
+      font-size:22px;
+      font-weight:bold;
+      color:#2563eb;
+    }
+
+    .contact-btn{
+      padding:12px 18px;
+
+      border:none;
+      border-radius:10px;
+
+      background:#22c55e;
+      color:white;
+
+      cursor:pointer;
+      transition:0.2s;
+    }
+
+    .contact-btn:hover{
+      background:#16a34a;
+    }
+
+    /* ===== FOOTER ===== */
+
+    footer{
+      background:#111827;
+      color:white;
+
+      text-align:center;
+
+      padding:30px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+
+    @media(max-width:768px){
+
+      header{
+        flex-direction:column;
+        gap:15px;
+      }
+
+      .hero h1{
+        font-size:38px;
+      }
+
+      .search-box{
+        flex-direction:column;
+      }
+
+    }
+
+  </style></head>
+<body>  <!-- ===== HEADER ===== -->  <header><div class="logo">
+  ServiciosYA
+</div>
+
+<nav class="menu">
+  <a href="#">Inicio</a>
+  <a href="#">Servicios</a>
+  <a href="#">Publicar</a>
+  <a href="#">Contacto</a>
+</nav>
+
+  </header>  <!-- ===== HERO ===== -->  <section class="hero"><h1>
+  Encontrá profesionales cerca tuyo
+</h1>
+
+<p>
+  Electricistas, carpinteros, albañiles, plomeros y mucho más.
+</p>
+
+<div class="search-box">
+
+  <input
+    type="text"
+    placeholder="Buscar servicio..."
   >
 
-  <title>Editor Eléctrico AEA</title>
+  <button>
+    Buscar
+  </button>
 
-  <!-- CSS -->
+</div>
 
-  <link
-    rel="stylesheet"
-  href="./css/styles.css"
-  >
+  </section>  <!-- ===== CATEGORIAS ===== -->  <section class="categories"><h2 class="section-title">
+  Categorías
+</h2>
 
-</head>
+<div class="category-grid">
 
-<body>
+  <div class="category-card">
+    <div class="category-icon">⚡</div>
+    <div class="category-name">Electricidad</div>
+  </div>
 
-  <!-- ===== SIDEBAR ===== -->
+  <div class="category-card">
+    <div class="category-icon">🪚</div>
+    <div class="category-name">Carpintería</div>
+  </div>
 
-  <aside class="sidebar">
+  <div class="category-card">
+    <div class="category-icon">🧱</div>
+    <div class="category-name">Albañilería</div>
+  </div>
 
-    <h2 class="sidebar-title">
-      Símbolos
-    </h2>
+  <div class="category-card">
+    <div class="category-icon">🚿</div>
+    <div class="category-name">Plomería</div>
+  </div>
 
-    <!-- TP -->
+  <div class="category-card">
+    <div class="category-icon">❄️</div>
+    <div class="category-name">Refrigeración</div>
+  </div>
 
-    <div
-      class="symbol"
-      draggable="true"
-      data-type="TP"
+</div>
+
+  </section>  <!-- ===== SERVICIOS ===== -->  <section class="services"><h2 class="section-title">
+  Servicios Destacados
+</h2>
+
+<div class="service-grid">
+
+  <!-- TARJETA 1 -->
+
+  <div class="service-card">
+
+    <img
+      class="service-image"
+      src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1200&auto=format&fit=crop"
+      alt="Electricista"
     >
 
-      TP
+    <div class="service-content">
+
+      <h3 class="service-title">
+        Instalaciones Eléctricas
+      </h3>
+
+      <div class="service-location">
+        Jardín América - Misiones
+      </div>
+
+      <p class="service-description">
+        Instalaciones domiciliarias, tableros, iluminación LED y mantenimiento eléctrico.
+      </p>
+
+      <div class="service-footer">
+
+        <div class="service-price">
+          Desde $25.000
+        </div>
+
+        <button class="contact-btn">
+          Contactar
+        </button>
+
+      </div>
 
     </div>
 
-    <!-- TS -->
+  </div>
 
-    <div
-      class="symbol"
-      draggable="true"
-      data-type="TS"
+  <!-- TARJETA 2 -->
+
+  <div class="service-card">
+
+    <img
+      class="service-image"
+      src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop"
+      alt="Albañil"
     >
 
-      TS
+    <div class="service-content">
+
+      <h3 class="service-title">
+        Obras y Construcción
+      </h3>
+
+      <div class="service-location">
+        Oberá - Misiones
+      </div>
+
+      <p class="service-description">
+        Construcciones, remodelaciones, pisos y ampliaciones.
+      </p>
+
+      <div class="service-footer">
+
+        <div class="service-price">
+          Presupuesto
+        </div>
+
+        <button class="contact-btn">
+          Contactar
+        </button>
+
+      </div>
 
     </div>
 
-  </aside>
+  </div>
 
-  <!-- ===== CANVAS ===== -->
+  <!-- TARJETA 3 -->
 
-  <main
-    class="canvas"
-    id="canvas"
-  >
+  <div class="service-card">
 
-  </main>
+    <img
+      class="service-image"
+      src="https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=1200&auto=format&fit=crop"
+      alt="Carpintería"
+    >
 
-  <!-- JS -->
+    <div class="service-content">
 
-  <script src="./js/app.js"></script>
+      <h3 class="service-title">
+        Carpintería a Medida
+      </h3>
 
-</body>
+      <div class="service-location">
+        Posadas - Misiones
+      </div>
 
+      <p class="service-description">
+        Muebles personalizados, cocinas, placares y trabajos en madera.
+      </p>
+
+      <div class="service-footer">
+
+        <div class="service-price">
+          Desde $40.000
+        </div>
+
+        <button class="contact-btn">
+          Contactar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+  </section>  <!-- ===== FOOTER ===== -->  <footer>
+    © 2026 ServiciosYA - Plataforma de servicios y oficios.
+  </footer></body>
 </html>
