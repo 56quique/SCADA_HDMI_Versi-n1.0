@@ -1,121 +1,215 @@
-/* ===== RESET ===== */
+/* ================= CONFIGURACIÓN GENERAL ================= */
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* ===== BODY ===== */
-
-body{
-  width:100vw;
-  height:100vh;
-
-  display:flex;
-
-  overflow:hidden;
-
-  font-family:Arial, Helvetica, sans-serif;
-
-  background:#f3f4f6;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f1e8;
+    color: #2d2d2d;
 }
 
-/* ===== SIDEBAR ===== */
 
-.sidebar{
-  width:220px;
-  height:100vh;
+/* ================= HEADER ================= */
 
-  background:#1f2937;
-
-  border-right:2px solid #111827;
-
-  padding:15px;
-
-  color:white;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background-color: #f5f1e8;
+    border-bottom: 1px solid #d8d2c7;
 }
 
-/* ===== TITULO ===== */
+.logo {
+    width: 170px;
 
-.sidebar-title{
-  margin-bottom:20px;
-
-  font-size:22px;
+    /*
+        MODIFICAR ESTE VALOR
+        para agrandar o achicar el logo.
+    */
 }
 
-/* ===== SIMBOLOS ===== */
-
-.symbol{
-  width:100%;
-
-  padding:12px;
-
-  margin-bottom:10px;
-
-  background:#374151;
-
-  border:1px solid #4b5563;
-
-  border-radius:6px;
-
-  text-align:center;
-
-  cursor:grab;
-
-  transition:0.2s;
+.nav a {
+    margin-left: 25px;
+    text-decoration: none;
+    color: #1f3b2d;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
-/* ===== HOVER ===== */
-
-.symbol:hover{
-  background:#4b5563;
+.nav a:hover {
+    color: #8a6b43;
 }
 
-/* ===== CANVAS ===== */
 
-.canvas{
-  flex:1;
+/* ================= HERO ================= */
 
-  position:relative;
+.hero {
+    height: 85vh;
 
-  overflow:hidden;
+    /*
+        CAMBIAR LA IMAGEN DE FONDO
+        reemplazando hero-bg.jpg
+    */
+    background-image:
+        linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+        url('hero-bg.jpg');
 
-  background:
+    background-size: cover;
+    background-position: center;
 
-    linear-gradient(
-      to right,
-      #d1d5db 1px,
-      transparent 1px
-    ),
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    linear-gradient(
-      to bottom,
-      #d1d5db 1px,
-      transparent 1px
-    );
+    text-align: center;
+    color: white;
 
-  background-size:20px 20px;
+    padding: 20px;
 }
 
-/* ===== NODOS ===== */
-
-.node{
-  position:absolute;
-
-  width:140px;
-  height:60px;
-
-  cursor:move;
-
-  user-select:none;
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
 }
 
-/* ===== SVG ===== */
+.hero-content p {
+    max-width: 700px;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
 
-.node svg{
-  width:100%;
-  height:100%;
+.hero-content button {
+    padding: 15px 35px;
+    border: none;
+    background-color: #1f3b2d;
+    color: white;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-  overflow:visible;
+.hero-content button:hover {
+    background-color: #8a6b43;
+}
+
+
+/* ================= PRODUCTOS ================= */
+
+.productos {
+    padding: 80px 50px;
+    text-align: center;
+}
+
+.productos h2 {
+    font-size: 2.5rem;
+    margin-bottom: 50px;
+    color: #1f3b2d;
+}
+
+.cards {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: white;
+    width: 320px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+
+    /*
+        LAS IMÁGENES DE PRODUCTOS
+        deberían tener tamaño similar
+        para que se vea más profesional.
+    */
+}
+
+.card h3 {
+    margin: 20px 0 10px;
+    color: #1f3b2d;
+}
+
+.card p {
+    padding: 0 20px 25px;
+    line-height: 1.5;
+}
+
+
+/* ================= ARTESANOS ================= */
+
+.artesanos {
+    background-color: #e8dfcf;
+    padding: 90px 40px;
+    text-align: center;
+}
+
+.artesanos h2 {
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+    color: #1f3b2d;
+}
+
+.artesanos p {
+    max-width: 800px;
+    margin: auto;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer {
+    background-color: #1f3b2d;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+
+    .header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
 }
