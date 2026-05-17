@@ -1,612 +1,154 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ServiciosYA</title>  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nativa | Artesanías y Productos Autóctonos</title>
 
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    <!-- Vinculación del CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Inter', sans-serif;
-    }
+    <!-- ================= HEADER ================= -->
+    <header class="header">
 
-    body{
-      background:#eef2f7;
-      color:#111827;
-    }
+        <div class="logo-container">
 
-    /* ===== HEADER ===== */
+            <!--
+                REEMPLAZAR "logo.png"
+                por el nombre exacto de tu logo.
 
-    header{
-      background:#0f172a;
-      color:white;
-      padding:20px 50px;
+                Ejemplo:
+                src="imagenes/logo-nativa.png"
+            -->
+            <img src="logo.png" alt="Logo Nativa" class="logo">
 
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-
-      position:sticky;
-      top:0;
-      z-index:100;
-
-      box-shadow:0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .logo{
-      font-size:30px;
-      font-weight:700;
-      letter-spacing:1px;
-
-      color:#f59e0b;
-    }
-
-    .menu{
-      display:flex;
-      gap:28px;
-    }
-
-    .menu a{
-      color:white;
-      text-decoration:none;
-      font-weight:500;
-      transition:0.2s;
-    }
-
-    .menu a:hover{
-      color:#f59e0b;
-    }
-
-    /* ===== HERO ===== */
-
-    .hero{
-      min-height:650px;
-
-      display:flex;
-      justify-content:center;
-      align-items:center;
-
-      text-align:center;
-
-      padding:60px 30px;
-
-      background:
-        linear-gradient(
-          rgba(15,23,42,0.75),
-          rgba(15,23,42,0.75)
-        ),
-
-        url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1600&auto=format&fit=crop');
-
-      background-size:cover;
-      background-position:center;
-
-      color:white;
-    }
-
-    .hero-content{
-      max-width:900px;
-    }
-
-    .hero h1{
-      font-size:64px;
-      line-height:1.1;
-      margin-bottom:25px;
-      font-weight:700;
-    }
-
-    .hero p{
-      font-size:22px;
-      line-height:1.6;
-      margin-bottom:40px;
-      color:#d1d5db;
-    }
-
-    /* ===== BUSCADOR ===== */
-
-    .search-box{
-      max-width:850px;
-      margin:auto;
-
-      display:flex;
-      gap:12px;
-
-      background:white;
-      padding:12px;
-
-      border-radius:18px;
-
-      box-shadow:0 8px 25px rgba(0,0,0,0.2);
-    }
-
-    .search-box input{
-      flex:1;
-
-      padding:18px;
-
-      border:none;
-      outline:none;
-
-      font-size:18px;
-
-      border-radius:12px;
-
-      background:#f3f4f6;
-    }
-
-    .search-box button{
-      padding:18px 28px;
-
-      border:none;
-      border-radius:14px;
-
-      background:#f59e0b;
-      color:white;
-
-      font-size:16px;
-      font-weight:600;
-
-      cursor:pointer;
-      transition:0.2s;
-    }
-
-    .search-box button:hover{
-      transform:translateY(-2px);
-      background:#d97706;
-    }
-
-    /* ===== SECCIONES ===== */
-
-    .categories,
-    .services{
-      padding:80px 30px;
-    }
-
-    .section-title{
-      font-size:40px;
-      margin-bottom:40px;
-      text-align:center;
-      font-weight:700;
-
-      color:#0f172a;
-    }
-
-    /* ===== CATEGORIAS ===== */
-
-    .category-grid{
-      display:grid;
-
-      grid-template-columns:
-        repeat(auto-fit, minmax(200px, 1fr));
-
-      gap:24px;
-
-      max-width:1300px;
-      margin:auto;
-    }
-
-    .category-card{
-      background:white;
-
-      border-radius:24px;
-
-      padding:40px 20px;
-
-      text-align:center;
-
-      box-shadow:0 8px 20px rgba(0,0,0,0.08);
-
-      transition:0.25s;
-
-      cursor:pointer;
-
-      border:1px solid #e5e7eb;
-    }
-
-    .category-card:hover{
-      transform:translateY(-8px);
-      box-shadow:0 12px 30px rgba(0,0,0,0.12);
-    }
-
-    .category-icon{
-      font-size:54px;
-      margin-bottom:18px;
-    }
-
-    .category-name{
-      font-size:22px;
-      font-weight:600;
-    }
-
-    /* ===== SERVICIOS ===== */
-
-    .service-grid{
-      display:grid;
-
-      grid-template-columns:
-        repeat(auto-fit, minmax(340px, 1fr));
-
-      gap:32px;
-
-      max-width:1400px;
-      margin:auto;
-    }
-
-    .service-card{
-      background:white;
-
-      border-radius:28px;
-
-      overflow:hidden;
-
-      box-shadow:0 10px 25px rgba(0,0,0,0.08);
-
-      transition:0.25s;
-    }
-
-    .service-card:hover{
-      transform:translateY(-8px);
-      box-shadow:0 16px 40px rgba(0,0,0,0.12);
-    }
-
-    .service-image{
-      width:100%;
-      height:240px;
-      object-fit:cover;
-    }
-
-    .service-content{
-      padding:24px;
-    }
-
-    .service-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:14px;
-    }
-
-    .verified{
-      background:#dcfce7;
-      color:#166534;
-
-      padding:8px 12px;
-
-      border-radius:999px;
-
-      font-size:13px;
-      font-weight:600;
-    }
-
-    .service-title{
-      font-size:28px;
-      margin-bottom:12px;
-      color:#0f172a;
-    }
-
-    .service-rating{
-      color:#f59e0b;
-      margin-bottom:10px;
-      font-weight:600;
-    }
-
-    .service-location{
-      color:#6b7280;
-      margin-bottom:16px;
-    }
-
-    .service-description{
-      line-height:1.7;
-      margin-bottom:24px;
-      color:#374151;
-    }
-
-    .service-footer{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-
-    .service-price{
-      font-size:24px;
-      font-weight:700;
-      color:#2563eb;
-    }
-
-    .contact-btn{
-      padding:14px 20px;
-
-      border:none;
-      border-radius:14px;
-
-      background:#22c55e;
-      color:white;
-
-      font-weight:600;
-
-      cursor:pointer;
-      transition:0.2s;
-    }
-
-    .contact-btn:hover{
-      transform:translateY(-2px);
-      background:#16a34a;
-    }
-
-    /* ===== FOOTER ===== */
-
-    footer{
-      background:#0f172a;
-      color:white;
-
-      text-align:center;
-
-      padding:40px;
-
-      margin-top:40px;
-    }
-
-    /* ===== RESPONSIVE ===== */
-
-    @media(max-width:768px){
-
-      header{
-        flex-direction:column;
-        gap:18px;
-      }
-
-      .hero h1{
-        font-size:42px;
-      }
-
-      .hero p{
-        font-size:18px;
-      }
-
-      .search-box{
-        flex-direction:column;
-      }
-
-    }
-
-  </style></head>
-<body>  <!-- ===== HEADER ===== -->  <header><div class="logo">
-  ServiciosYA
-</div>
-
-<nav class="menu">
-  <a href="#">Inicio</a>
-  <a href="#">Servicios</a>
-  <a href="#">Publicar</a>
-  <a href="#">Contacto</a>
-</nav>
-
-  </header>  <!-- ===== HERO ===== -->  <section class="hero"><div class="hero-content">
-
-<h1>
-  Encontrá personas + servicios...
-</h1>
-
-<p>
-  Electricistas, carpinteros, albañiles, plomeros y mucho más.
-</p>
-
-<div class="search-box">
-
-  <input
-    type="text"
-    placeholder="Buscar servicio..."
-  >
-
-  <button>
-    Buscar
-  </button>
-
-</div>
-
-  </div>
-
-  </section>  <!-- ===== CATEGORIAS ===== -->  <section class="categories"><h2 class="section-title">
-  Categorías
-</h2>
-
-<div class="category-grid">
-
-  <div class="category-card">
-    <div class="category-icon">⚡</div>
-    <div class="category-name">Electricidad</div>
-  </div>
-
-  <div class="category-card">
-    <div class="category-icon">🪚</div>
-    <div class="category-name">Carpintería</div>
-  </div>
-
-  <div class="category-card">
-    <div class="category-icon">🧱</div>
-    <div class="category-name">Albañilería</div>
-  </div>
-
-  <div class="category-card">
-    <div class="category-icon">🚿</div>
-    <div class="category-name">Plomería</div>
-  </div>
-
-  <div class="category-card">
-    <div class="category-icon">❄️</div>
-    <div class="category-name">Refrigeración</div>
-  </div>
-
-</div>
-
-  </section>  <!-- ===== SERVICIOS ===== -->  <section class="services"><h2 class="section-title">
-  Servicios Destacados
-</h2>
-
-<div class="service-grid">
-
-  <!-- TARJETA 1 -->
-
-  <div class="service-card">
-
-    <img
-      class="service-image"
-      src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?q=80&w=1200&auto=format&fit=crop"
-      alt="Electricista"
-    >
-
-    <div class="service-content">
-
-      <div class="service-top">
-
-        <div class="verified">
-          ✓ Verificado
         </div>
 
-      </div>
+        <nav class="nav">
+            <a href="#inicio">Inicio</a>
+            <a href="#productos">Productos</a>
+            <a href="#artesanos">Artesanos</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
 
-      <h3 class="service-title">
-        Instalaciones Eléctricas
-      </h3>
+    </header>
 
-      <div class="service-rating">
-        ⭐ 4.9
-      </div>
 
-      <div class="service-location">
-        Jardín América - Misiones
-      </div>
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="inicio">
 
-      <p class="service-description">
-        Instalaciones domiciliarias, tableros, iluminación LED y mantenimiento eléctrico.
-      </p>
+        <div class="hero-content">
 
-      <div class="service-footer">
+            <h1>Productos auténticos con identidad regional</h1>
 
-        <div class="service-price">
-          Desde $25.000
+            <p>
+                Descubrí artesanías y productos autóctonos hechos por
+                productores y artesanos locales.
+            </p>
+
+            <button id="explorarBtn">Explorar Productos</button>
+
         </div>
 
-        <button class="contact-btn">
-          Contactar
-        </button>
+    </section>
 
-      </div>
 
-    </div>
+    <!-- ================= PRODUCTOS ================= -->
+    <section class="productos" id="productos">
 
-  </div>
+        <h2>Productos Destacados</h2>
 
-  <!-- TARJETA 2 -->
+        <div class="cards">
 
-  <div class="service-card">
+            <!-- TARJETA 1 -->
+            <div class="card">
 
-    <img
-      class="service-image"
-      src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200&auto=format&fit=crop"
-      alt="Albañil"
-    >
+                <!--
+                    CAMBIAR imagen-producto-1.jpg
+                    por tu imagen real.
+                -->
+                <img src="imagen-producto-1.jpg" alt="Mate artesanal">
 
-    <div class="service-content">
+                <h3>Mate Artesanal</h3>
 
-      <div class="service-top">
+                <p>
+                    Elaborado manualmente con materiales regionales.
+                </p>
 
-        <div class="verified">
-          ✓ Verificado
+            </div>
+
+
+            <!-- TARJETA 2 -->
+            <div class="card">
+
+                <!--
+                    CAMBIAR imagen-producto-2.jpg
+                    por tu imagen real.
+                -->
+                <img src="imagen-producto-2.jpg" alt="Tejidos regionales">
+
+                <h3>Tejidos Regionales</h3>
+
+                <p>
+                    Diseños tradicionales y materiales naturales.
+                </p>
+
+            </div>
+
+
+            <!-- TARJETA 3 -->
+            <div class="card">
+
+                <!--
+                    CAMBIAR imagen-producto-3.jpg
+                    por tu imagen real.
+                -->
+                <img src="imagen-producto-3.jpg" alt="Decoración en madera">
+
+                <h3>Decoración en Madera</h3>
+
+                <p>
+                    Piezas únicas hechas artesanalmente.
+                </p>
+
+            </div>
+
         </div>
 
-      </div>
+    </section>
 
-      <h3 class="service-title">
-        Obras y Construcción
-      </h3>
 
-      <div class="service-rating">
-        ⭐ 4.8
-      </div>
+    <!-- ================= ARTESANOS ================= -->
+    <section class="artesanos" id="artesanos">
 
-      <div class="service-location">
-        Oberá - Misiones
-      </div>
+        <div class="artesanos-texto">
 
-      <p class="service-description">
-        Construcciones, remodelaciones, pisos y ampliaciones.
-      </p>
+            <h2>Conectando artesanos con el mundo</h2>
 
-      <div class="service-footer">
+            <p>
+                Nativa busca impulsar el trabajo local y mostrar productos
+                con identidad cultural auténtica.
+            </p>
 
-        <div class="service-price">
-          Presupuesto
         </div>
 
-        <button class="contact-btn">
-          Contactar
-        </button>
+    </section>
 
-      </div>
 
-    </div>
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer" id="contacto">
 
-  </div>
+        <p>
+            © 2026 Nativa - Artesanías y Productos Autóctonos
+        </p>
 
-  <!-- TARJETA 3 -->
+    </footer>
 
-  <div class="service-card">
 
-    <img
-      class="service-image"
-      src="https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?q=80&w=1200&auto=format&fit=crop"
-      alt="Carpintería"
-    >
+    <!-- Vinculación del JS -->
+    <script src="script.js"></script>
 
-    <div class="service-content">
-
-      <div class="service-top">
-
-        <div class="verified">
-          ✓ Verificado
-        </div>
-
-      </div>
-
-      <h3 class="service-title">
-        Carpintería a Medida
-      </h3>
-
-      <div class="service-rating">
-        ⭐ 5.0
-      </div>
-
-      <div class="service-location">
-        Posadas - Misiones
-      </div>
-
-      <p class="service-description">
-        Muebles personalizados, cocinas, placares y trabajos en madera.
-      </p>
-
-      <div class="service-footer">
-
-        <div class="service-price">
-          Desde $40.000
-        </div>
-
-        <button class="contact-btn">
-          Contactar
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-  </section>  <!-- ===== FOOTER ===== -->  <footer>
-    © 2026 ServiciosYA - Plataforma de servicios y oficios.
-  </footer></body>
+</body>
 </html>
