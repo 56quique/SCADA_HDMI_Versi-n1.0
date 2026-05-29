@@ -17,8 +17,10 @@
 
 body{
     min-height:100vh;
+
     background:
     radial-gradient(circle at top left,#1e293b,#020617);
+
     color:#f1f5f9;
     padding:25px;
 }
@@ -28,17 +30,21 @@ body{
     margin:auto;
 }
 
+/* =========================
+HEADER
+========================= */
+
 .header{
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    gap:20px;
+    align-items:flex-start;
+    gap:25px;
     flex-wrap:wrap;
     margin-bottom:30px;
 }
 
 .logo-area h1{
-    font-size:2.3rem;
+    font-size:2.5rem;
     font-weight:700;
 }
 
@@ -53,43 +59,39 @@ body{
     flex-wrap:wrap;
 }
 
+/* =========================
+GLASS EFFECT
+========================= */
+
 .glass-box{
     background:rgba(255,255,255,0.06);
+
     border:1px solid rgba(255,255,255,0.08);
+
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
-    border-radius:20px;
+
+    border-radius:22px;
+
     padding:18px;
+
     box-shadow:
     0 10px 30px rgba(0,0,0,0.35);
 }
 
-.clock{
-    min-width:170px;
-}
-
-.clock-time{
-    font-size:2rem;
-    font-weight:bold;
-}
-
-.clock-date{
-    margin-top:6px;
-    color:#cbd5e1;
-    font-size:0.9rem;
-}
+/* =========================
+STATUS
+========================= */
 
 .status{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    min-width:220px;
+    min-width:240px;
 }
 
 .status-title{
     color:#22c55e;
     font-weight:bold;
-    margin-bottom:6px;
+    margin-bottom:8px;
+    font-size:1rem;
 }
 
 .status-sub{
@@ -97,23 +99,88 @@ body{
     font-size:0.9rem;
 }
 
+/* =========================
+WEATHER HEADER
+========================= */
+
+.weather-header{
+    min-width:260px;
+}
+
+.weather-top{
+    margin-bottom:12px;
+}
+
+.weather-temp{
+    font-size:2.1rem;
+    font-weight:bold;
+}
+
+.weather-desc{
+    margin-top:5px;
+    color:#cbd5e1;
+    font-size:0.9rem;
+}
+
+.weather-mini{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    color:#e2e8f0;
+    font-size:0.92rem;
+}
+
+/* =========================
+CLOCK
+========================= */
+
+.clock{
+    min-width:200px;
+}
+
+.clock-time{
+    font-size:2.2rem;
+    font-weight:bold;
+}
+
+.clock-date{
+    margin-top:6px;
+    color:#cbd5e1;
+    font-size:0.92rem;
+}
+
+/* =========================
+GRID
+========================= */
+
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:22px;
 }
 
+/* =========================
+CARDS
+========================= */
+
 .card{
+
     background:rgba(255,255,255,0.06);
+
     border:1px solid rgba(255,255,255,0.08);
+
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
+
     border-radius:24px;
+
     padding:22px;
+
     box-shadow:
     0 10px 30px rgba(0,0,0,0.35);
 
     transition:0.3s ease;
+
     cursor:pointer;
 }
 
@@ -145,6 +212,10 @@ body{
     font-size:0.95rem;
 }
 
+/* =========================
+EXPANDIBLE CONTENT
+========================= */
+
 .content{
     overflow:hidden;
     max-height:0;
@@ -152,22 +223,33 @@ body{
 }
 
 .card.active .content{
-    max-height:1000px;
+    max-height:1200px;
     margin-top:20px;
 }
+
+/* =========================
+DEVICES
+========================= */
 
 .device{
     display:flex;
     justify-content:space-between;
     align-items:center;
+
     margin-bottom:15px;
 
     background:rgba(0,0,0,0.18);
+
     border:1px solid rgba(255,255,255,0.05);
 
     padding:14px;
+
     border-radius:16px;
 }
+
+/* =========================
+SWITCH
+========================= */
 
 .switch{
     position:relative;
@@ -182,25 +264,36 @@ body{
 .slider{
     position:absolute;
     inset:0;
+
     background:#334155;
+
     border-radius:50px;
+
     transition:0.3s;
 }
 
 .slider::before{
     content:"";
+
     position:absolute;
+
     width:24px;
     height:24px;
+
     left:4px;
     top:4px;
+
     background:white;
+
     border-radius:50%;
+
     transition:0.3s;
 }
 
 input:checked + .slider{
-    background:linear-gradient(135deg,#22c55e,#16a34a);
+
+    background:
+    linear-gradient(135deg,#22c55e,#16a34a);
 
     box-shadow:
     0 0 15px rgba(34,197,94,0.5);
@@ -210,32 +303,50 @@ input:checked + .slider::before{
     transform:translateX(28px);
 }
 
-.weather-main{
-    font-size:3rem;
-    font-weight:bold;
-    margin-bottom:10px;
+/* =========================
+ENERGY
+========================= */
+
+.energy-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:18px;
 }
 
-.info-row{
-    display:flex;
-    justify-content:space-between;
-    margin-top:12px;
-    padding:12px;
-    border-radius:14px;
+.energy-box{
 
     background:rgba(0,0,0,0.18);
+
+    border-radius:16px;
+
+    padding:16px;
+
+    text-align:center;
 }
 
+.energy-box h3{
+    margin-top:8px;
+    font-size:1.6rem;
+}
+
+/* =========================
+CHART
+========================= */
+
 .chart{
-    margin-top:20px;
+    margin-top:22px;
     height:140px;
+
     display:flex;
     align-items:end;
+
     gap:10px;
 }
 
 .bar{
     flex:1;
+
     border-radius:10px 10px 0 0;
 
     background:
@@ -251,50 +362,41 @@ input:checked + .slider::before{
 .label-row{
     display:flex;
     justify-content:space-between;
+
     margin-top:10px;
+
     color:#94a3b8;
+
     font-size:0.8rem;
 }
 
-.energy-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-top:18px;
-}
-
-.energy-box{
-    background:rgba(0,0,0,0.18);
-    border-radius:16px;
-    padding:16px;
-    text-align:center;
-}
-
-.energy-box h3{
-    font-size:1.5rem;
-    margin-top:8px;
-}
+/* =========================
+FOOTER
+========================= */
 
 .footer{
-    margin-top:35px;
+    margin-top:40px;
     text-align:center;
     color:#94a3b8;
     font-size:0.9rem;
 }
 
+/* =========================
+RESPONSIVE
+========================= */
+
 @media(max-width:700px){
 
     .header{
         flex-direction:column;
-        align-items:flex-start;
     }
 
     .top-info{
         width:100%;
+        flex-direction:column;
     }
 
-    .clock,
-    .status{
+    .glass-box{
         width:100%;
     }
 
@@ -307,6 +409,10 @@ input:checked + .slider::before{
 
 <div class="container">
 
+<!-- =========================
+HEADER
+========================= -->
+
 <div class="header">
 
     <div class="logo-area">
@@ -316,12 +422,10 @@ input:checked + .slider::before{
 
     <div class="top-info">
 
-        <div class="glass-box clock">
-            <div class="clock-time" id="clock">00:00</div>
-            <div class="clock-date" id="date">Cargando fecha...</div>
-        </div>
+        <!-- STATUS -->
 
         <div class="glass-box status">
+
             <div class="status-title">
                 ● Sistema estable
             </div>
@@ -329,63 +433,82 @@ input:checked + .slider::before{
             <div class="status-sub">
                 Todos los módulos operativos
             </div>
+
+        </div>
+
+        <!-- WEATHER -->
+
+        <div class="glass-box weather-header">
+
+            <div class="weather-top">
+
+                <div class="weather-temp" id="temp">
+                    --°C
+                </div>
+
+                <div class="weather-desc" id="weatherDescription">
+                    Cargando clima...
+                </div>
+
+            </div>
+
+            <div class="weather-mini">
+
+                <span>
+                    💧 Humedad:
+                    <span id="humidity">--%</span>
+                </span>
+
+                <span>
+                    🌬 Viento:
+                    <span id="wind">-- km/h</span>
+                </span>
+
+                <span>
+                    🌧 Lluvia:
+                    <span id="rain">-- mm</span>
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- CLOCK -->
+
+        <div class="glass-box clock">
+
+            <div class="clock-time" id="clock">
+                00:00
+            </div>
+
+            <div class="clock-date" id="date">
+                Cargando fecha...
+            </div>
+
         </div>
 
     </div>
 
 </div>
 
+<!-- =========================
+GRID
+========================= -->
+
 <div class="grid">
-
-    <!-- CLIMA -->
-
-    <div class="card">
-
-        <div class="card-header">
-            <h2>🌦 Información climática</h2>
-            <span class="arrow">⌄</span>
-        </div>
-
-        <div class="preview">
-            Estado ambiental en tiempo real
-        </div>
-
-        <div class="content">
-
-            <div class="weather-main" id="temp">
-                --°C
-            </div>
-
-            <div id="weatherDescription">
-                Cargando clima...
-            </div>
-
-            <div class="info-row">
-                <span>💧 Humedad</span>
-                <span id="humidity">--%</span>
-            </div>
-
-            <div class="info-row">
-                <span>🌬 Viento</span>
-                <span id="wind">-- km/h</span>
-            </div>
-
-            <div class="info-row">
-                <span>🌧 Lluvia</span>
-                <span id="rain">-- mm</span>
-            </div>
-
-        </div>
-
-    </div>
 
     <!-- CONTROL -->
 
     <div class="card">
 
         <div class="card-header">
+
             <h2>💡 Control</h2>
-            <span class="arrow">⌄</span>
+
+            <span class="arrow">
+                ⌄
+            </span>
+
         </div>
 
         <div class="preview">
@@ -395,30 +518,45 @@ input:checked + .slider::before{
         <div class="content">
 
             <div class="device">
+
                 <span>Luz Cocina</span>
 
                 <label class="switch">
+
                     <input type="checkbox">
+
                     <span class="slider"></span>
+
                 </label>
+
             </div>
 
             <div class="device">
+
                 <span>Luz Patio</span>
 
                 <label class="switch">
+
                     <input type="checkbox">
+
                     <span class="slider"></span>
+
                 </label>
+
             </div>
 
             <div class="device">
+
                 <span>Taller</span>
 
                 <label class="switch">
+
                     <input type="checkbox">
+
                     <span class="slider"></span>
+
                 </label>
+
             </div>
 
         </div>
@@ -430,8 +568,13 @@ input:checked + .slider::before{
     <div class="card">
 
         <div class="card-header">
+
             <h2>⏱ Programación</h2>
-            <span class="arrow">⌄</span>
+
+            <span class="arrow">
+                ⌄
+            </span>
+
         </div>
 
         <div class="preview">
@@ -441,30 +584,45 @@ input:checked + .slider::before{
         <div class="content">
 
             <div class="device">
+
                 <span>Ventilación automática</span>
 
                 <label class="switch">
+
                     <input type="checkbox" checked>
+
                     <span class="slider"></span>
+
                 </label>
+
             </div>
 
             <div class="device">
+
                 <span>Riego al atardecer</span>
 
                 <label class="switch">
+
                     <input type="checkbox">
+
                     <span class="slider"></span>
+
                 </label>
+
             </div>
 
             <div class="device">
+
                 <span>Protección baja tensión</span>
 
                 <label class="switch">
+
                     <input type="checkbox" checked>
+
                     <span class="slider"></span>
+
                 </label>
+
             </div>
 
         </div>
@@ -476,8 +634,13 @@ input:checked + .slider::before{
     <div class="card">
 
         <div class="card-header">
+
             <h2>⚡ Energía</h2>
-            <span class="arrow">⌄</span>
+
+            <span class="arrow">
+                ⌄
+            </span>
+
         </div>
 
         <div class="preview">
@@ -522,12 +685,14 @@ input:checked + .slider::before{
             </div>
 
             <div class="label-row">
+
                 <span>12h</span>
                 <span>14h</span>
                 <span>16h</span>
                 <span>18h</span>
                 <span>20h</span>
                 <span>22h</span>
+
             </div>
 
         </div>
@@ -535,6 +700,8 @@ input:checked + .slider::before{
     </div>
 
 </div>
+
+<!-- FOOTER -->
 
 <div class="footer">
     Klenser Logic · automatización resiliente · hogar · comercio · industria
@@ -544,27 +711,41 @@ input:checked + .slider::before{
 
 <script>
 
+/* =========================
+CLOCK
+========================= */
+
 function actualizarHora(){
 
     const now = new Date();
 
     const hora = now.toLocaleTimeString('es-AR',{
+
         hour:'2-digit',
         minute:'2-digit'
+
     });
 
     const fecha = now.toLocaleDateString('es-AR',{
+
         weekday:'long',
         day:'numeric',
         month:'long'
+
     });
 
     document.getElementById('clock').innerText = hora;
+
     document.getElementById('date').innerText = fecha;
 }
 
 setInterval(actualizarHora,1000);
+
 actualizarHora();
+
+/* =========================
+WEATHER
+========================= */
 
 async function cargarClima(){
 
@@ -577,6 +758,7 @@ async function cargarClima(){
         `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain&timezone=auto`;
 
         const response = await fetch(url);
+
         const data = await response.json();
 
         document.getElementById('temp').innerText =
@@ -592,7 +774,7 @@ async function cargarClima(){
         data.current.rain + ' mm';
 
         document.getElementById('weatherDescription').innerText =
-        'Datos meteorológicos en tiempo real';
+        'Estado climático en tiempo real';
 
     }
 
@@ -608,6 +790,10 @@ async function cargarClima(){
 cargarClima();
 
 setInterval(cargarClima,300000);
+
+/* =========================
+EXPANDIBLE CARDS
+========================= */
 
 const cards = document.querySelectorAll('.card');
 
