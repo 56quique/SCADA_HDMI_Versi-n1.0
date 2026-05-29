@@ -1,368 +1,627 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Klenser Logic</title>  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Klenser Logic</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top left,#1e293b,#020617);
+    color:#f1f5f9;
+    padding:25px;
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.logo-area h1{
+    font-size:2.3rem;
+    font-weight:700;
+}
+
+.logo-area span{
+    color:#94a3b8;
+    font-size:0.95rem;
+}
+
+.top-info{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.glass-box{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.clock{
+    min-width:170px;
+}
+
+.clock-time{
+    font-size:2rem;
+    font-weight:bold;
+}
+
+.clock-date{
+    margin-top:6px;
+    color:#cbd5e1;
+    font-size:0.9rem;
+}
+
+.status{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-width:220px;
+}
+
+.status-title{
+    color:#22c55e;
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+.status-sub{
+    color:#cbd5e1;
+    font-size:0.9rem;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:22px;
+}
+
+.card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-radius:24px;
+    padding:22px;
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+
+    transition:0.3s ease;
+    cursor:pointer;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card h2{
+    font-size:1.2rem;
+}
+
+.arrow{
+    transition:0.3s;
+}
+
+.card.active .arrow{
+    transform:rotate(180deg);
+}
+
+.preview{
+    margin-top:15px;
+    color:#cbd5e1;
+    font-size:0.95rem;
+}
+
+.content{
+    overflow:hidden;
+    max-height:0;
+    transition:max-height 0.5s ease;
+}
+
+.card.active .content{
+    max-height:1000px;
+    margin-top:20px;
+}
+
+.device{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+
+    background:rgba(0,0,0,0.18);
+    border:1px solid rgba(255,255,255,0.05);
+
+    padding:14px;
+    border-radius:16px;
+}
+
+.switch{
+    position:relative;
+    width:60px;
+    height:32px;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#334155;
+    border-radius:50px;
+    transition:0.3s;
+}
+
+.slider::before{
+    content:"";
+    position:absolute;
+    width:24px;
+    height:24px;
+    left:4px;
+    top:4px;
+    background:white;
+    border-radius:50%;
+    transition:0.3s;
+}
+
+input:checked + .slider{
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+
+    box-shadow:
+    0 0 15px rgba(34,197,94,0.5);
+}
+
+input:checked + .slider::before{
+    transform:translateX(28px);
+}
+
+.weather-main{
+    font-size:3rem;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.info-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:12px;
+    padding:12px;
+    border-radius:14px;
+
+    background:rgba(0,0,0,0.18);
+}
+
+.chart{
+    margin-top:20px;
+    height:140px;
+    display:flex;
+    align-items:end;
+    gap:10px;
+}
+
+.bar{
+    flex:1;
+    border-radius:10px 10px 0 0;
+
+    background:
+    linear-gradient(to top,#38bdf8,#60a5fa);
+
+    transition:0.3s;
+}
+
+.bar:hover{
+    opacity:0.8;
+}
+
+.label-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    color:#94a3b8;
+    font-size:0.8rem;
+}
+
+.energy-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:18px;
+}
+
+.energy-box{
+    background:rgba(0,0,0,0.18);
+    border-radius:16px;
+    padding:16px;
+    text-align:center;
+}
+
+.energy-box h3{
+    font-size:1.5rem;
+    margin-top:8px;
+}
+
+.footer{
+    margin-top:35px;
+    text-align:center;
+    color:#94a3b8;
+    font-size:0.9rem;
+}
+
+@media(max-width:700px){
+
+    .header{
+        flex-direction:column;
+        align-items:flex-start;
     }
 
-    body {
-      background: #0f172a;
-      color: #f1f5f9;
-      padding: 20px;
+    .top-info{
+        width:100%;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: auto;
+    .clock,
+    .status{
+        width:100%;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
+}
 
-    .header h1 {
-      font-size: 2rem;
-    }
+</style>
+</head>
 
-    .status {
-      background: #1e293b;
-      padding: 10px 18px;
-      border-radius: 12px;
-      border: 1px solid #334155;
-    }
+<body>
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
+<div class="container">
 
-    .card {
-      background: #1e293b;
-      border-radius: 18px;
-      padding: 20px;
-      border: 1px solid #334155;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-      transition: transform 0.2s ease;
-    }
+<div class="header">
 
-    .card:hover {
-      transform: translateY(-4px);
-    }
+    <div class="logo-area">
+        <h1>Klenser Logic</h1>
+        <span>automatización y control</span>
+    </div>
 
-    .card h2 {
-      margin-bottom: 15px;
-      font-size: 1.2rem;
-      color: #cbd5e1;
-    }
+    <div class="top-info">
 
-    .weather-main {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+        <div class="glass-box clock">
+            <div class="clock-time" id="clock">00:00</div>
+            <div class="clock-date" id="date">Cargando fecha...</div>
+        </div>
 
-    .weather-info {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 15px;
-    }
+        <div class="glass-box status">
+            <div class="status-title">
+                ● Sistema estable
+            </div>
 
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      background: #0f172a;
-      padding: 10px;
-      border-radius: 10px;
-    }
+            <div class="status-sub">
+                Todos los módulos operativos
+            </div>
+        </div>
 
-    .device {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      background: #0f172a;
-      padding: 12px;
-      border-radius: 12px;
-    }
+    </div>
 
-    .switch {
-      position: relative;
-      width: 58px;
-      height: 30px;
-    }
-
-    .switch input {
-      display: none;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background: #475569;
-      border-radius: 50px;
-      transition: 0.3s;
-    }
-
-    .slider::before {
-      content: "";
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      left: 3px;
-      top: 3px;
-      background: white;
-      border-radius: 50%;
-      transition: 0.3s;
-    }
-
-    input:checked + .slider {
-      background: #22c55e;
-    }
-
-    input:checked + .slider::before {
-      transform: translateX(28px);
-    }
-
-    .footer {
-      margin-top: 30px;
-      text-align: center;
-      color: #94a3b8;
-      font-size: 0.9rem;
-    }
-
-    .chart {
-      margin-top: 15px;
-      height: 120px;
-      display: flex;
-      align-items: end;
-      gap: 8px;
-    }
-
-    .bar {
-      flex: 1;
-      background: linear-gradient(to top, #3b82f6, #60a5fa);
-      border-radius: 8px 8px 0 0;
-      transition: 0.3s;
-    }
-
-    .bar:hover {
-      opacity: 0.8;
-    }
-
-    .label-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: #94a3b8;
-    }
-
-  </style></head>
-<body>  <div class="container"><div class="header">
-  <h1>Klenser Logic</h1>
-  <div class="status" id="connectionStatus">
-    ● Sistema conectado
-  </div>
 </div>
 
 <div class="grid">
 
-  <div class="card">
-    <h2>🌦 Estado del tiempo</h2>
+    <!-- CLIMA -->
 
-    <div class="weather-main" id="temp">
-      --°C
+    <div class="card">
+
+        <div class="card-header">
+            <h2>🌦 Información climática</h2>
+            <span class="arrow">⌄</span>
+        </div>
+
+        <div class="preview">
+            Estado ambiental en tiempo real
+        </div>
+
+        <div class="content">
+
+            <div class="weather-main" id="temp">
+                --°C
+            </div>
+
+            <div id="weatherDescription">
+                Cargando clima...
+            </div>
+
+            <div class="info-row">
+                <span>💧 Humedad</span>
+                <span id="humidity">--%</span>
+            </div>
+
+            <div class="info-row">
+                <span>🌬 Viento</span>
+                <span id="wind">-- km/h</span>
+            </div>
+
+            <div class="info-row">
+                <span>🌧 Lluvia</span>
+                <span id="rain">-- mm</span>
+            </div>
+
+        </div>
+
     </div>
 
-    <div id="weatherDescription">
-      Cargando clima...
+    <!-- CONTROL -->
+
+    <div class="card">
+
+        <div class="card-header">
+            <h2>💡 Control</h2>
+            <span class="arrow">⌄</span>
+        </div>
+
+        <div class="preview">
+            Iluminación y dispositivos
+        </div>
+
+        <div class="content">
+
+            <div class="device">
+                <span>Luz Cocina</span>
+
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="device">
+                <span>Luz Patio</span>
+
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="device">
+                <span>Taller</span>
+
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="weather-info">
-      <div class="info-row">
-        <span>💧 Humedad</span>
-        <span id="humidity">--%</span>
-      </div>
+    <!-- PROGRAMACION -->
 
-      <div class="info-row">
-        <span>🌬 Viento</span>
-        <span id="wind">-- km/h</span>
-      </div>
+    <div class="card">
 
-      <div class="info-row">
-        <span>🌧 Lluvia</span>
-        <span id="rain">-- %</span>
-      </div>
-    </div>
-  </div>
+        <div class="card-header">
+            <h2>⏱ Programación</h2>
+            <span class="arrow">⌄</span>
+        </div>
 
-  <div class="card">
-    <h2>💡 Iluminación</h2>
+        <div class="preview">
+            Eventos y automatizaciones
+        </div>
 
-    <div class="device">
-      <span>Luz Cocina</span>
-      <label class="switch">
-        <input type="checkbox" id="cocinaSwitch">
-        <span class="slider"></span>
-      </label>
-    </div>
+        <div class="content">
 
-    <div class="device">
-      <span>Luz Patio</span>
-      <label class="switch">
-        <input type="checkbox" id="patioSwitch">
-        <span class="slider"></span>
-      </label>
-    </div>
+            <div class="device">
+                <span>Ventilación automática</span>
 
-    <div class="device">
-      <span>Taller</span>
-      <label class="switch">
-        <input type="checkbox" id="tallerSwitch">
-        <span class="slider"></span>
-      </label>
-    </div>
-  </div>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
 
-  <div class="card">
-    <h2>⚡ Consumo estimado</h2>
+            <div class="device">
+                <span>Riego al atardecer</span>
 
-    <div class="weather-main" id="powerNow">
-      2.4 kW
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="device">
+                <span>Protección baja tensión</span>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+        </div>
+
     </div>
 
-    <div>
-      Últimas 6 horas
-    </div>
+    <!-- ENERGIA -->
 
-    <div class="chart">
-      <div class="bar" style="height:40%"></div>
-      <div class="bar" style="height:55%"></div>
-      <div class="bar" style="height:75%"></div>
-      <div class="bar" style="height:65%"></div>
-      <div class="bar" style="height:85%"></div>
-      <div class="bar" style="height:50%"></div>
-    </div>
+    <div class="card">
 
-    <div class="label-row">
-      <span>12h</span>
-      <span>14h</span>
-      <span>16h</span>
-      <span>18h</span>
-      <span>20h</span>
-      <span>22h</span>
-    </div>
-  </div>
+        <div class="card-header">
+            <h2>⚡ Energía</h2>
+            <span class="arrow">⌄</span>
+        </div>
 
-  <div class="card">
-    <h2>🚨 Automatizaciones</h2>
+        <div class="preview">
+            Supervisión eléctrica
+        </div>
 
-    <div class="device">
-      <span>Ventilación automática</span>
-      <label class="switch">
-        <input type="checkbox" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
+        <div class="content">
 
-    <div class="device">
-      <span>Protección baja tensión</span>
-      <label class="switch">
-        <input type="checkbox" checked>
-        <span class="slider"></span>
-      </label>
-    </div>
+            <div class="energy-grid">
 
-    <div class="device">
-      <span>Riego automático</span>
-      <label class="switch">
-        <input type="checkbox">
-        <span class="slider"></span>
-      </label>
+                <div class="energy-box">
+                    Tensión
+                    <h3>223V</h3>
+                </div>
+
+                <div class="energy-box">
+                    Corriente
+                    <h3>2.4A</h3>
+                </div>
+
+                <div class="energy-box">
+                    Potencia
+                    <h3>540W</h3>
+                </div>
+
+                <div class="energy-box">
+                    Energía
+                    <h3>12.6kWh</h3>
+                </div>
+
+            </div>
+
+            <div class="chart">
+
+                <div class="bar" style="height:35%"></div>
+                <div class="bar" style="height:55%"></div>
+                <div class="bar" style="height:75%"></div>
+                <div class="bar" style="height:65%"></div>
+                <div class="bar" style="height:90%"></div>
+                <div class="bar" style="height:50%"></div>
+
+            </div>
+
+            <div class="label-row">
+                <span>12h</span>
+                <span>14h</span>
+                <span>16h</span>
+                <span>18h</span>
+                <span>20h</span>
+                <span>22h</span>
+            </div>
+
+        </div>
+
     </div>
-  </div>
 
 </div>
 
 <div class="footer">
-  Klenser Logic - Smart control - automatización - Hogar Comercio e Industria
+    Klenser Logic · automatización resiliente · hogar · comercio · industria
 </div>
 
-  </div>  <script>
+</div>
 
-    async function cargarClima() {
-      try {
+<script>
 
-        // Jardín América, Misiones
+function actualizarHora(){
+
+    const now = new Date();
+
+    const hora = now.toLocaleTimeString('es-AR',{
+        hour:'2-digit',
+        minute:'2-digit'
+    });
+
+    const fecha = now.toLocaleDateString('es-AR',{
+        weekday:'long',
+        day:'numeric',
+        month:'long'
+    });
+
+    document.getElementById('clock').innerText = hora;
+    document.getElementById('date').innerText = fecha;
+}
+
+setInterval(actualizarHora,1000);
+actualizarHora();
+
+async function cargarClima(){
+
+    try{
+
         const lat = -27.043;
         const lon = -55.227;
 
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain&timezone=auto`;
+        const url =
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain&timezone=auto`;
 
         const response = await fetch(url);
         const data = await response.json();
 
         document.getElementById('temp').innerText =
-          Math.round(data.current.temperature_2m) + '°C';
+        Math.round(data.current.temperature_2m) + '°C';
 
         document.getElementById('humidity').innerText =
-          data.current.relative_humidity_2m + '%';
+        data.current.relative_humidity_2m + '%';
 
         document.getElementById('wind').innerText =
-          Math.round(data.current.wind_speed_10m) + ' km/h';
+        Math.round(data.current.wind_speed_10m) + ' km/h';
 
         document.getElementById('rain').innerText =
-          data.current.rain + ' mm';
+        data.current.rain + ' mm';
 
         document.getElementById('weatherDescription').innerText =
-          'Datos meteorológicos en tiempo real';
+        'Datos meteorológicos en tiempo real';
 
-      } catch (error) {
-        console.error(error);
+    }
+
+    catch(error){
 
         document.getElementById('weatherDescription').innerText =
-          'No se pudo cargar el clima';
-      }
+        'No se pudo cargar el clima';
+
     }
 
+}
 
-    function conectarSwitches() {
+cargarClima();
 
-      const switches = document.querySelectorAll('input[type="checkbox"]');
+setInterval(cargarClima,300000);
 
-      switches.forEach(sw => {
-        sw.addEventListener('change', () => {
-          console.log(sw.id + ' -> ' + sw.checked);
+const cards = document.querySelectorAll('.card');
 
-          // AQUÍ podrías conectar Home Assistant
-          // o llamar a tu ESP8266
+cards.forEach(card => {
 
-          // ejemplo:
-          // fetch("http://IP_DEL_HOME_ASSISTANT/api/...")
-        });
-      });
-    }
+    card.addEventListener('click', () => {
 
+        card.classList.toggle('active');
 
-    cargarClima();
-    conectarSwitches();
+    });
 
+});
 
-    // actualización cada 5 minutos
-    setInterval(cargarClima, 300000);
+</script>
 
-  </script></body>
+</body>
 </html>
