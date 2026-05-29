@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Klenser Logic</title>
+<title>Quique Logic Ecosystem</title>
 
 <style>
 
@@ -46,7 +46,7 @@ TOP SECTION
 
     gap:30px;
 
-    margin-bottom:50px;
+    margin-bottom:40px;
 }
 
 .brand h1{
@@ -67,9 +67,12 @@ LIVE INFO
 .live-info{
 
     display:flex;
-    gap:35px;
-    flex-wrap:wrap;
+
+    gap:60px;
+
     align-items:flex-start;
+
+    margin-top:-10px;
 }
 
 .live-item{
@@ -398,15 +401,24 @@ RESPONSIVE
 
     .top-section{
         flex-direction:column;
+        gap:20px;
     }
 
     .live-info{
-        flex-direction:column;
-        gap:20px;
+
+        flex-direction:row;
+
+        gap:45px;
+
+        margin-top:-5px;
     }
 
     .brand h1{
         font-size:2.4rem;
+    }
+
+    .live-value{
+        font-size:1.8rem;
     }
 
 }
@@ -456,10 +468,6 @@ TOP
 
             <div class="live-value" id="temp">
                 --°C
-            </div>
-
-            <div class="live-sub" id="weatherDescription">
-                Cargando clima...
             </div>
 
             <div class="live-sub">
@@ -699,7 +707,7 @@ INTERACTIVE CARDS
 </div>
 
 <div class="footer">
-    Quique Logic Ecosystem· automatización · hogar · comercio · industria
+    Quique Logic Ecosystem · automatización · hogar · comercio · industria
 </div>
 
 </div>
@@ -765,15 +773,11 @@ async function cargarClima(){
         document.getElementById('wind').innerText =
         Math.round(data.current.wind_speed_10m) + ' km/h';
 
-        document.getElementById('weatherDescription').innerText =
-        'Estado climático en tiempo real';
-
     }
 
     catch(error){
 
-        document.getElementById('weatherDescription').innerText =
-        'No se pudo cargar el clima';
+        console.log('No se pudo cargar el clima');
 
     }
 
