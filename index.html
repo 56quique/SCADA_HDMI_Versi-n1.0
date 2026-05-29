@@ -406,12 +406,40 @@ RESPONSIVE
 
     .live-info{
 
-        flex-direction:row;
+    width:100%;
 
-        gap:45px;
+    display:flex;
 
-        margin-top:-5px;
-    }
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:20px;
+
+    margin-top:18px;
+
+    padding:14px 20px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.06);
+
+    backdrop-filter:blur(10px);
+
+    color:#cbd5e1;
+
+    text-align:center;
+
+    font-size:1rem;
+}
+
+.live-info span{
+    white-space:nowrap;
+}
 
     .brand h1{
         font-size:2.4rem;
@@ -458,47 +486,27 @@ TOP
 
     <div class="live-info">
 
-        <!-- WEATHER -->
+    <span id="temp">🌡 --°C</span>
 
-        <div class="live-item">
+    <span>
+        💧 <span id="humidity">--%</span>
+    </span>
 
-            <div class="live-label">
-                CLIMA
-            </div>
+    <span>
+        🌬 <span id="wind">-- km/h</span>
+    </span>
 
-            <div class="live-value" id="temp">
-                --°C
-            </div>
+    <span id="forecast">
+        ⛅ Cargando...
+    </span>
 
-            <div class="live-sub">
-                💧 <span id="humidity">--%</span>
-            </div>
+    <span>
+        🕒 <span id="clock">00:00</span>
+    </span>
 
-            <div class="live-sub">
-                🌬 <span id="wind">-- km/h</span>
-            </div>
-
-        </div>
-
-        <!-- CLOCK -->
-
-        <div class="live-item">
-
-            <div class="live-label">
-                HORA
-            </div>
-
-            <div class="live-value" id="clock">
-                00:00
-            </div>
-
-            <div class="live-sub" id="date">
-                Cargando fecha...
-            </div>
-
-        </div>
-
-    </div>
+    <span id="date">
+        Cargando fecha...
+    </span>
 
 </div>
 
@@ -758,14 +766,14 @@ async function cargarClima(){
         const lon = -55.227;
 
         const url =
-        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,rain&timezone=auto`;
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`;
 
         const response = await fetch(url);
 
         const data = await response.json();
 
         document.getElementById('temp').innerText =
-        Math.round(data.current.temperature_2m) + '°C';
+        '🌡 ' + Math.round(data.current.temperature_2m) + '°C';
 
         document.getElementById('humidity').innerText =
         data.current.relative_humidity_2m + '%';
@@ -773,19 +781,40 @@ async function cargarClima(){
         document.getElementById('wind').innerText =
         Math.round(data.current.wind_speed_10m) + ' km/h';
 
+        const code = data.current.weather_code;
+
+        let texto = "⛅ Variable";
+
+        if(code === 0)
+            texto = "☀ Soleado";
+
+        else if([1,2,3].includes(code))
+            texto = "⛅ Parcialmente nublado";
+
+        else if([45,48].includes(code))
+            texto = "🌫 Neblina";
+
+        else if([51,53,55,61,63,65].includes(code))
+            texto = "🌧 Lluvias";
+
+        else if([71,73,75].includes(code))
+            texto = "❄ Frío";
+
+        else if([95,96,99].includes(code))
+            texto = "⛈ Tormentas";
+
+        document.getElementById('forecast').innerText = texto;
+
     }
 
     catch(error){
 
-        console.log('No se pudo cargar el clima');
+        document.getElementById('forecast').innerText =
+        'Sin datos';
 
     }
 
 }
-
-cargarClima();
-
-setInterval(cargarClima,300000);
 
 /* =========================
 EXPANDIBLE CARDS
