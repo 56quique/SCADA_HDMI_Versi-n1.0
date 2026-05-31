@@ -218,6 +218,11 @@ La vivienda puede explicarse a sí misma
 <span>Sistema operativo</span>
 
 </div>
+<button id="btnComenzar" class="btn">
+
+🚀 Comenzar
+
+</button>
 
 <div class="info">
 
@@ -274,7 +279,11 @@ Si quieres, puedes preguntarme cómo está la casa o si hay algo que debas saber
 
 </div>
 
-<button class="btn" onclick="escuchar()">
+<button
+class="btn"
+id="btnMicrofono"
+onclick="escuchar()"
+style="display:none;">
 
 🎤 Hablar con Klenser
 
@@ -360,23 +369,35 @@ speechSynthesis.speak(voz);
 SALUDO AUTOMÁTICO
 =========================== */
 
-window.onload=()=>{
 
-setTimeout(()=>{
-
-hablar(
-
-"Hola Clau. Me alegra verte. La vivienda se encuentra funcionando normalmente. No detecto novedades importantes por el momento."
-
-);
-
-},1200);
-
-};
 
 /* ===========================
 RECONOCIMIENTO
 =========================== */
+document
+.getElementById("btnComenzar")
+.addEventListener("click",()=>{
+
+const saludo =
+
+"Hola Clau. Me alegra verte. La vivienda se encuentra funcionando normalmente. No detecto novedades importantes por el momento. Puedes preguntarme cómo está la casa o si hay algo que debas saber.";
+
+hablar(saludo);
+
+document
+.getElementById("btnComenzar")
+.style.display="none";
+
+document
+.getElementById("btnMicrofono")
+.style.display="block";
+
+document
+.getElementById("respuesta")
+.innerHTML =
+"Klenser está listo para escucharte.";
+
+});
 
 function escuchar(){
 
@@ -388,6 +409,11 @@ const recognition =
 new SpeechRecognition();
 
 recognition.lang="es-AR";
+recognition.interimResults=false;
+
+recognition.maxAlternatives=1;
+
+recognition.continuous=false;
 
 recognition.start();
 
@@ -449,6 +475,13 @@ document.getElementById("respuesta").innerHTML =
 respuesta;
 
 hablar(respuesta);
+
+};
+recognition.onerror=(event)=>{
+
+document.getElementById("respuesta").innerHTML=
+
+"Error de micrófono: " + event.error;
 
 };
 
