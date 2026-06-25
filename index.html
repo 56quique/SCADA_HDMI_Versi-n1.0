@@ -3,305 +3,245 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NÚCLEO Home</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet"/>
+  <title>NÚCLEO Home — Prueba de Servidor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
-    /* ── Reset y base ── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      background: #000;
-      color: #fff;
+      background: #000; color: #fff;
       font-family: 'Rajdhani', sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 40px 20px 50px;
-      overflow: hidden;
-      user-select: none;
+      min-height: 100vh; padding: 30px 20px;
     }
 
-    /* ── Logo ── */
-    .logo {
-      text-align: center;
-      letter-spacing: 2px;
+    h1 {
+      font-size: 1.2rem; letter-spacing: 4px;
+      text-transform: uppercase; color: #38bdf8;
+      margin-bottom: 6px;
     }
-    .logo-nucleo {
-      font-size: 2.8rem;
-      font-weight: 600;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 6px;
-    }
-    .logo-home {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2rem;
-      color: #38bdf8;
-      margin-left: 8px;
-    }
-    .logo-line {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(to right, transparent, #38bdf8, transparent);
-      margin-top: 10px;
+    .subtitulo {
+      font-size: 0.85rem; color: #555;
+      letter-spacing: 2px; margin-bottom: 30px;
     }
 
-    /* ── Reloj y fecha ── */
-    .datetime {
-      text-align: center;
+    /* ── Estado de conexión ── */
+    .estado-conexion {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 24px;
     }
-    .clock {
-      font-size: 4.5rem;
-      font-weight: 300;
-      letter-spacing: 4px;
-      color: #f0f0f0;
-      line-height: 1;
+    .indicador {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #555; transition: background 0.3s;
     }
-    .date {
-      font-size: 1rem;
-      color: #aaa;
-      margin-top: 6px;
-      letter-spacing: 1px;
+    .indicador.conectado  { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
+    .indicador.error      { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .estado-texto {
+      font-size: 0.9rem; letter-spacing: 2px;
+      text-transform: uppercase; color: #555;
     }
 
-    /* ── Clima ── */
-    .weather {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 14px;
-      justify-content: center;
+    /* ── Log de mensajes ── */
+    .log-titulo {
+      font-size: 0.75rem; letter-spacing: 3px;
+      text-transform: uppercase; color: #555;
+      margin-bottom: 10px;
     }
-    .weather img {
-      width: 36px;
-      height: 36px;
+    .log {
+      background: #0a1a2e; border: 1px solid #1e3a5f;
+      border-radius: 12px; padding: 16px;
+      min-height: 200px; max-height: 400px;
+      overflow-y: auto; margin-bottom: 24px;
     }
-    .weather-temp {
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #fff;
+    .log-item {
+      font-size: 0.9rem; color: #e2e8f0;
+      padding: 8px 0; border-bottom: 1px solid #1e3a5f11;
+      line-height: 1.4;
     }
-    .weather-divider {
-      color: #555;
-      font-size: 1.2rem;
-    }
-    .weather-desc {
-      font-size: 1rem;
-      color: #aaa;
-      text-transform: capitalize;
-    }
+    .log-item:last-child { border-bottom: none; }
+    .log-item .hora { color: #555; font-size: 0.8rem; margin-right: 8px; }
+    .log-item .tipo-comando   { color: #38bdf8; }
+    .log-item .tipo-panico    { color: #ef4444; }
+    .log-item .tipo-sistema   { color: #4ade80; }
 
-    /* ── Círculo de voz ── */
-    .circle-wrapper {
-      position: relative;
-      width: 260px;
-      height: 260px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* ── Panel de respuesta manual ── */
+    .panel-titulo {
+      font-size: 0.75rem; letter-spacing: 3px;
+      text-transform: uppercase; color: #555;
+      margin-bottom: 10px;
     }
-
-    /* Anillo exterior giratorio */
-    .ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 2px solid transparent;
-      animation: spin 6s linear infinite;
+    .input-respuesta {
+      width: 100%; padding: 14px 16px;
+      background: #0a1a2e; border: 1px solid #1e3a5f;
+      border-radius: 12px; color: #fff;
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem;
+      margin-bottom: 12px; outline: none;
     }
-    .ring-1 {
-      width: 260px; height: 260px;
-      border-top-color: #38bdf8;
-      border-right-color: #38bdf855;
-      animation-duration: 6s;
+    .input-respuesta:focus { border-color: #38bdf8; }
+    .btn-enviar {
+      width: 100%; padding: 14px;
+      background: #0a1a2e; border: 2px solid #38bdf8;
+      border-radius: 50px; color: #38bdf8;
+      font-family: 'Rajdhani', sans-serif; font-size: 1rem;
+      font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+      cursor: pointer; transition: box-shadow 0.2s;
     }
-    .ring-2 {
-      width: 230px; height: 230px;
-      border-bottom-color: #22d3ee;
-      border-left-color: #22d3ee44;
-      animation-duration: 9s;
-      animation-direction: reverse;
-    }
-    .ring-3 {
-      width: 200px; height: 200px;
-      border-top-color: #4ade80;
-      border-right-color: #4ade8033;
-      animation-duration: 12s;
-    }
-
-    /* Brillo central */
-    .circle-glow {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      background: radial-gradient(circle at center, #0e4a6e55 0%, transparent 70%);
-      box-shadow:
-        0 0 40px #38bdf866,
-        0 0 80px #22d3ee33,
-        inset 0 0 30px #38bdf822;
-      animation: pulse 3s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 40px #38bdf866, 0 0 80px #22d3ee33; }
-      50%       { box-shadow: 0 0 60px #38bdf8aa, 0 0 120px #22d3ee55; }
-    }
-
-    /* Reflejo en el suelo */
-    .circle-shadow {
-      position: absolute;
-      bottom: -20px;
-      width: 140px;
-      height: 20px;
-      background: radial-gradient(ellipse, #38bdf844 0%, transparent 70%);
-      border-radius: 50%;
-    }
-
-    /* ── Botón COMENZAR ── */
-    .btn-start {
-      width: 100%;
-      max-width: 320px;
-      padding: 18px 0;
-      border: 2px solid #4ade80;
-      border-radius: 50px;
-      background: #0a1a0e88;
-      color: #fff;
-      font-family: 'Rajdhani', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      letter-spacing: 6px;
-      text-transform: uppercase;
+    .btn-enviar:active { box-shadow: 0 0 20px #38bdf855; }
+    .btn-limpiar {
+      width: 100%; padding: 12px; margin-top: 10px;
+      background: transparent; border: 1px solid #333;
+      border-radius: 50px; color: #555;
+      font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;
+      letter-spacing: 3px; text-transform: uppercase;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      transition: background 0.3s, box-shadow 0.3s;
-      box-shadow: 0 0 20px #4ade8033;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-start:active {
-      background: #0a2e1488;
-      box-shadow: 0 0 40px #4ade8066;
-    }
-    .btn-arrow {
-      font-size: 1.2rem;
-      color: #4ade80;
     }
   </style>
 </head>
 <body>
 
-  <!-- Logo -->
-  <div class="logo">
-    <div>
-      <span class="logo-nucleo">NÚCLEO</span><span class="logo-home">home</span>
+  <h1>NÚCLEO Home</h1>
+  <div class="subtitulo">Simulador de ESP32 — Prueba de servidor</div>
+
+  <!-- Estado de conexión -->
+  <div class="estado-conexion">
+    <div class="indicador" id="indicador"></div>
+    <span class="estado-texto" id="estadoTexto">Conectando...</span>
+  </div>
+
+  <!-- Log de mensajes recibidos -->
+  <div class="log-titulo">Mensajes recibidos del servidor</div>
+  <div class="log" id="log">
+    <div class="log-item">
+      <span class="hora">--:--</span>
+      <span style="color:#555">Esperando mensajes...</span>
     </div>
-    <div class="logo-line"></div>
   </div>
 
-  <!-- Reloj, fecha y clima -->
-  <div class="datetime">
-    <div class="clock" id="clock">00:00</div>
-    <div class="date" id="date">Cargando fecha...</div>
-    <div class="weather" id="weather">
-      <span style="color:#555; font-size:0.9rem;">Obteniendo clima...</span>
-    </div>
-  </div>
-
-  <!-- Círculo animado -->
-  <div class="circle-wrapper">
-    <div class="ring ring-1"></div>
-    <div class="ring ring-2"></div>
-    <div class="ring ring-3"></div>
-    <div class="circle-glow"></div>
-    <div class="circle-shadow"></div>
-  </div>
-
-  <!-- Botón comenzar -->
-  <button class="btn-start" onclick="comenzar()">
-    COMENZAR
-    <span class="btn-arrow">›</span>
-  </button>
+  <!-- Panel para responder manualmente -->
+  <div class="panel-titulo">Responder al dashboard (simular ESP32)</div>
+  <input class="input-respuesta" id="inputRespuesta"
+    type="text" placeholder="Ej: Luz encendida correctamente" />
+  <button class="btn-enviar" onclick="enviarRespuesta()">Enviar respuesta</button>
+  <button class="btn-limpiar" onclick="limpiarLog()">Limpiar log</button>
 
   <script>
-    // ── CONFIGURACIÓN ──────────────────────────────────────────────
-    // Pegá tu API key de OpenWeatherMap aquí abajo entre las comillas
-    const API_KEY = '7f459ea71753f5cb8c9acbae9eee1de3';
-    const CIUDAD  = 'Jardín América';
-    const PAIS    = 'AR';
-    // ──────────────────────────────────────────────────────────────
+    // ── CONFIGURACIÓN ────────────────────────────────────────────
+    const URL_SERVIDOR = 'wss://domoticaklenser.onrender.com';
 
-    // Actualiza el reloj cada segundo
-    function actualizarReloj() {
-      const ahora = new Date();
+    // ── VARIABLES ────────────────────────────────────────────────
+    let ws = null;
 
-      // Hora en formato HH:MM
-      const horas   = String(ahora.getHours()).padStart(2, '0');
-      const minutos = String(ahora.getMinutes()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${horas}:${minutos}`;
+    // ── CONEXIÓN AL SERVIDOR ─────────────────────────────────────
+    function conectar() {
+      ws = new WebSocket(URL_SERVIDOR);
 
-      // Fecha en español
-      const opciones = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-      const fechaStr = ahora.toLocaleDateString('es-AR', opciones);
-      // Primera letra en mayúscula
-      document.getElementById('date').textContent =
-        fechaStr.charAt(0).toUpperCase() + fechaStr.slice(1);
+      ws.onopen = () => {
+        // Se identifica como ESP32
+        ws.send(JSON.stringify({ tipo: 'esp32' }));
+        setEstado('conectado', 'Conectado como ESP32');
+        agregarLog('sistema', 'Conectado al servidor');
+      };
+
+      ws.onmessage = (evento) => {
+        try {
+          const datos = JSON.parse(evento.data);
+          procesarMensaje(datos);
+        } catch (e) {
+          agregarLog('sistema', 'Mensaje no válido: ' + evento.data);
+        }
+      };
+
+      ws.onclose = () => {
+        setEstado('error', 'Desconectado — reintentando...');
+        agregarLog('sistema', 'Conexión cerrada, reintentando en 5 segundos...');
+        setTimeout(conectar, 5000);
+      };
+
+      ws.onerror = () => {
+        setEstado('error', 'Error de conexión');
+      };
     }
 
-    // Llama al reloj inmediatamente y luego cada segundo
-    actualizarReloj();
-    setInterval(actualizarReloj, 1000);
+    // ── PROCESAR MENSAJE RECIBIDO ────────────────────────────────
+    function procesarMensaje(datos) {
+      const tipo = datos.tipo || 'desconocido';
 
-    // Obtiene el clima de OpenWeatherMap
-    async function obtenerClima() {
-      // Si aún no pusiste la API key, muestra un mensaje y no hace el fetch
-      if (API_KEY === 'TU_API_KEY_AQUI') {
-        document.getElementById('weather').innerHTML =
-          '<span style="color:#555; font-size:0.85rem;">Agregá tu API key para ver el clima</span>';
+      if (tipo === 'comando') {
+        // Llegó un comando de voz del dashboard
+        agregarLog('comando', '🎤 Comando: "' + datos.texto + '"');
+
+      } else if (tipo === 'panico') {
+        // Llegó una alerta de pánico
+        agregarLog('panico', '🚨 ALERTA DE PÁNICO');
+
+      } else {
+        // Cualquier otro mensaje del servidor
+        agregarLog('sistema', JSON.stringify(datos));
+      }
+    }
+
+    // ── ENVIAR RESPUESTA MANUAL ──────────────────────────────────
+    // Simula lo que haría el ESP32 al responder un comando
+    function enviarRespuesta() {
+      const input = document.getElementById('inputRespuesta');
+      const texto = input.value.trim();
+
+      if (!texto) return;
+      if (!ws || ws.readyState !== WebSocket.OPEN) {
+        agregarLog('sistema', 'No hay conexión con el servidor');
         return;
       }
 
-      try {
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(CIUDAD)},${PAIS}&appid=${API_KEY}&units=metric&lang=es`;
-        const respuesta = await fetch(url);
-        const datos     = await respuesta.json();
+      // Manda la respuesta al servidor para que la reenvíe al dashboard
+      ws.send(JSON.stringify({
+        tipo: 'respuesta',
+        mensaje: texto
+      }));
 
-        if (datos.cod !== 200) throw new Error('Ciudad no encontrada');
+      agregarLog('sistema', '📤 Respuesta enviada: "' + texto + '"');
+      input.value = '';   // Limpia el campo
+    }
 
-        const temp    = Math.round(datos.main.temp);           // temperatura entera
-        const desc    = datos.weather[0].description;          // descripción en español
-        const icono   = datos.weather[0].icon;                 // código del ícono
-        const iconUrl = `https://openweathermap.org/img/wn/${icono}.png`;
+    // ── AGREGAR ENTRADA AL LOG ───────────────────────────────────
+    function agregarLog(tipo, texto) {
+      const log   = document.getElementById('log');
+      const ahora = new Date();
+      const hora  = String(ahora.getHours()).padStart(2, '0') + ':' +
+                    String(ahora.getMinutes()).padStart(2, '0') + ':' +
+                    String(ahora.getSeconds()).padStart(2, '0');
 
-        // Arma el HTML del clima
-        document.getElementById('weather').innerHTML = `
-          <img src="${iconUrl}" alt="${desc}" />
-          <span class="weather-temp">${temp}°C</span>
-          <span class="weather-divider">|</span>
-          <span class="weather-desc">${desc}</span>
-        `;
-      } catch (error) {
-        // Si falla, muestra un mensaje discreto
-        document.getElementById('weather').innerHTML =
-          '<span style="color:#555; font-size:0.85rem;">Clima no disponible</span>';
+      // Limpiamos el mensaje inicial si es la primera entrada
+      if (log.children.length === 1 && log.children[0].querySelector('[style*="555"]')) {
+        log.innerHTML = '';
       }
+
+      const item = document.createElement('div');
+      item.className = 'log-item';
+      item.innerHTML = `<span class="hora">${hora}</span><span class="tipo-${tipo}">${texto}</span>`;
+
+      log.appendChild(item);
+      log.scrollTop = log.scrollHeight;   // Hace scroll al último mensaje
     }
 
-    // Obtiene el clima al cargar y luego cada 10 minutos
-    obtenerClima();
-    setInterval(obtenerClima, 10 * 60 * 1000);
-
-    // Acción del botón COMENZAR (por ahora solo un log, luego navega a la pantalla principal)
-    function comenzar() {
-      // Aquí irá la navegación a la pantalla principal
-      alert('¡Bienvenido a NÚCLEO Home!');
+    // ── LIMPIAR LOG ──────────────────────────────────────────────
+    function limpiarLog() {
+      document.getElementById('log').innerHTML =
+        '<div class="log-item"><span class="hora">--:--</span><span style="color:#555">Log limpiado</span></div>';
     }
+
+    // ── ESTADO VISUAL DE CONEXIÓN ────────────────────────────────
+    function setEstado(estado, texto) {
+      const ind  = document.getElementById('indicador');
+      const txt  = document.getElementById('estadoTexto');
+      ind.className  = 'indicador ' + estado;
+      txt.textContent = texto;
+    }
+
+    // ── ENVIAR CON ENTER ─────────────────────────────────────────
+    document.getElementById('inputRespuesta').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') enviarRespuesta();
+    });
+
+    // Iniciamos la conexión al cargar la página
+    conectar();
   </script>
 
 </body>
