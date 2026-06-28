@@ -346,10 +346,51 @@ p{font-size:14px;line-height:1.6;color:var(--texto2);margin-bottom:10px}
 /* ── PIE ── */
 .site-footer{
   margin-top:32px;
-  font-size:11px;color:var(--gris3);
-  text-align:center;max-width:580px;
-  padding:0 16px;
+  width:100%;max-width:900px;
+  padding:0 16px 16px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1fr 1.6fr 1fr;
+  gap:32px;
+  background:var(--azul);
+  border-radius:var(--radio) var(--radio) 0 0;
+  padding:32px;
+}
+.footer-col p{
+  font-size:12px;
+  color:rgba(255,255,255,0.55);
   line-height:1.6;
+  margin-bottom:6px;
+}
+.footer-titulo{
+  font-size:11px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.4);margin-bottom:12px;
+}
+.footer-lista{list-style:none;padding:0;margin:0}
+.footer-lista li{
+  font-size:12px;color:rgba(255,255,255,0.6);
+  padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.5;
+}
+.footer-lista li:last-child{border:none}
+.footer-link{
+  display:block;font-size:13px;font-weight:500;
+  color:rgba(255,255,255,0.85);text-decoration:none;
+  margin-bottom:6px;transition:color .15s;
+}
+.footer-link:hover{color:#fff}
+.footer-bottom{
+  text-align:center;font-size:11px;
+  color:rgba(255,255,255,0.3);
+  padding:14px 32px;
+  background:var(--azul);
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-radius:0 0 var(--radio) var(--radio);
+}
+@media(max-width:700px){
+  .footer-grid{grid-template-columns:1fr;gap:20px;padding:24px 20px}
 }
 
 @media(max-width:600px){
@@ -550,39 +591,30 @@ p{font-size:14px;line-height:1.6;color:var(--texto2);margin-bottom:10px}
 </div><!-- /card -->
 
 <div class="site-footer">
-  IRVL · Índice de Riesgo de Violencia Laboral · Herramienta de acceso libre orientada a la prevención.<br/>
-  Basada en el Manual sobre Violencia Laboral — OAVL / MTEySS (2014).
-</div>
 
-<script>
-/* ════════════════════════════
-   DATOS
-════════════════════════════ */
-const BLOQUES=[
-  {id:'D1',nom:'Tipo de violencia',   esc:'frec'},
-  {id:'D2',nom:'Dirección',           esc:'frec'},
-  {id:'D3',nom:'Frecuencia',          esc:'frec'},
-  {id:'D4',nom:'Impacto en salud',    esc:'frec'},
-  {id:'D5',nom:'Contexto',            esc:'frec'},
-  {id:'D6',nom:'Recursos disponibles',esc:'sino'},
-];
+  <div class="footer-grid">
 
-const QS=[
-  {b:'D1',c:'D1-P01',t:'¿Alguien en tu trabajo te gritó, insultó o te habló de manera humillante?'},
-  {b:'D1',c:'D1-P02',t:'¿Sentiste que alguien te hostiga o te presiona de manera repetida y sin motivo claro?'},
-  {b:'D1',c:'D1-P03',t:'¿Te ignoraron, dejaron de hablarte o te excluyeron de reuniones sin explicación?'},
-  {b:'D1',c:'D1-P04',t:'¿Sentiste que te trataron diferente por tu género, edad, origen, salud, embarazo o actividad sindical?'},
-  {b:'D1',c:'D1-P05',t:'¿Alguien te empujó, golpeó o te agredió físicamente en tu lugar de trabajo?'},
-  {b:'D1',c:'D1-P06',t:'¿Recibiste comentarios, gestos o contacto físico de contenido sexual que no deseabas?'},
-  {b:'D2',c:'D2-P01',t:'¿Las situaciones las realiza alguien que tiene autoridad sobre vos (jefe, supervisor, director)?'},
-  {b:'D2',c:'D2-P02',t:'¿Las realiza algún compañero o compañera de tu mismo nivel?'},
-  {b:'D2',c:'D2-P03',t:'¿Las realiza alguien que está por debajo tuyo en la jerarquía?'},
-  {b:'D2',c:'D2-P04',t:'¿Son varias personas las que te tratan de esta manera?'},
-  {b:'D2',c:'D2-P05',t:'¿Hay alguien que, aunque no sea tu jefe formal, tiene mucho poder y te trata mal?'},
-  {b:'D3',c:'D3-P01',t:'¿Estas situaciones se repiten de manera regular, no son hechos aislados?'},
-  {b:'D3',c:'D3-P02',t:'¿Con el tiempo las situaciones se fueron poniendo peor o más intensas?'},
-  {b:'D3',c:'D3-P03',t:'¿Estas situaciones llevan más de un mes ocurriendo?'},
-  {b:'D3',c:'D3-P04',t:'¿Llevan más de seis meses?'},
-  {b:'D3',c:'D3-P05',t:'¿Podés identificar un momento puntual a partir del cual empezaron estas situaciones?'},
-  {b:'D3',c:'D3-P06',t:'¿Otras personas en tu trabajo también están viviendo situaciones similares?'},
-  {b:'D4',c:'D4-P01',t:'¿Tenés dolores físicos, contracturas, problemas digestivos 
+    <div class="footer-col">
+      <div class="footer-titulo">IRVL · v1.0</div>
+      <p>Herramienta de acceso libre orientada a la prevenci&oacute;n de la violencia laboral.</p>
+      <p>El resultado es orientativo y no reemplaza evaluaciones legales, m&eacute;dicas ni psicol&oacute;gicas.</p>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-titulo">Marco normativo de referencia</div>
+      <ul class="footer-lista">
+        <li>Constituci&oacute;n Nacional Argentina &mdash; Art. 14 bis</li>
+        <li>Ley de Contrato de Trabajo &mdash; Arts. 62, 63, 65, 66, 68, 81</li>
+        <li>Ley N&deg; 23.592 &mdash; Antidiscriminaci&oacute;n</li>
+        <li>Ley N&deg; 24.557 &mdash; Riesgos del Trabajo</li>
+        <li>Declaraci&oacute;n Universal de Derechos Humanos &mdash; Art. 23</li>
+        <li>Convenio 111 OIT &mdash; Discriminaci&oacute;n en empleo</li>
+        <li>Convenci&oacute;n de Belem do Par&aacute; &mdash; Ley N&deg; 24.632</li>
+        <li>Manual sobre Violencia Laboral &mdash; OAVL / MTEySS (2014)</li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-titulo">Contacto</div>
+      <p style="margin-bottom:6px"><strong>Enrique Alberto Klenser</strong></p>
+      <a class
