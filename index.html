@@ -1,248 +1,588 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NÚCLEO Home — Prueba de Servidor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #000; color: #fff;
-      font-family: 'Rajdhani', sans-serif;
-      min-height: 100vh; padding: 30px 20px;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IRVL — Índice de Riesgo de Violencia Laboral</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-    h1 {
-      font-size: 1.2rem; letter-spacing: 4px;
-      text-transform: uppercase; color: #38bdf8;
-      margin-bottom: 6px;
-    }
-    .subtitulo {
-      font-size: 0.85rem; color: #555;
-      letter-spacing: 2px; margin-bottom: 30px;
-    }
+:root{
+  --azul:#0F2240;
+  --azul-med:#1A3560;
+  --acento:#1D6FE8;
+  --acento-claro:#EEF4FF;
+  --blanco:#FFFFFF;
+  --bg:#F0F4FA;
+  --gris1:#F7F8FA;
+  --gris2:#E8ECF2;
+  --gris3:#9AA3B2;
+  --texto:#1A2535;
+  --texto2:#4A5568;
+  --radio:14px;
+  --shadow:0 2px 16px rgba(15,34,64,0.10);
+  --shadow-lg:0 8px 40px rgba(15,34,64,0.14);
 
-    /* ── Estado de conexión ── */
-    .estado-conexion {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 24px;
-    }
-    .indicador {
-      width: 12px; height: 12px; border-radius: 50%;
-      background: #555; transition: background 0.3s;
-    }
-    .indicador.conectado  { background: #4ade80; box-shadow: 0 0 8px #4ade80; }
-    .indicador.error      { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
-    .estado-texto {
-      font-size: 0.9rem; letter-spacing: 2px;
-      text-transform: uppercase; color: #555;
-    }
+  --c0b:#D1FAE5;--c0t:#065F46;
+  --c1b:#FEF3C7;--c1t:#92400E;
+  --c2b:#FED7AA;--c2t:#9A3412;
+  --c3b:#FEE2E2;--c3t:#991B1B;
+  --c4b:#7F1D1D;--c4t:#FFFFFF;
+}
 
-    /* ── Log de mensajes ── */
-    .log-titulo {
-      font-size: 0.75rem; letter-spacing: 3px;
-      text-transform: uppercase; color: #555;
-      margin-bottom: 10px;
-    }
-    .log {
-      background: #0a1a2e; border: 1px solid #1e3a5f;
-      border-radius: 12px; padding: 16px;
-      min-height: 200px; max-height: 400px;
-      overflow-y: auto; margin-bottom: 24px;
-    }
-    .log-item {
-      font-size: 0.9rem; color: #e2e8f0;
-      padding: 8px 0; border-bottom: 1px solid #1e3a5f11;
-      line-height: 1.4;
-    }
-    .log-item:last-child { border-bottom: none; }
-    .log-item .hora { color: #555; font-size: 0.8rem; margin-right: 8px; }
-    .log-item .tipo-comando   { color: #38bdf8; }
-    .log-item .tipo-panico    { color: #ef4444; }
-    .log-item .tipo-sistema   { color: #4ade80; }
+html{scroll-behavior:smooth}
 
-    /* ── Panel de respuesta manual ── */
-    .panel-titulo {
-      font-size: 0.75rem; letter-spacing: 3px;
-      text-transform: uppercase; color: #555;
-      margin-bottom: 10px;
-    }
-    .input-respuesta {
-      width: 100%; padding: 14px 16px;
-      background: #0a1a2e; border: 1px solid #1e3a5f;
-      border-radius: 12px; color: #fff;
-      font-family: 'Rajdhani', sans-serif; font-size: 1rem;
-      margin-bottom: 12px; outline: none;
-    }
-    .input-respuesta:focus { border-color: #38bdf8; }
-    .btn-enviar {
-      width: 100%; padding: 14px;
-      background: #0a1a2e; border: 2px solid #38bdf8;
-      border-radius: 50px; color: #38bdf8;
-      font-family: 'Rajdhani', sans-serif; font-size: 1rem;
-      font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
-      cursor: pointer; transition: box-shadow 0.2s;
-    }
-    .btn-enviar:active { box-shadow: 0 0 20px #38bdf855; }
-    .btn-limpiar {
-      width: 100%; padding: 12px; margin-top: 10px;
-      background: transparent; border: 1px solid #333;
-      border-radius: 50px; color: #555;
-      font-family: 'Rajdhani', sans-serif; font-size: 0.9rem;
-      letter-spacing: 3px; text-transform: uppercase;
-      cursor: pointer;
-    }
-  </style>
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--texto);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:0 0 60px;
+}
+
+/* ── HEADER ── */
+.site-header{
+  width:100%;
+  background:var(--azul);
+  padding:16px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:32px;
+}
+.site-header .marca{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.site-header .sigla{
+  font-size:20px;
+  font-weight:800;
+  color:#fff;
+  letter-spacing:1px;
+}
+.site-header .subtitulo-marca{
+  font-size:11px;
+  color:rgba(255,255,255,0.55);
+  font-weight:400;
+  letter-spacing:.5px;
+}
+.badge-version{
+  background:rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.7);
+  font-size:11px;
+  font-weight:500;
+  padding:4px 10px;
+  border-radius:999px;
+}
+
+/* ── CARD ── */
+.card{
+  background:var(--blanco);
+  border-radius:var(--radio);
+  box-shadow:var(--shadow-lg);
+  width:100%;
+  max-width:580px;
+  overflow:hidden;
+}
+
+.screen{display:none}
+.screen.active{display:block}
+
+/* ── CARD HEADER ── */
+.card-top{
+  background:linear-gradient(135deg,var(--azul) 0%,var(--azul-med) 100%);
+  padding:28px 32px 24px;
+  color:#fff;
+}
+.card-top .etiqueta{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.55);
+  margin-bottom:8px;
+}
+.card-top h1{
+  font-size:24px;
+  font-weight:700;
+  line-height:1.2;
+  margin-bottom:8px;
+}
+.card-top p{
+  font-size:14px;
+  color:rgba(255,255,255,0.75);
+  line-height:1.5;
+}
+
+/* ── CARD BODY ── */
+.card-body{padding:28px 32px}
+
+/* ── TIPOGRAFÍA ── */
+h2{font-size:18px;font-weight:700;color:var(--azul);margin-bottom:6px}
+h3{font-size:14px;font-weight:600;color:var(--azul);margin-bottom:8px}
+p{font-size:14px;line-height:1.6;color:var(--texto2);margin-bottom:10px}
+
+/* ── CHIPS ── */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.chip{
+  background:var(--gris1);
+  border:1px solid var(--gris2);
+  border-radius:999px;
+  padding:5px 13px;
+  font-size:12px;
+  font-weight:500;
+  color:var(--texto);
+  display:flex;align-items:center;gap:5px;
+}
+
+/* ── AVISO ── */
+.aviso{
+  background:var(--acento-claro);
+  border-left:3px solid var(--acento);
+  border-radius:0 8px 8px 0;
+  padding:12px 16px;
+  font-size:13px;
+  color:#1e3a6e;
+  line-height:1.55;
+  margin:16px 0;
+}
+
+/* ── BOTONES ── */
+.btn{
+  display:block;width:100%;padding:15px 20px;
+  border:none;border-radius:10px;
+  font-family:'Inter',sans-serif;font-size:15px;font-weight:600;
+  cursor:pointer;text-align:center;
+  transition:all .15s;
+  margin-top:10px;
+}
+.btn:active{transform:scale(0.98)}
+.btn-primary{
+  background:var(--acento);color:#fff;
+  box-shadow:0 4px 12px rgba(29,111,232,0.30);
+}
+.btn-primary:hover{background:#1558c0;box-shadow:0 4px 16px rgba(29,111,232,0.40)}
+.btn-primary:disabled{background:#93b4e8;box-shadow:none;cursor:not-allowed}
+.btn-ghost{
+  background:transparent;color:var(--acento);
+  border:1.5px solid var(--gris2);
+}
+.btn-ghost:hover{background:var(--acento-claro);border-color:var(--acento)}
+
+/* ── DIVIDER ── */
+.div{border:none;border-top:1px solid var(--gris2);margin:22px 0}
+
+/* ── OPCIONES ── */
+.opciones{display:flex;flex-direction:column;gap:8px;margin:14px 0}
+.opc{
+  padding:13px 16px;
+  border:1.5px solid var(--gris2);
+  border-radius:10px;
+  font-size:14px;font-weight:500;
+  cursor:pointer;
+  transition:all .15s;
+  color:var(--texto);
+  background:var(--blanco);
+}
+.opc:hover{border-color:var(--acento);background:var(--acento-claro);color:var(--acento)}
+.opc.sel{border-color:var(--acento);background:var(--acento-claro);color:var(--acento);font-weight:600}
+
+/* ── LABEL SECCIÓN ── */
+.sec-label{
+  font-size:11px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:var(--acento);
+  margin-bottom:4px;
+}
+
+/* ── PROGRESO ── */
+.prog-wrap{padding:24px 32px 0;background:var(--gris1);border-bottom:1px solid var(--gris2)}
+.prog-meta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.prog-meta span{font-size:13px;font-weight:500;color:var(--texto2)}
+.prog-meta strong{font-size:13px;font-weight:700;color:var(--acento)}
+.prog-bar{height:5px;background:var(--gris2);border-radius:999px;overflow:hidden;margin-bottom:14px}
+.prog-fill{height:100%;background:var(--acento);border-radius:999px;transition:width .35s ease}
+.bloque-pill{
+  display:inline-block;
+  background:var(--acento-claro);color:var(--acento);
+  font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:4px 12px;border-radius:999px;margin-bottom:16px;
+}
+
+/* ── PREGUNTA ── */
+.q-body{padding:24px 32px}
+.q-txt{font-size:17px;font-weight:600;line-height:1.45;color:var(--azul);margin-bottom:20px}
+
+/* ── NAV QUIZ ── */
+.nav-quiz{
+  display:flex;gap:10px;
+  padding:16px 32px 28px;
+  background:var(--gris1);
+  border-top:1px solid var(--gris2);
+}
+.btn-nav{
+  flex:1;padding:13px;border-radius:10px;
+  font-size:14px;font-weight:600;cursor:pointer;border:none;
+  font-family:'Inter',sans-serif;transition:all .15s;
+}
+.btn-ant{background:var(--gris2);color:var(--texto)}
+.btn-ant:hover{background:#d0d7e2}
+.btn-sig{background:var(--acento);color:#fff;box-shadow:0 4px 12px rgba(29,111,232,0.25)}
+.btn-sig:hover{background:#1558c0}
+.btn-sig:disabled,.btn-ant:disabled{opacity:0.4;cursor:not-allowed}
+
+/* ── APOYO ── */
+.apoyo-box{
+  margin:0;
+  background:linear-gradient(135deg,#0F2240,#1A3560);
+  padding:40px 32px;text-align:center;color:#fff;
+}
+.apoyo-box .icono{font-size:40px;margin-bottom:16px}
+.apoyo-box h2{color:#fff;font-size:20px;margin-bottom:8px}
+.apoyo-box p{color:rgba(255,255,255,0.75);margin-bottom:8px}
+.apoyo-tel{
+  font-size:42px;font-weight:800;color:#fff;
+  letter-spacing:2px;margin:16px 0 4px;
+}
+.apoyo-sub{font-size:12px;color:rgba(255,255,255,0.5)}
+.apoyo-btn{
+  margin:24px auto 0;max-width:260px;
+  background:rgba(255,255,255,0.15);
+  color:#fff;border:1.5px solid rgba(255,255,255,0.3);
+  padding:13px;border-radius:10px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  font-family:'Inter',sans-serif;
+  width:100%;transition:all .15s;
+  display:block;
+}
+.apoyo-btn:hover{background:rgba(255,255,255,0.25)}
+
+/* ── RESULTADO BADGE ── */
+.res-header{
+  padding:28px 32px;
+  display:flex;align-items:center;gap:20px;
+}
+.res-circle{
+  width:90px;height:90px;border-radius:50%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.res-circle .num{font-size:26px;font-weight:800;line-height:1}
+.res-circle .lbl{font-size:10px;font-weight:600;letter-spacing:.5px;margin-top:2px;opacity:.8}
+.res-info h2{font-size:20px;margin-bottom:4px}
+.res-info p{font-size:13px;margin:0}
+
+.interp-box{
+  margin:0 32px 20px;
+  background:var(--gris1);
+  border-radius:10px;
+  padding:16px;
+  font-size:14px;line-height:1.6;color:var(--texto2);
+  border-left:3px solid var(--acento);
+}
+
+/* ── DIMENSIONES ── */
+.dims-section{padding:0 32px 24px}
+.dim-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dim-nom{font-size:12px;font-weight:500;width:120px;flex-shrink:0;color:var(--texto2)}
+.dim-bg{flex:1;height:8px;background:var(--gris2);border-radius:999px;overflow:hidden}
+.dim-fill{height:100%;border-radius:999px;transition:width .6s ease}
+.dim-val{font-size:12px;font-weight:700;width:30px;text-align:right;color:var(--texto)}
+
+/* ── RECOMENDACIONES ── */
+.rec-section{padding:0 32px 24px}
+.rec-bloque{margin-bottom:20px}
+.rec-bloque h3{
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gris3);font-weight:600;
+  border-bottom:1px solid var(--gris2);
+  padding-bottom:6px;margin-bottom:10px;
+}
+.rec-item{
+  display:flex;gap:10px;margin-bottom:7px;
+  font-size:13px;line-height:1.55;color:var(--texto2);
+}
+.rec-arrow{color:var(--acento);font-weight:700;flex-shrink:0;margin-top:1px}
+
+/* ── RECURSOS ── */
+.recursos-section{padding:0 32px 28px}
+.rec-card{
+  background:var(--gris1);border:1px solid var(--gris2);
+  border-radius:10px;padding:14px 16px;margin-bottom:10px;
+}
+.rec-card h3{font-size:13px;color:var(--azul);margin-bottom:3px}
+.rec-card p{font-size:12px;color:var(--gris3);margin:0}
+.rec-card a{
+  font-size:22px;font-weight:800;color:var(--acento);
+  text-decoration:none;display:block;margin-top:4px;
+}
+
+/* ── INFORME LISTO ── */
+.inf-hero{
+  background:linear-gradient(135deg,var(--azul),var(--azul-med));
+  padding:36px 32px;text-align:center;color:#fff;
+}
+.inf-hero .icono{font-size:44px;margin-bottom:12px}
+.inf-hero h2{color:#fff;font-size:22px;margin-bottom:6px}
+.inf-hero p{color:rgba(255,255,255,0.65);font-size:14px;margin:0}
+
+.checks{padding:20px 32px 4px}
+.check-item{
+  display:flex;gap:10px;padding:9px 0;
+  border-bottom:1px solid var(--gris2);
+  font-size:14px;color:var(--texto2);
+}
+.check-item:last-child{border:none}
+.check-ok{color:#16a34a;font-weight:700;flex-shrink:0}
+
+.inf-actions{padding:16px 32px 28px}
+
+/* ── PIE ── */
+.site-footer{
+  margin-top:32px;
+  font-size:11px;color:var(--gris3);
+  text-align:center;max-width:580px;
+  padding:0 16px;
+  line-height:1.6;
+}
+
+@media(max-width:600px){
+  .site-header{padding:14px 16px}
+  .card-top,.card-body,.prog-wrap,.q-body,.nav-quiz,
+  .res-header,.dims-section,.rec-section,.recursos-section,
+  .checks,.inf-actions,.interp-box{padding-left:20px;padding-right:20px}
+  .card-top h1{font-size:20px}
+  .res-header{flex-direction:column;text-align:center}
+  .res-circle{width:100px;height:100px}
+}
+</style>
 </head>
 <body>
 
-  <h1>NÚCLEO Home</h1>
-  <div class="subtitulo">Simulador de ESP32 — Prueba de servidor</div>
-
-  <!-- Estado de conexión -->
-  <div class="estado-conexion">
-    <div class="indicador" id="indicador"></div>
-    <span class="estado-texto" id="estadoTexto">Conectando...</span>
-  </div>
-
-  <!-- Log de mensajes recibidos -->
-  <div class="log-titulo">Mensajes recibidos del servidor</div>
-  <div class="log" id="log">
-    <div class="log-item">
-      <span class="hora">--:--</span>
-      <span style="color:#555">Esperando mensajes...</span>
+<header class="site-header">
+  <div class="marca">
+    <div>
+      <div class="sigla">IRVL</div>
+      <div class="subtitulo-marca">Índice de Riesgo de Violencia Laboral</div>
     </div>
   </div>
+  <span class="badge-version">v1.0</span>
+</header>
 
-  <!-- Panel para responder manualmente -->
-  <div class="panel-titulo">Responder al dashboard (simular ESP32)</div>
-  <input class="input-respuesta" id="inputRespuesta"
-    type="text" placeholder="Ej: Luz encendida correctamente" />
-  <button class="btn-enviar" onclick="enviarRespuesta()">Enviar respuesta</button>
-  <button class="btn-limpiar" onclick="limpiarLog()">Limpiar log</button>
+<div class="card">
 
-  <script>
-    // ── CONFIGURACIÓN ────────────────────────────────────────────
-    const URL_SERVIDOR = 'wss://domoticaklenser.onrender.com';
+<!-- ══════════════════════════════════
+     P1 · BIENVENIDA
+══════════════════════════════════ -->
+<div id="s-bienvenida" class="screen active">
+  <div class="card-top">
+    <div class="etiqueta">Herramienta de evaluación</div>
+    <h1>¿Estás viviendo violencia laboral?</h1>
+    <p>Este cuestionario te ayuda a identificarlo y te entrega un informe descargable con recomendaciones personalizadas.</p>
+  </div>
+  <div class="card-body">
+    <div class="chips">
+      <span class="chip">⏱ 10 minutos</span>
+      <span class="chip">🔒 Anónimo y confidencial</span>
+      <span class="chip">📄 Informe PDF gratuito</span>
+    </div>
+    <div class="aviso">
+      <strong>Aviso importante:</strong> El resultado es orientativo. No reemplaza evaluaciones legales, médicas ni psicológicas profesionales.
+    </div>
+    <button class="btn btn-primary" onclick="ir('s-contexto')">Comenzar el test →</button>
+  </div>
+</div>
 
-    // ── VARIABLES ────────────────────────────────────────────────
-    let ws = null;
 
-    // ── CONEXIÓN AL SERVIDOR ─────────────────────────────────────
-    function conectar() {
-      ws = new WebSocket(URL_SERVIDOR);
+<!-- ══════════════════════════════════
+     P2 · CONTEXTO
+══════════════════════════════════ -->
+<div id="s-contexto" class="screen">
+  <div class="card-top">
+    <div class="etiqueta">Paso 1 de 2</div>
+    <h1>Dos preguntas rápidas</h1>
+    <p>Para personalizar tu informe necesitamos saber un poco sobre tu organización.</p>
+  </div>
+  <div class="card-body">
+    <div class="sec-label">Tipo de organización</div>
+    <div class="opciones" id="cg01">
+      <div class="opc" onclick="elegirCG('cg01',this,'org')">Empresa privada</div>
+      <div class="opc" onclick="elegirCG('cg01',this,'org')">Organismo público</div>
+      <div class="opc" onclick="elegirCG('cg01',this,'org')">ONG / asociación civil</div>
+      <div class="opc" onclick="elegirCG('cg01',this,'org')">Institución educativa</div>
+      <div class="opc" onclick="elegirCG('cg01',this,'org')">Otro</div>
+    </div>
+    <hr class="div"/>
+    <div class="sec-label">Cantidad de personas</div>
+    <div class="opciones" id="cg02">
+      <div class="opc" onclick="elegirCG('cg02',this,'tam')">Menos de 10</div>
+      <div class="opc" onclick="elegirCG('cg02',this,'tam')">Entre 10 y 50</div>
+      <div class="opc" onclick="elegirCG('cg02',this,'tam')">Entre 50 y 200</div>
+      <div class="opc" onclick="elegirCG('cg02',this,'tam')">Más de 200</div>
+    </div>
+    <hr class="div"/>
+    <button class="btn btn-primary" id="btn-ctx" onclick="iniciarTest()" disabled>Continuar →</button>
+  </div>
+</div>
 
-      ws.onopen = () => {
-        // Se identifica como ESP32
-        ws.send(JSON.stringify({ tipo: 'esp32' }));
-        setEstado('conectado', 'Conectado como ESP32');
-        agregarLog('sistema', 'Conectado al servidor');
-      };
 
-      ws.onmessage = (evento) => {
-        try {
-          const datos = JSON.parse(evento.data);
-          procesarMensaje(datos);
-        } catch (e) {
-          agregarLog('sistema', 'Mensaje no válido: ' + evento.data);
-        }
-      };
+<!-- ══════════════════════════════════
+     P3 · CUESTIONARIO
+══════════════════════════════════ -->
+<div id="s-cuestionario" class="screen">
+  <div class="prog-wrap">
+    <div class="prog-meta">
+      <span id="prog-txt">Pregunta 1 de 40</span>
+      <strong id="prog-pct">0%</strong>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="bloque-pill" id="bloque-pill">Tipo de violencia</div>
+  </div>
+  <div class="q-body">
+    <p class="q-txt" id="q-txt"></p>
+    <div class="opciones" id="opciones"></div>
+  </div>
+  <div class="nav-quiz">
+    <button class="btn-nav btn-ant" id="btn-ant" onclick="anterior()">← Anterior</button>
+    <button class="btn-nav btn-sig" id="btn-sig" onclick="siguiente()" disabled>Siguiente →</button>
+  </div>
+</div>
 
-      ws.onclose = () => {
-        setEstado('error', 'Desconectado — reintentando...');
-        agregarLog('sistema', 'Conexión cerrada, reintentando en 5 segundos...');
-        setTimeout(conectar, 5000);
-      };
 
-      ws.onerror = () => {
-        setEstado('error', 'Error de conexión');
-      };
-    }
+<!-- ══════════════════════════════════
+     APOYO EMOCIONAL
+══════════════════════════════════ -->
+<div id="s-apoyo" class="screen">
+  <div class="apoyo-box">
+    <div class="icono">💙</div>
+    <h2>Gracias por tu honestidad</h2>
+    <p>Lo que estás viviendo importa.<br/>Podés seguir el test o hablar con alguien ahora:</p>
+    <div class="apoyo-tel">135</div>
+    <div class="apoyo-sub">Línea de Salud Mental · Gratuito · 24 horas</div>
+    <button class="apoyo-btn" onclick="seguirTest()">Continuar el test →</button>
+  </div>
+</div>
 
-    // ── PROCESAR MENSAJE RECIBIDO ────────────────────────────────
-    function procesarMensaje(datos) {
-      const tipo = datos.tipo || 'desconocido';
 
-      if (tipo === 'comando') {
-        // Llegó un comando de voz del dashboard
-        agregarLog('comando', '🎤 Comando: "' + datos.texto + '"');
+<!-- ══════════════════════════════════
+     P4 · RESULTADO
+══════════════════════════════════ -->
+<div id="s-resultado" class="screen">
+  <div class="res-header" id="res-header">
+    <div class="res-circle" id="res-circle">
+      <div class="num" id="res-num">0</div>
+      <div class="lbl">IRVL</div>
+    </div>
+    <div class="res-info">
+      <h2 id="res-nivel">—</h2>
+      <p id="res-sub">—</p>
+    </div>
+  </div>
+  <div class="interp-box" id="res-interp"></div>
+  <div class="dims-section">
+    <div class="sec-label" style="margin-bottom:12px">Perfil por dimensiones</div>
+    <div id="dims-graf"></div>
+  </div>
+  <div class="card-body" style="padding-top:0">
+    <button class="btn btn-primary" onclick="ir('s-informe')">Ver informe completo →</button>
+  </div>
+</div>
 
-      } else if (tipo === 'panico') {
-        // Llegó una alerta de pánico
-        agregarLog('panico', '🚨 ALERTA DE PÁNICO');
 
-      } else {
-        // Cualquier otro mensaje del servidor
-        agregarLog('sistema', JSON.stringify(datos));
-      }
-    }
+<!-- ══════════════════════════════════
+     P5 · INFORME
+══════════════════════════════════ -->
+<div id="s-informe" class="screen">
+  <div class="inf-hero">
+    <div class="icono">📋</div>
+    <h2>Tu informe está listo</h2>
+    <p>Incluye resultado, análisis, recomendaciones y recursos.</p>
+  </div>
+  <div class="checks">
+    <div class="check-item"><span class="check-ok">✓</span> Puntaje IRVL y nivel de riesgo</div>
+    <div class="check-item"><span class="check-ok">✓</span> Análisis por dimensiones</div>
+    <div class="check-item"><span class="check-ok">✓</span> Recomendaciones personalizadas</div>
+    <div class="check-item"><span class="check-ok">✓</span> Recursos y contactos de ayuda</div>
+  </div>
+  <div class="inf-actions">
+    <button class="btn btn-primary" id="btn-pdf" onclick="descargarPDF()">⬇ Descargar PDF</button>
+    <button class="btn btn-ghost" onclick="ir('s-resultado')">← Volver al resultado</button>
+  </div>
+  <hr class="div" style="margin:0 32px"/>
+  <div class="rec-section" style="padding-top:24px">
+    <div class="sec-label" style="margin-bottom:16px">Recomendaciones</div>
+    <div id="recs-wrap"></div>
+  </div>
+  <hr class="div" style="margin:0 32px"/>
+  <div class="recursos-section" style="padding-top:20px">
+    <div class="sec-label" style="margin-bottom:12px">Recursos y contactos</div>
+    <div class="rec-card">
+      <h3>Oficina de Asesoramiento sobre Violencia Laboral</h3>
+      <p>Ministerio de Trabajo · Atención gratuita y confidencial</p>
+      <a href="tel:01143105525">(011) 4310-5525</a>
+      <p style="font-size:12px;color:var(--gris3);margin-top:3px">violencialaboral@trabajo.gob.ar</p>
+    </div>
+    <div class="rec-card">
+      <h3>Línea de Salud Mental</h3>
+      <p>Gratuito · 24 horas</p>
+      <a href="tel:135">135</a>
+    </div>
+    <div class="rec-card">
+      <h3>Centro de Asistencia a la Víctima</h3>
+      <p>Gratuito · 24 horas</p>
+      <a href="tel:137">137</a>
+    </div>
+    <div class="aviso" style="margin-top:16px;margin-bottom:0">
+      La violencia laboral tiene nombre, está prohibida por la ley y no tenés que enfrentarla solo/a.
+    </div>
+  </div>
+  <div class="card-body">
+    <button class="btn btn-ghost" onclick="reiniciar()">Comenzar de nuevo</button>
+  </div>
+</div>
 
-    // ── ENVIAR RESPUESTA MANUAL ──────────────────────────────────
-    // Simula lo que haría el ESP32 al responder un comando
-    function enviarRespuesta() {
-      const input = document.getElementById('inputRespuesta');
-      const texto = input.value.trim();
+</div><!-- /card -->
 
-      if (!texto) return;
-      if (!ws || ws.readyState !== WebSocket.OPEN) {
-        agregarLog('sistema', 'No hay conexión con el servidor');
-        return;
-      }
+<div class="site-footer">
+  IRVL · Índice de Riesgo de Violencia Laboral · Herramienta de acceso libre orientada a la prevención.<br/>
+  Basada en el Manual sobre Violencia Laboral — OAVL / MTEySS (2014).
+</div>
 
-      // Manda la respuesta al servidor para que la reenvíe al dashboard
-      ws.send(JSON.stringify({
-        tipo: 'respuesta',
-        mensaje: texto
-      }));
+<script>
+/* ════════════════════════════
+   DATOS
+════════════════════════════ */
+const BLOQUES=[
+  {id:'D1',nom:'Tipo de violencia',   esc:'frec'},
+  {id:'D2',nom:'Dirección',           esc:'frec'},
+  {id:'D3',nom:'Frecuencia',          esc:'frec'},
+  {id:'D4',nom:'Impacto en salud',    esc:'frec'},
+  {id:'D5',nom:'Contexto',            esc:'frec'},
+  {id:'D6',nom:'Recursos disponibles',esc:'sino'},
+];
 
-      agregarLog('sistema', '📤 Respuesta enviada: "' + texto + '"');
-      input.value = '';   // Limpia el campo
-    }
-
-    // ── AGREGAR ENTRADA AL LOG ───────────────────────────────────
-    function agregarLog(tipo, texto) {
-      const log   = document.getElementById('log');
-      const ahora = new Date();
-      const hora  = String(ahora.getHours()).padStart(2, '0') + ':' +
-                    String(ahora.getMinutes()).padStart(2, '0') + ':' +
-                    String(ahora.getSeconds()).padStart(2, '0');
-
-      // Limpiamos el mensaje inicial si es la primera entrada
-      if (log.children.length === 1 && log.children[0].querySelector('[style*="555"]')) {
-        log.innerHTML = '';
-      }
-
-      const item = document.createElement('div');
-      item.className = 'log-item';
-      item.innerHTML = `<span class="hora">${hora}</span><span class="tipo-${tipo}">${texto}</span>`;
-
-      log.appendChild(item);
-      log.scrollTop = log.scrollHeight;   // Hace scroll al último mensaje
-    }
-
-    // ── LIMPIAR LOG ──────────────────────────────────────────────
-    function limpiarLog() {
-      document.getElementById('log').innerHTML =
-        '<div class="log-item"><span class="hora">--:--</span><span style="color:#555">Log limpiado</span></div>';
-    }
-
-    // ── ESTADO VISUAL DE CONEXIÓN ────────────────────────────────
-    function setEstado(estado, texto) {
-      const ind  = document.getElementById('indicador');
-      const txt  = document.getElementById('estadoTexto');
-      ind.className  = 'indicador ' + estado;
-      txt.textContent = texto;
-    }
-
-    // ── ENVIAR CON ENTER ─────────────────────────────────────────
-    document.getElementById('inputRespuesta').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') enviarRespuesta();
-    });
-
-    // Iniciamos la conexión al cargar la página
-    conectar();
-  </script>
-
-</body>
-</html>
+const QS=[
+  {b:'D1',c:'D1-P01',t:'¿Alguien en tu trabajo te gritó, insultó o te habló de manera humillante?'},
+  {b:'D1',c:'D1-P02',t:'¿Sentiste que alguien te hostiga o te presiona de manera repetida y sin motivo claro?'},
+  {b:'D1',c:'D1-P03',t:'¿Te ignoraron, dejaron de hablarte o te excluyeron de reuniones sin explicación?'},
+  {b:'D1',c:'D1-P04',t:'¿Sentiste que te trataron diferente por tu género, edad, origen, salud, embarazo o actividad sindical?'},
+  {b:'D1',c:'D1-P05',t:'¿Alguien te empujó, golpeó o te agredió físicamente en tu lugar de trabajo?'},
+  {b:'D1',c:'D1-P06',t:'¿Recibiste comentarios, gestos o contacto físico de contenido sexual que no deseabas?'},
+  {b:'D2',c:'D2-P01',t:'¿Las situaciones las realiza alguien que tiene autoridad sobre vos (jefe, supervisor, director)?'},
+  {b:'D2',c:'D2-P02',t:'¿Las realiza algún compañero o compañera de tu mismo nivel?'},
+  {b:'D2',c:'D2-P03',t:'¿Las realiza alguien que está por debajo tuyo en la jerarquía?'},
+  {b:'D2',c:'D2-P04',t:'¿Son varias personas las que te tratan de esta manera?'},
+  {b:'D2',c:'D2-P05',t:'¿Hay alguien que, aunque no sea tu jefe formal, tiene mucho poder y te trata mal?'},
+  {b:'D3',c:'D3-P01',t:'¿Estas situaciones se repiten de manera regular, no son hechos aislados?'},
+  {b:'D3',c:'D3-P02',t:'¿Con el tiempo las situaciones se fueron poniendo peor o más intensas?'},
+  {b:'D3',c:'D3-P03',t:'¿Estas situaciones llevan más de un mes ocurriendo?'},
+  {b:'D3',c:'D3-P04',t:'¿Llevan más de seis meses?'},
+  {b:'D3',c:'D3-P05',t:'¿Podés identificar un momento puntual a partir del cual empezaron estas situaciones?'},
+  {b:'D3',c:'D3-P06',t:'¿Otras personas en tu trabajo también están viviendo situaciones similares?'},
+  {b:'D4',c:'D4-P01',t:'¿Tenés dolores físicos, contracturas, problemas digestivos 
